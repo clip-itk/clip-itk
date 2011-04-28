@@ -471,6 +471,7 @@ static int w32_readch(void);
 static Gpm_Connect conn;
 
 #endif
+#define __INTERNAL_CAPS_VISIBLE
 #include <term.h>
 
 #define RAWMODE_ESC 117
@@ -702,7 +703,7 @@ typedef struct
 	char *termcap_TS, *termcap_FS;
 	int termcap_NF, termcap_NB;
 
-	char *termcap_CF, *termcap_CB;
+	/*char *termcap_CF, *termcap_CB;*/
 	char *termcap_MF, *termcap_MB;
 	char *termcap_MD, *termcap_mb, *termcap_MH, *termcap_MR, *termcap_ME;
 	char *termcap_SE, *termcap_SO;
@@ -712,9 +713,9 @@ typedef struct
 
 	char *termcap_PO, *termcap_PF, *termcap_POO;
 	char *termcap_Km, *termcap_Mi;
-	char *termcap_Ct;
+	/*char *termcap_Ct;*/
 
-	char termcap_C2;
+	/*char termcap_C2;*/
 	char termcap_MS;
 	int termcap_HS;
 
@@ -1850,130 +1851,98 @@ destroy_ScreenData(ScreenData * dp)
 {
 }
 
-static char *
-get_str(ScreenData * dp, int no)
-{
-	char *rp;
-
-	if (dp->terminfo.strings[no] == -1)
-		return 0;
-
-	rp = dp->terminfo.buf + dp->terminfo.strings[no];
-	if (!*rp)
-		return 0;
-	else
-		return rp;
-}
-
-static char *
-get_key(ScreenData * dp, int no)
-{
-	char *rp;
-
-	if (dp->terminfo.keys[no] == -1)
-		return 0;
-
-	rp = dp->terminfo.buf + dp->terminfo.keys[no];
-	if (!*rp)
-		return 0;
-	else
-		return rp;
-}
-
 static void
 init_ScreenData(ScreenData * dp)
 {
-	char *bools = dp->terminfo.bools;
-	int *nums = dp->terminfo.nums;
 	char *s;
 
-	dp->termcap_TI = get_str(dp, NO_smcup);
-	dp->termcap_TE = get_str(dp, NO_rmcup);
+	dp->termcap_TI = enter_ca_mode;
+	dp->termcap_TE = exit_ca_mode;
 
-	dp->termcap_KS = get_str(dp, NO_smkx);
-	dp->termcap_KE = get_str(dp, NO_rmkx);
+	dp->termcap_KS = keypad_xmit;
+	dp->termcap_KE = keypad_local;
 
-	dp->termcap_CM = get_str(dp, NO_cup);
+	dp->termcap_CM = cursor_address;
 
-	dp->termcap_GS = get_str(dp, NO_smacs);
-	dp->termcap_GE = get_str(dp, NO_rmacs);
-	dp->termcap_AS = get_str(dp, NO_smacs);
-	dp->termcap_AE = get_str(dp, NO_rmacs);
+	dp->termcap_GS = enter_alt_charset_mode;
+	dp->termcap_GE = exit_alt_charset_mode;
+	dp->termcap_AS = enter_alt_charset_mode;
+	dp->termcap_AE = exit_alt_charset_mode;
 
-	dp->termcap_G1 = get_str(dp, NO_g1);
-	dp->termcap_G2 = get_str(dp, NO_g2);
-	dp->termcap_AC = get_key(dp, NO_acsc);
+	dp->termcap_G1 = acs_urcorner;
+	dp->termcap_G2 = acs_ulcorner;
+	dp->termcap_AC = acs_chars;
 
-	dp->termcap_AL = get_str(dp, NO_il1);
-	dp->termcap_DL = get_str(dp, NO_dl1);
+	dp->termcap_AL = insert_line;
+	dp->termcap_DL = delete_line;
 
-	dp->termcap_SF = get_str(dp, NO_indn);
-	dp->termcap_SR = get_str(dp, NO_rin);
-	dp->termcap_CS = get_str(dp, NO_csr);
+	dp->termcap_SF = parm_index;
+	dp->termcap_SR = parm_rindex;
+	dp->termcap_CS = change_scroll_region;
 
-	dp->termcap_CL = get_str(dp, NO_clear);
-	dp->termcap_CE = get_str(dp, NO_el);
+	dp->termcap_CL = clear_screen;
+	dp->termcap_CE = clr_eol;
 
-	dp->termcap_TS = get_str(dp, NO_tsl);
-	dp->termcap_FS = get_str(dp, NO_fsl);
+	dp->termcap_TS = to_status_line;
+	dp->termcap_FS = from_status_line;
 
-	dp->termcap_NF = nums[NO_Nf];
-	dp->termcap_NB = nums[NO_Nb];
+	dp->termcap_NF = 0; /* number of foreground colors */
+	dp->termcap_NB = 0; /* number of background colors */
 
-	dp->termcap_lines = nums[NO_lines];
-	dp->termcap_columns = nums[NO_cols];
+	dp->termcap_lines = lines;
+	dp->termcap_columns = columns;
 
-	dp->termcap_CF = get_str(dp, NO_Cf);
-	dp->termcap_CB = get_str(dp, NO_Cb);
+	/*dp->termcap_CF = get_str(dp, NO_Cf); Cyrillic extention color foreground */
+	/*dp->termcap_CB = get_str(dp, NO_Cb); Cyrillic extention color background */
 
-	dp->termcap_MF = get_str(dp, NO_Mf);
-	dp->termcap_MB = get_str(dp, NO_Mb);
+	dp->termcap_MF = NULL; /* Cyrillic extention foreground color map */
+	dp->termcap_MB = NULL; /* Cyrillic extention background color map */
 
-	dp->termcap_MD = get_str(dp, NO_bold);
-	dp->termcap_mb = get_str(dp, NO_blink);
-	dp->termcap_MH = get_str(dp, NO_dim);
-	dp->termcap_MR = get_str(dp, NO_rev);
-	dp->termcap_ME = get_str(dp, NO_sgr0);
+	dp->termcap_MD = enter_bold_mode;
+	dp->termcap_mb = enter_blink_mode;
+	dp->termcap_MH = enter_dim_mode;
+	dp->termcap_MR = enter_reverse_mode;
+	dp->termcap_ME = exit_attribute_mode;
 
-	dp->termcap_SE = get_str(dp, NO_rmso);
-	dp->termcap_SO = get_str(dp, NO_smso);
+	dp->termcap_SE = exit_standout_mode;
+	dp->termcap_SO = enter_standout_mode;
 
-	dp->termcap_AF = get_str(dp, NO_setaf);
-	dp->termcap_AB = get_str(dp, NO_setab);
+	dp->termcap_AF = set_a_foreground;
+	dp->termcap_AB = set_a_background;
 
-	dp->termcap_SETF = get_str(dp, NO_setf);
-	dp->termcap_SETB = get_str(dp, NO_setb);
+	dp->termcap_SETF = set_foreground;
+	dp->termcap_SETB = set_background;
 
-	dp->termcap_PO = get_str(dp, NO_mc5);
-	dp->termcap_POO = get_str(dp, NO_mc5p);
-	dp->termcap_PF = get_str(dp, NO_mc4);
+	dp->termcap_PO = prtr_on;
+	dp->termcap_POO = prtr_non;
+	dp->termcap_PF = prtr_off;
 
-	dp->termcap_Km = get_str(dp, NO_kmous);
-	dp->termcap_Mi = get_str(dp, NO_minfo);
+	dp->termcap_Km = key_mouse;
+	dp->termcap_Mi = mouse_info;
 
-	dp->termcap_Ct = get_str(dp, NO_Ct);
-	dp->termcap_C2 = bools[NO_C2];
-	dp->termcap_MS = bools[NO_msgr];
+	/*dp->termcap_Ct = get_str(dp, NO_Ct); Cyrillic extention terminal translation filename */
+	/*dp->termcap_C2 = bools[NO_C2];*/
+	dp->termcap_MS = move_standout_mode;
 
-	dp->termcap_xo = bools[NO_xon];
+	dp->termcap_xo = xon_xoff;
 
-	s = get_str(dp, NO_xonc);
+	s = xon_character;
 	if (s)
 		dp->termcap_XN = s[0];
-	s = get_str(dp, NO_xoffc);
+	s = xoff_character;
 	if (s)
 		dp->termcap_XF = s[0];
 
-	dp->termcap_HS = bools[NO_hs];
+	dp->termcap_HS = has_status_line;
 
-	dp->termcap_BL = get_str(dp, NO_bel);
+	dp->termcap_BL = bell;
 
-	dp->termcap_IS = get_str(dp, NO_is2);
-	dp->termcap_EA = get_str(dp, NO_enacs);
+	dp->termcap_IS = init_2string;
+	dp->termcap_EA = ena_acs;
 
-	dp->termcap_VS = get_str(dp, NO_cvvis);
-	dp->termcap_VE = get_str(dp, NO_cnorm);
-	dp->termcap_VI = get_str(dp, NO_civis);
+	dp->termcap_VS = cursor_visible;
+	dp->termcap_VE = cursor_normal;
+	dp->termcap_VI = cursor_invisible;
 #if 0
 	printf("%s\n", dp->termcap_VS);
 	printf("%s\n", dp->termcap_VE);
@@ -2114,43 +2083,43 @@ initKey(ScreenData * dp)
 	map[1].str = dp->meta2_key;
 	map[2].str = dp->national_key;
 
-	map[3].str = get_key(dp, NO_kcub1);	/* kl */
-	map[4].str = get_key(dp, NO_kcuf1);	/* kr */
-	map[5].str = get_key(dp, NO_kcuu1);	/* ku */
-	map[6].str = get_key(dp, NO_kcud1);	/* kd */
+	map[3].str = key_left;			/* kl */
+	map[4].str = key_right;			/* kr */
+	map[5].str = key_up;			/* ku */
+	map[6].str = key_down;			/* kd */
 
-	map[7].str = get_key(dp, NO_knp);	/* kN */
-	map[8].str = get_key(dp, NO_kpp);	/* kP */
-	s = get_key(dp, NO_khome);	/* kh */
+	map[7].str = key_npage;			/* kN */
+	map[8].str = key_ppage;			/* kP */
+	s = key_home;				/* kh */
 	if (!s)
-		s = get_key(dp, NO_kend);	/* @7 */
+		s = key_end;			/* @7 */
 	map[9].str = s;
-	map[10].str = get_key(dp, NO_kll);	/* kH */
-	map[11].str = get_key(dp, NO_kich1);	/* kI */
-	map[12].str = get_key(dp, NO_kbs);	/* kb */
-	map[13].str = get_key(dp, NO_kdch1);	/* kD */
+	map[10].str = key_ll;			/* kH */
+	map[11].str = key_ic;			/* kI */
+	map[12].str = key_backspace;		/* kb */
+	map[13].str = key_dc;			/* kD */
 
-	map[14].str = get_key(dp, NO_kf1);	/* k1 */
-	map[15].str = get_key(dp, NO_kf2);	/* k2 */
-	map[16].str = get_key(dp, NO_kf3);	/* k3 */
-	map[17].str = get_key(dp, NO_kf4);	/* k4 */
-	map[18].str = get_key(dp, NO_kf5);	/* k5 */
-	map[19].str = get_key(dp, NO_kf6);	/* k6 */
-	map[20].str = get_key(dp, NO_kf7);	/* k7 */
-	map[21].str = get_key(dp, NO_kf8);	/* k8 */
-	map[22].str = get_key(dp, NO_kf9);	/* k9 */
-	map[23].str = get_key(dp, NO_kf0);	/* k0 */
+	map[14].str = key_f1;			/* k1 */
+	map[15].str = key_f2;			/* k2 */
+	map[16].str = key_f3;			/* k3 */
+	map[17].str = key_f4;			/* k4 */
+	map[18].str = key_f5;			/* k5 */
+	map[19].str = key_f6;			/* k6 */
+	map[20].str = key_f7;			/* k7 */
+	map[21].str = key_f8;			/* k8 */
+	map[22].str = key_f9;			/* k9 */
+	map[23].str = key_f0;			/* k0 */
 
-	map[24].str = get_key(dp, NO_kf11);	/* k11 */
-	map[25].str = get_key(dp, NO_kf12);	/* k12 */
-	map[26].str = get_key(dp, NO_kf13);	/* k13 */
-	map[27].str = get_key(dp, NO_kf14);	/* k14 */
-	map[28].str = get_key(dp, NO_kf15);	/* k15 */
-	map[29].str = get_key(dp, NO_kf16);	/* k16 */
-	map[30].str = get_key(dp, NO_kf17);	/* k17 */
-	map[31].str = get_key(dp, NO_kf18);	/* k18 */
-	map[32].str = get_key(dp, NO_kf19);	/* k19 */
-	map[33].str = get_key(dp, NO_kf20);	/* k20 */
+	map[24].str = key_f11;			/* k11 */
+	map[25].str = key_f12;			/* k12 */
+	map[26].str = key_f13;			/* k13 */
+	map[27].str = key_f14;			/* k14 */
+	map[28].str = key_f15;			/* k15 */
+	map[29].str = key_f16;			/* k16 */
+	map[30].str = key_f17;			/* k17 */
+	map[31].str = key_f18;			/* k18 */
+	map[32].str = key_f19;			/* k19 */
+	map[33].str = key_f20;			/* k20 */
 
 	qsort(map, KEYTAB_SIZE, sizeof(Keytab), (int (*)(const void *, const void *)) compkeys);
 
