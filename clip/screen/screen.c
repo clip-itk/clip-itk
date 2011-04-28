@@ -3502,9 +3502,9 @@ delLine_Screen(Screen * scr, int line, unsigned char attr)
 void
 scroll_Screen(Screen * scr, int beg, int end, int num, unsigned char attr)
 {
-	int columns = scr->base->Columns;
+	int cols = scr->base->Columns;
 
-	scrollw_Screen(scr, beg, 0, end, columns - 1, num, attr);
+	scrollw_Screen(scr, beg, 0, end, cols - 1, num, attr);
 }
 
 void
@@ -3579,7 +3579,7 @@ syncLine(Screen * scr, int y, int utf8term)
 {
 	int Lines = scr->base->Lines;
 	int Columns = scr->base->Columns;
-	int columns = (y == Lines - 1 ? Columns - 1 : Columns);
+	int cols = (y == Lines - 1 ? Columns - 1 : Columns);
 	int x, e, i, end, l, contnum;
 	unsigned char *chars, *ochars, *colors, *ocolors, *attrs, *oattrs;
 	ScreenData *dp = (ScreenData *) scr->base->data;
@@ -3595,12 +3595,12 @@ syncLine(Screen * scr, int y, int utf8term)
 	attrs = scr->attrs[y];
 	oattrs = scr->base->realScreen->attrs[y];
 
-	for (x = 0; x < columns && chars[x] == ochars[x] && colors[x] == ocolors[x] && attrs[x] == oattrs[x]; x++);
+	for (x = 0; x < cols && chars[x] == ochars[x] && colors[x] == ocolors[x] && attrs[x] == oattrs[x]; x++);
 
-	if (x >= columns)
+	if (x >= cols)
 		return;
 
-	for (l = columns - 1; l >= x && chars[l] == ochars[l] && colors[l] == ocolors[l] && attrs[l] == oattrs[l]; l--);
+	for (l = cols - 1; l >= x && chars[l] == ochars[l] && colors[l] == ocolors[l] && attrs[l] == oattrs[l]; l--);
 
 	if (l < x)
 		return;
@@ -3649,7 +3649,7 @@ syncLine(Screen * scr, int y, int utf8term)
 /* Search the first nonblank character from the end of line. */
 	if (dp->termcap_CE)
 	{
-		int p = columns - 1;
+		int p = cols - 1;
 
 		if (chars[p] == ' ')
 			while (p > 0 && chars[p] == chars[p - 1] && colors[p] == colors[p - 1] && attrs[p] == attrs[p - 1])
