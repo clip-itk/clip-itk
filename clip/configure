@@ -321,7 +321,7 @@ MINGW)
 LINUX)
 	LD_PRG='ld -Bdynamic -dynamic-linker /lib/ld-linux.so.2 /usr/lib/crt1.o /usr/lib/crti.o'
 	LD_END='/usr/lib/crtn.o -lc'
-	ADDLIBS='-ldl -lm'
+	ADDLIBS='-ldl -lm -lcurses'
 	LDS_PRG='ld -Bstatic /usr/lib/crt1.o /usr/lib/crti.o'
 	LDS_END='/usr/lib/crtn.o -lc -lc_pic'
 	USE_LD=yes
