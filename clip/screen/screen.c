@@ -1269,6 +1269,8 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 
 	if (setupterm(base->terminalName, fd, &ret) == -1)
 			{
+				_clip_logg(0, "%s: invalid terminal (setupterm returned %d)",
+					   base->terminalName, ret);
 #ifdef _WIN32
 				if (!w32_console)
 #endif
