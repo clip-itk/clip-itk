@@ -157,7 +157,7 @@ $(CLIP):  $(OBJS) seq_no.txt $(MLIB)
 		$(OBJS) $(LIBS) $(ICONV_LIB) $(MLIB)
 
 seq_no.txt:
-	./seq_no.sh > seq_no.txt
+	./seq_no.sh
 
 clipar:	clipar.o coll.o #getopt.o
 	$(CC) $(CFLAGS) $(STATICLINK) -o clipar clipar.o coll.o $(MLIB) #getopt.o

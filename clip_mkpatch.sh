@@ -86,7 +86,7 @@ checkout "$from_tags" "$from_name"
 checkout "$to_tags" "$to_name"
 cd $wd
 pwd
-cd $to_name/clip-prg/clip; ./seq_no.sh > seq_no.txt; cd $wd
+cd $to_name/clip-prg/clip; ./seq_no.sh; cd $wd
 pwd
 
 ################################
