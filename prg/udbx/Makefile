@@ -32,9 +32,6 @@ $(BIN): $(BIN).prg $(OBJS)
 	[ ! -f $(CLIPROOT)/include/clip-gtk.ch ] || ( cd plugins; $(CLIP) -pw *.prg )
 	[ ! -f $(CLIPROOT)/include/clip-gtk.ch ] || ( $(CLIP) $(CLIPFLAGS) -se $(BIN).prg $(OBJS) $(CLIPLIBS) )
 
-commit:
-	_cvs commit
-
 .prg.o:
 	[ ! -f $(CLIPROOT)/include/clip-gtk.ch ] || ( $(CLIP) $(CLIPFLAGS) $< )
 

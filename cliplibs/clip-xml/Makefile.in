@@ -67,15 +67,6 @@ clean:
 	cd example && $(MAKE) clean
 	rm -rf Makefile *.o *.s *.b *.bak *.a *.so *.ex *.nm
 
-commit:
-	_cvs commit
-
-update:
-	_cvs update -dP
-
-ucommit:
-	_cvs update -dP && _cvs commit
-
 shell:
 	sh
 

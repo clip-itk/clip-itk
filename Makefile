@@ -57,15 +57,6 @@ doc: clean
 src_p: clean
 	./mksrc_p
 
-ucommit:
-	./cvs_ucommit
-
-commit:
-	./cvs_commit
-
-update:
-	./cvs_update
-
 #doc:
 #	cd tdoc && $(MAKE)
 

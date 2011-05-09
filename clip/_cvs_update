@@ -1,8 +1,0 @@
-#!/bin/sh
-
-CVS_RSH=ssh
-export CVS_RSH
-
-cvs update -dP
-./seq_no.sh > seq_no.txt
-

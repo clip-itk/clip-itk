@@ -1,8 +1,0 @@
-#!/bin/sh
-
-CVS_RSH=ssh
-export CVS_RSH
-
-cvs commit -m 'subversion' seq_no.txt
-cvs commit
-

@@ -151,15 +151,6 @@ depend:
 	$(MAKE) hash
 	makedepend -Y  -- $(CFLAGS) -- $(SRCS) 2>/dev/null
 
-commit:
-	_cvs commit
-
-update:
-	_cvs update -dP
-
-ucommit:
-	_cvs update -dP && _cvs commit
-
 shell:
 	sh
 

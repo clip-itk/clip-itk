@@ -50,15 +50,6 @@ clean: example_clean
 	rm -rf *.o *.c *.s *.a *.so *.po *.pa *.log *.b *.BAK *.bak include/*.bak \
 	include/*.BAK *~ core* *core *.ex *.nm
 
-commit:
-	_cvs commit .
-
-update:
-	_cvs update -dP
-	make depend
-
-ucommit: update commit
-
 depend:
 	makedepend -w80 -I./include -- *.prg 2>/dev/null
 

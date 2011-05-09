@@ -16,10 +16,6 @@ PROGS = codb_pack codb_addobj codb_ab \
 
 all: $(PROGS)
 
-commit:
-	../_cvs commit
-update:
-	../_cvs update -dP
 clean:
 	cd data; rm -f *.bak
 	#cd loaders; $(MAKE) clean

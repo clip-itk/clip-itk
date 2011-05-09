@@ -53,14 +53,5 @@ dist: distclean
 .prg.o: clip-postscript.ch
 	$(CLIP) $(CLIPFLAGS) $<
 
-commit:
-	_cvs commit
-
-update:
-	_cvs update -dP
-
-ucommit:
-	_cvs update -dP && _cvs commit
-
 shell:
 	sh

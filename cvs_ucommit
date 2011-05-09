@@ -1,4 +1,0 @@
-#!/bin/sh
-
-./cvs_update "$@" && ./cvs_commit "$@"
-

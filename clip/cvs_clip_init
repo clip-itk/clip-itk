@@ -1,8 +1,0 @@
-#!/bin/sh
-ssh=`which ssh1`
-if [ -z "$ssh" ]
-then
-	ssh=ssh
-fi
-export CVS_RSH=$ssh
-cvs -d :ext:clip@last.itk.ru:/home/clip/cvsroot checkout clip

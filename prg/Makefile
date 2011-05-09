@@ -13,12 +13,6 @@ configure:
 clean:
 	./Clean.sh
 
-commit:
-	./_cvs commit
-
-update:
-	./_cvs update -dP
-
 deb:
 	./mkdeb
 

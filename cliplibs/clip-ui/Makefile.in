@@ -71,14 +71,5 @@ dist: distclean
 .prg.o: clip-ui.ch
 	$(CLIP) -w $<
 
-commit:
-	_cvs commit
-
-update:
-	_cvs update -dP
-
-ucommit:
-	_cvs update -dP && _cvs commit
-
 shell:
 	sh

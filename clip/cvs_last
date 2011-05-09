@@ -1,3 +1,0 @@
-#!/bin/sh
-export CVS_RSH=ssh
-cvs -d :ext:paul@last.itk.ru:/home/paul/clip/cvsroot $*
