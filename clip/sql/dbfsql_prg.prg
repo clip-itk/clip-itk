@@ -291,10 +291,10 @@ STATIC PROCEDURE _sqlflush(self)
 
 		data := self:Read()
 		ids := SQLRowId(self:rowset)
-		IF VALTYPE(ids) == "N"
+		IF VALTYPE(ids) == "N" .AND. ids > 0
 			data[HASHSTR(UPPER(;
 				SQLFieldName(self:rowset,ids)))] := self:GetValue(ids)
-		ELSE
+		ELSEIF VALTYPE(ids) == "A"
 			FOR i:=1 TO LEN(ids)
 				data[HASHSTR(UPPER(;
 					SQLFieldName(self:rowset,ids[i])))] := self:GetValue(ids[i])
@@ -369,10 +369,10 @@ STATIC FUNCTION rowsetWrite(self,data)
 	IF SQLLastrec(self:rowset) > 0
 		IF self:updateSQL != NIL
 			ids := SQLRowId(self:rowset)
-			IF VALTYPE(ids) == "N"
+			IF VALTYPE(ids) == "N" .AND. ids > 0
 				data[HASHSTR(UPPER(;
 					SQLFieldName(self:rowset,ids)))] := self:GetValue(ids)
-			ELSE
+			ELSEIF VALTYPE(ids) == "A"
 				FOR i:=1 TO LEN(ids)
 					data[HASHSTR(UPPER(;
 						SQLFieldName(self:rowset,ids[i])))] :=;
