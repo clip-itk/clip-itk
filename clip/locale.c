@@ -73,6 +73,10 @@ static FILE *out = 0;
 static char *fname = 0, *mname = 0;
 static char *file_name = 0;
 
+#ifdef OS_MINGW
+#define mkdir(D, M)	mkdir(D)
+#endif
+
 static int
 make_dir(char *path)
 {
@@ -80,11 +84,7 @@ make_dir(char *path)
 	int r;
 
 	strncpy(dir, path, sizeof(dir));
-#ifdef OS_MINGW
-	r = mkdir(dir);
-#else
 	r = mkdir(dir, 0775);
-#endif
 	if (r && errno == EEXIST)
 		return 0;
 
@@ -101,11 +101,7 @@ make_dir(char *path)
 			else
 			{
 				strncpy(dir, path, sizeof(dir));
-#ifdef OS_MINGW
-				if ((r = mkdir(dir)))
-#else
 				if ((r = mkdir(dir, 0775)))
-#endif
 					yywarning("cannot create dir '%s': %s", dir, strerror(errno));
 			}
 			return r;
