@@ -72,7 +72,7 @@ main(int argc, char **argv)
 
 	while (fgets(buf, sizeof(buf), stdin))
 	{
-		for (beg = buf; *beg && (beg - buf) < sizeof(buf) && (*beg == ' ' || *beg == '\t'); ++beg)
+		for (beg = buf; *beg && (beg - buf) < (int)sizeof(buf) && (*beg == ' ' || *beg == '\t'); ++beg)
 			;
 		for (end = buf + strlen(buf) - 1; end >= buf && (*end == ' ' || *end == '\t' || *end == '\r' || *end == '\n'); --end)
 			;

@@ -624,7 +624,7 @@ make_c_file(char *Arname, int argc, char **argv)
 	}
 	fprintf(file, "\n};\n");
 	fprintf(file, "\nstruct ClipFile ");
-	for (i = 0; i < strlen(name); ++i)
+	for (i = 0; i < (int)strlen(name); ++i)
 		fputc(toupper(name[i]), file);
 	fprintf(file, " =\n{\n");
 	fprintf(file, "\t1,\n");
@@ -638,7 +638,7 @@ make_c_file(char *Arname, int argc, char **argv)
 	fprintf(file, "\t0,\n");
 	fprintf(file, "};\n\n");
 
-	for (i = 0; i < strlen(name); ++i)
+	for (i = 0; i < (int)strlen(name); ++i)
 		name[i] = toupper(name[i]);
 
 	fprintf(file, "\nClipModule %s_module =\n{\n ", name + 7);

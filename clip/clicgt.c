@@ -71,7 +71,7 @@ typedef struct
 	char *charset;
 
 	char *nullentry;
-	int nplural;
+	unsigned nplural;
 	PluralData *pd;
 
 	int tr_inited;
@@ -159,8 +159,7 @@ _clic_ngettext(const char *msg, const char *nmsg, int n)
 
 	if (sp)
 	{
-		int i;
-		unsigned long int nn;
+		unsigned i, nn;
 		char *ep;
 
 		if (!lp->pd)
