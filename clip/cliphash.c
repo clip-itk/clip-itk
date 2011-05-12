@@ -145,9 +145,9 @@ static int crc16_tab[] =
 };
 
 CLIP_DLLEXPORT clip_hash_t
-_clip_hashbytes16(long seed, const char *bytes, int len)
+_clip_hashbytes16(long seed, const char *bytes, size_t len)
 {
-	unsigned int i;
+	size_t i;
 	unsigned short crc16val;
 	unsigned char *s = (unsigned char *) bytes;
 
@@ -159,9 +159,9 @@ _clip_hashbytes16(long seed, const char *bytes, int len)
 }
 
 CLIP_DLLEXPORT clip_hash_t
-_clip_hashbytes32(long seed, const char *bytes, int len)
+_clip_hashbytes32(long seed, const char *bytes, size_t len)
 {
-	unsigned int i;
+	size_t i;
 	unsigned long crc32val;
 	long ret;
 	unsigned char *s = (unsigned char *) bytes;
@@ -170,7 +170,7 @@ _clip_hashbytes32(long seed, const char *bytes, int len)
 	for (i = 0; i < len; i++)
 		crc32val = crc32_tab[(crc32val ^ s[i]) & 0xff] ^ (crc32val >> 8);
 //	printf("\nhash32=%s,%d,%ld,%ld,%d,",bytes,len,seed,(clip_hash_t)crc32val,crc32val> 0x7FFFFFFF);
-	
+
 	if (sizeof(long /*clip_hash_t*/) <= 4 )
 		return (clip_hash_t)crc32val;
 	ret = (long)crc32val;
@@ -178,11 +178,10 @@ _clip_hashbytes32(long seed, const char *bytes, int len)
 		ret = ret - 0XFFFFFFFFL-1;
 //	printf("%ld,%ld,%ld\n",0xFFFFFFFFL,ret,(clip_hash_t)ret);
 	return (clip_hash_t)ret;
-	
 }
 
 CLIP_DLLEXPORT clip_hash_t
-_clip_hashbytes(long seed, const char *bytes, int len)
+_clip_hashbytes(long seed, const char *bytes, size_t len)
 {
 	return _clip_hashbytes32(seed, bytes, len);
 }
@@ -221,9 +220,9 @@ is_hex(int b)
 	}
 }
 CLIP_DLLEXPORT clip_hash_t
-_clip_casehashbytes_(long seed, const char *bytes, int len)
+_clip_casehashbytes_(long seed, const char *bytes, size_t len)
 {
-	unsigned int i;
+	size_t i;
 	clip_hash_t ret;
 	unsigned char *s = (unsigned char *) bytes;
 #if 0
@@ -246,7 +245,7 @@ _clip_casehashbytes_(long seed, const char *bytes, int len)
 }
 
 CLIP_DLLEXPORT clip_hash_t
-_clip_casehashbytes(long seed, const char *bytes, int len)
+_clip_casehashbytes(long seed, const char *bytes, size_t len)
 {
 	unsigned long crc32val;
 	/* 0xXXXXXXXX handled specially */

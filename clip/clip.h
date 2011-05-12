@@ -1793,10 +1793,10 @@ void _clip_signal_real(int sig);
 
 long _clip_hashstr(const char *x);
 long _clip_casehashstr(const char *x);
-long _clip_hashbytes(long seed, const char *bytes, int len);
-long _clip_hashbytes16(long seed, const char *bytes, int len);
-long _clip_hashbytes32(long seed, const char *bytes, int len);
-long _clip_casehashbytes(long seed, const char *bytes, int len);
+long _clip_hashbytes(long seed, const char *bytes, size_t len);
+long _clip_hashbytes16(long seed, const char *bytes, size_t len);
+long _clip_hashbytes32(long seed, const char *bytes, size_t len);
+long _clip_casehashbytes(long seed, const char *bytes, size_t len);
 /* trim head and tail spaces */
 long _clip_hashword(const char *x, int l);
 long _clip_casehashword(const char *x, int l);

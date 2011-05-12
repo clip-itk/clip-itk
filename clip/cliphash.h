@@ -17,10 +17,10 @@
 
 clip_hash_t _clip_hashstr(const char *x);
 clip_hash_t _clip_casehashstr(const char *x);
-clip_hash_t _clip_hashbytes(long seed, const char *bytes, int len);
-clip_hash_t _clip_casehashbytes(long seed, const char *bytes, int len);
-clip_hash_t _clip_hashbytes16(long seed, const char *bytes, int len);
-clip_hash_t _clip_hashbytes32(long seed, const char *bytes, int len);
+clip_hash_t _clip_hashbytes(long seed, const char *bytes, size_t len);
+clip_hash_t _clip_casehashbytes(long seed, const char *bytes, size_t len);
+clip_hash_t _clip_hashbytes16(long seed, const char *bytes, size_t len);
+clip_hash_t _clip_hashbytes32(long seed, const char *bytes, size_t len);
 /* trim head and tail spaces */
 clip_hash_t _clip_hashword(const char *x, int l);
 clip_hash_t _clip_casehashword(const char *x, int l);
