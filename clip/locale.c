@@ -79,7 +79,7 @@ make_dir(char *path)
 	char dir[256];
 	int r;
 
-	snprintf(dir, sizeof(dir), path);
+	strncpy(dir, path, sizeof(dir));
 #ifdef OS_MINGW
 	r = mkdir(dir);
 #else
@@ -100,7 +100,7 @@ make_dir(char *path)
 				yywarning("cannot create dir '%s': %s", dir, strerror(errno));
 			else
 			{
-				snprintf(dir, sizeof(dir), path);
+				strncpy(dir, path, sizeof(dir));
 #ifdef OS_MINGW
 				if ((r = mkdir(dir)))
 #else
@@ -236,7 +236,7 @@ put_locale_string(char *name)
 	if (!out && file_name)
 		set_locale();
 	if (!out)
-        	return 0;
+		return 0;
 
 	fprintf(out, "#: %s:%ld\n", file_name, clic_line);
 	fprintf(out, "msgid \"");
@@ -254,7 +254,7 @@ put_locale_string_plural(char *singular, char *plural)
 	if (!out && file_name)
 		set_locale();
 	if (!out)
-        	return 0;
+		return 0;
 
 	fprintf(out, "#: %s:%ld\n", file_name, clic_line);
 	fprintf(out, "msgid \"");
