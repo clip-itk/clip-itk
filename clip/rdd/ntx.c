@@ -361,8 +361,8 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__);
 static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int soft,int last,int* found,const char* __PROC__);
 
-static int ntx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__);
-static int ntx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__);
+static int ntx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* lastkey,const char* __PROC__);
+static int ntx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* keyno,const char* __PROC__);
 
 static int ntx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,const char* __PROC__);
 
@@ -1754,7 +1754,7 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	NTX_HEADER hdr;
 	NTX_PAGE page;
 	ClipVar vv,*vp;
-	int lastrec;
+	unsigned lastrec;
 	int s,e,i,er;
 	BTREE* bt;
 	void* buf;
@@ -1881,13 +1881,13 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 
 	s = rd->os.nStart;
-	e = min(lastrec,rd->os.nStart+rd->os.nNext-1);
+	e = min((int)lastrec,rd->os.nStart+rd->os.nNext-1);
 	if(rd->os.nStart==0 || !rd->os.lRest)
 		s = 1;
 	if(rd->os.nNext==0)
 		e = lastrec;
 	if(rd->os.nRecord)
-		s = e = min(lastrec,rd->os.nRecord);
+		s = e = min((int)lastrec,rd->os.nRecord);
 	if(rd->os.lAll || s<1 || e<1){
 		s = 1;
 		e = lastrec;
@@ -1908,7 +1908,7 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 		bt = bt_create(ro->unique,lastrec,ro->keysize+sizeof(unsigned int)+1,_ntx_comp);
 	buf = malloc(ro->keysize+sizeof(unsigned int)+1);
 	if(!rd->os.lCurrent){
-		for(rd->recno=s;rd->recno<=e;rd->recno++){
+		for(rd->recno=s;(int)rd->recno<=e;rd->recno++){
 			rd->eof = 0;
 			if((er = rd->vtbl->rawgo(cm,rd,rd->recno,0,__PROC__))) return er;
 			/* check WHILE condition */
@@ -2052,7 +2052,8 @@ static int ntx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** rop
 }
 
 static int _ntx_reindex(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PROC__){
-	int lastrec,i,er;
+	unsigned lastrec;
+	int i,er;
 	ClipVar vv,*vp;
 
 	if(ro->custom)
@@ -2181,7 +2182,7 @@ static int ntx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 	ro->level = 0;
 	if((er = _ntx_first(cm,ro,_rdd_uint(hdr.root),&recno,&out,__PROC__))) return er;
 	if(out){
-		if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->bof = rd->v_bof = rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 		return 0;
@@ -2205,7 +2206,7 @@ static int ntx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 	ro->level = 0;
 	if((er = _ntx_last(cm,ro,_rdd_uint(hdr.root),&recno,&out,__PROC__))) return er;
 	if(out){
-		if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->bof = rd->v_bof = rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 		return 0;
@@ -2244,7 +2245,7 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 			if((er = _ntx_search_tree(cm,rd,ro,ro->key,ro->keysize,rd->recno,&r,0,
 				__PROC__))) return er;
 			if(r){
-				if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+				if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 				if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 					return er;
 				rd->eof = 1;
@@ -2260,7 +2261,7 @@ static int ntx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 
 		if((er = __ntx_next(cm,rd,ro,&out,__PROC__))) return er;
 		if(out){
-			if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
 			rd->eof = 1;
@@ -2281,7 +2282,7 @@ static int ntx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	int res = 0,sok,out,er;
 	int oldrecno = rd->recno;
 	int oldeof = rd->eof;
-	int lastrec;
+	unsigned lastrec;
 
 	if(rd->bof) return 0;
 /*	printf("skip -1\n? 'skip -1',recno(),bof()\n");*/
@@ -2359,8 +2360,9 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 	NTX_BUCKET* buck;
 	NTX_PAGE page;
 	char expr[1024];
-	int res,sok,lastrec,oldrecno,er;
+	int res,sok,oldrecno,er;
 	int len = ro->keysize;
+	unsigned lastrec;
 
 	rd->bof = rd->v_bof = rd->eof = 0;
 	if((er = ntx_formatkey(cm,ro,v,expr,__PROC__))) return er;
@@ -2504,7 +2506,7 @@ static int ntx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 	return 0;
 }
 
-static int _ntx_leftkeys(ClipMachine* cm,RDD_ORDER* ro,unsigned int pageoffs,int* keyno,const char* __PROC__){
+static int _ntx_leftkeys(ClipMachine* cm,RDD_ORDER* ro,unsigned int pageoffs,unsigned* keyno,const char* __PROC__){
 	NTX_PAGE page;
 	NTX_BUCKET* buck;
 	int i,er;
@@ -2522,7 +2524,7 @@ static int _ntx_leftkeys(ClipMachine* cm,RDD_ORDER* ro,unsigned int pageoffs,int
 	return 0;
 }
 
-static int ntx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__){
+static int ntx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* keyno,const char* __PROC__){
 	NTX_HEADER hdr;
 	NTX_PAGE page;
 	NTX_BUCKET* buck;
@@ -2566,7 +2568,7 @@ static int ntx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const
 	return 0;
 }
 
-static int ntx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__){
+static int ntx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* lastkey,const char* __PROC__){
 	NTX_HEADER hdr;
 	int er;
 
@@ -2579,7 +2581,7 @@ static int ntx_gotokey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int k
 	NTX_HEADER hdr;
 	NTX_PAGE page;
 	NTX_BUCKET* buck;
-	int left,oneleft,i,lastkey,er;
+	unsigned left,oneleft,i,lastkey,er;
 
 	*ok = 1;
 	if((er = ntx_lastkey(cm,rd,ro,&lastkey,__PROC__))) return er;

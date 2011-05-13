@@ -714,7 +714,8 @@ err:
 int clip_RDDRECNO(ClipMachine* cm){
 	const char* __PROC__ = "RDDRECNO";
 	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
-	int recno,er;
+	unsigned recno;
+	int er;
 
 	if(!rd) return EG_NOTABLE;
 
@@ -728,7 +729,8 @@ err:
 int clip_RDDLASTREC(ClipMachine* cm){
 	const char* __PROC__ = "RDDLASTREC";
 	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
-	int lastrec,er;
+	unsigned lastrec;
+	int er;
 
 	if(!rd) return EG_NOTABLE;
 
@@ -746,7 +748,8 @@ err:
 int clip_RDDKEYNO(ClipMachine* cm){
 	const char* __PROC__ = "RDDKEYNO";
 	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
-	int keyno = 0,er;
+	unsigned keyno = 0;
+	int er;
 
 	if(!rd) return EG_NOTABLE;
 
@@ -765,7 +768,8 @@ err:
 int clip_RDDLASTKEY(ClipMachine* cm){
 	const char* __PROC__ = "RDDLASTKEY";
 	RDD_DATA* rd = _fetch_rdd(cm,__PROC__);
-	int lastkey = 0,er;
+	unsigned lastkey = 0;
+	int er;
 
 	if(!rd) return EG_NOTABLE;
 

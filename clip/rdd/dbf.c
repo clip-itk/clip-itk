@@ -617,7 +617,7 @@ static int dbf_create(ClipMachine* cm,RDD_DATA_VTBL* vtbl,char* name,RDD_STRUCT*
 static int dbf_pack(ClipMachine* cm,RDD_DATA* rd,int tfd,const char* __PROC__);
 static int dbf_zap(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf_close(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
-static int dbf_lastrec(ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__);
+static int dbf_lastrec(ClipMachine* cm,RDD_DATA* rd,unsigned* lastrec,const char* __PROC__);
 static int dbf_deleted(ClipMachine* cm,RDD_DATA* rd,int* deleted,const char* __PROC__);
 static int dbf_gotop(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
@@ -1346,7 +1346,7 @@ static int dbf_close(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	}
 	if((er = rdd_read(cm,&rd->file,0,sizeof(DBF_HEADER),&hdr,__PROC__)))
 		return er;
-	if((er = dbf_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 	if(!rd->readonly && rd->updated){
 		if(!rd->shared){
 			if((er = rdd_trunc(cm,&rd->file,_rdd_ushort(hdr.hdrsize)+_rdd_ushort(hdr.recsize)*lastrec+1,__PROC__)))
@@ -1371,7 +1371,7 @@ static int dbf_close(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	return 0;
 }
 
-static int dbf_lastrec(ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__){
+static int dbf_lastrec(ClipMachine* cm,RDD_DATA* rd,unsigned* lastrec,const char* __PROC__){
 	char recs[4];
 	int er;
 	struct stat st;
@@ -1402,7 +1402,7 @@ static int dbf_gotop(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	unsigned int lastrec;
 	int res,deleted,er;
 
-	if((er = dbf_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 
 	rd->bof = rd->v_bof = rd->eof = 0;
 
@@ -1458,7 +1458,7 @@ static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	unsigned int lastrec;
 	int res,deleted,er;
 
-	if((er = dbf_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+	if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 	rd->bof = rd->v_bof = rd->eof = 0;
 
 	if(rd->filter && rd->filter->list){
@@ -1478,7 +1478,7 @@ static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 					return 0;
 			}
 			rd->eof = rd->bof = rd->v_bof = 1;
-			if((er = dbf_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+			if((er = dbf_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			if((er = dbf_rawgoto(cm,rd,lastrec+1,0,__PROC__))) return er;
 		}
 		return 0;
@@ -1517,7 +1517,8 @@ static int dbf_gobottom(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 }
 
 static int dbf_next(ClipMachine* cm,RDD_DATA* rd,int filtok,const char* __PROC__){
-	int lastrec,res,er,deleted;
+	unsigned lastrec;
+	int res,er,deleted;
 
 	if(rd->eof) return 0;
 	rd->bof = rd->v_bof = rd->eof = 0;
@@ -1562,7 +1563,8 @@ static int dbf_next(ClipMachine* cm,RDD_DATA* rd,int filtok,const char* __PROC__
 }
 
 static int dbf_prev(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
-	int res,deleted,lastrec,er;
+	int res,deleted,er;
+	unsigned lastrec;
 
 	if(rd->bof) return 0;
 	rd->bof = rd->v_bof =rd->eof = 0;
@@ -1623,7 +1625,7 @@ static int dbf_rawgoto(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,char valid_
 }
 
 static int dbf_goto(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,const char* __PROC__){
-	int lastrec;
+	unsigned lastrec;
 	int er;
 
 /*	printf("goto %d\n? 'goto %d',recno(),bof()\n",rec,rec);*/
@@ -1640,7 +1642,8 @@ static int dbf_goto(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,const char* __
 
 static int dbf_append(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__){
 	char recs[4];
-	int lastrec,flen,i,er;
+	unsigned lastrec, flen;
+	int i, er;
 
 	if(rd->readonly){
 		er = rdd_err(cm,EG_READONLY,0,__FILE__,__LINE__,__PROC__,
@@ -2407,7 +2410,7 @@ static int _dbf_compare(void* op,void* lp,void* rp,int* uniq){
 
 static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const char* __PROC__){
 	BTREE* bt;
-	int i,j;
+	unsigned i,j;
 	unsigned int recno;
 
 	if(fp->list){
@@ -2430,7 +2433,7 @@ static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const ch
 	} else {
 #if 1
 		unsigned int bytes = ((fp->size+1) >> 5) + 1;
-		int i,b,bb,t,tt;
+		int b,bb,t,tt;
 
 		fp->listlen = 0;
 		for(i=0;i<bytes;i++){
@@ -2480,17 +2483,18 @@ static int dbf_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,const ch
 static int dbf_pack(ClipMachine* cm,RDD_DATA* rd,int tfd,const char* __PROC__){
 	DBF_HEADER hdr;
 	unsigned char* buf = NULL;
-	unsigned int oldnrecs;
+	unsigned int oldnrecs, i;
 	unsigned int newnrecs = 0;
-	int rs,i;
+	int rs, s;
 
 	if(read(tfd,&hdr,sizeof(DBF_HEADER)) != sizeof(DBF_HEADER)) goto err;
 	oldnrecs = _rdd_uint(hdr.recs);
 	_rdd_put_uint(hdr.recs,0);
 	if(write(rd->file.fd,&hdr,sizeof(DBF_HEADER)) != sizeof(DBF_HEADER)) goto err;
-	buf = malloc(_rdd_ushort(hdr.hdrsize)-sizeof(DBF_HEADER));
-	if(read(tfd,buf,_rdd_ushort(hdr.hdrsize)-sizeof(DBF_HEADER)) != _rdd_ushort(hdr.hdrsize)-sizeof(DBF_HEADER)) goto err;
-	if(write(rd->file.fd,buf,_rdd_ushort(hdr.hdrsize)-sizeof(DBF_HEADER)) != _rdd_ushort(hdr.hdrsize)-sizeof(DBF_HEADER)) goto err;
+	s = _rdd_ushort(hdr.hdrsize)-sizeof(DBF_HEADER);
+	buf = malloc(s);
+	if(read(tfd,buf,s) != s) goto err;
+	if(write(rd->file.fd,buf,s) != s) goto err;
 	free(buf);
 	rs = _rdd_ushort(hdr.recsize);
 	buf = malloc(rs);

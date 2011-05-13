@@ -2829,7 +2829,8 @@ clip_RECCOUNT(ClipMachine * cm)
 {
 	const char *__PROC__ = "RECCOUNT";
 	DBWorkArea *wa = cur_area(cm);
-	int lastrec,er;
+	unsigned lastrec;
+	int er;
 
 	_clip_retni(cm,0);
 	if(!wa) return 0;
@@ -2855,7 +2856,8 @@ clip_LASTREC(ClipMachine * cm)
 {
 	const char *__PROC__ = "LASTREC";
 	DBWorkArea *wa = cur_area(cm);
-	int lastrec,er;
+	unsigned lastrec;
+	int er;
 
 	_clip_retni(cm,0);
 	if(!wa) return 0;

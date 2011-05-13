@@ -925,7 +925,8 @@ int clip_M6_RECCOUNT(ClipMachine* cm){
 	const char* __PROC__ = "M6_RECCOUNT";
 	DBWorkArea* wa = cur_area(cm);
 	RDD_FILTER* fp;
-	int i,cnt = 0,er;
+	int cnt = 0,er;
+	unsigned i;
 
 	cm->m6_error = 0;
 	if(!wa){
@@ -959,7 +960,8 @@ int clip_M6_ADDSCOPED(ClipMachine* cm){
 	ClipVar* b = _clip_vptr(_clip_par(cm,3));
 	int ord = _clip_parni(cm,4)-1;
 	int opttype = _clip_parinfo(cm,5);
-	int er,i,cnt = 0;
+	int er,cnt = 0;
+	unsigned i;
 
 	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
@@ -1002,8 +1004,8 @@ int clip_M6_ADDSCOPED(ClipMachine* cm){
 		int oldrecno = wa->rd->recno;
 		int oldbof = wa->rd->bof;
 		int oldeof = wa->rd->eof;
-		int words = (fp->size >> 5) + 1;
-		int* tmap = calloc(4,words);
+		unsigned words = (fp->size >> 5) + 1;
+		unsigned* tmap = calloc(4,words);
 		if(opttype == CHARACTER_t){
 			if((er = rdd_wildseek(cm,wa->rd,_clip_parc(cm,5),1,0,&found,__PROC__)))
 				goto err_unlock;
@@ -1290,7 +1292,7 @@ int clip_M6_FILTSKIP(ClipMachine* cm){
 	int h = _clip_parni(cm,1);
 	int nrecs = _clip_parni(cm,2);
 	RDD_FILTER* fp;
-	int i,er,recno = 0;
+	int i,s,er,recno = 0;
 
 	cm->m6_error = 0;
 	CHECKARG1(1,NUMERIC_t);
@@ -1302,25 +1304,26 @@ int clip_M6_FILTSKIP(ClipMachine* cm){
 	}
 	if(fp->optimize){
 		recno = fp->recno;
+		s = fp->size;
 		if(_clip_parinfo(cm,2) == UNDEF_t)
 			nrecs = 1;
 		if(nrecs < 0){
-			if(recno > fp->size)
-				recno = fp->size+1;
+			if(recno > s)
+				recno = s+1;
 			for(i=0;i>nrecs && recno>0;i--){
 				while(--recno > 0
-					&& !_rm_getbit(fp->rmap,fp->size,recno));
+					&& !_rm_getbit(fp->rmap,s,recno));
 			}
 			fp->recno = recno;
 		} else {
 			if(recno < 0)
 				recno = 0;
-			for(i=0;i<nrecs && recno<=fp->size;i++){
-				while(++recno <= fp->size
-					&& !_rm_getbit(fp->rmap,fp->size,recno));
+			for(i=0;i<nrecs && recno<=s;i++){
+				while(++recno <= s
+					&& !_rm_getbit(fp->rmap,s,recno));
 			}
 			fp->recno = recno;
-			if(recno > fp->size)
+			if(recno > s)
 				recno = 0;
 		}
 	}
@@ -1345,9 +1348,10 @@ int clip_M6_FILTTOP(ClipMachine* cm){
 	}
 	fp->recno = recno = 0;
 	if(fp->optimize){
-		while(++recno <= fp->size
-			&& !_rm_getbit(fp->rmap,fp->size,recno));
-		if(recno <= fp->size)
+		int s = fp->size;
+		while(++recno <= s
+			&& !_rm_getbit(fp->rmap,s,recno));
+		if(recno <= s)
 			fp->recno = recno;
 	}
 	_clip_retni(cm,fp->recno);
@@ -1880,7 +1884,7 @@ int clip_SXCHAR(ClipMachine* cm){
 		case DATE_t:
 		{
 			char* s = _clip_date_to_str(v->d.julian,"yyyymmdd");
-			int l = min(len,strlen(s));
+			int l = min(len,(int)strlen(s));
 
 			memcpy(r->s.str.buf,s,l);
 			memset(r->s.str.buf+l,' ',len-l);
@@ -2562,7 +2566,8 @@ int clip_SX_RLOCK(ClipMachine* cm){
 	DBWorkArea* wa = cur_area(cm);
 	int t = _clip_parinfo(cm,1);
 	ClipVar *ap,*vp;
-	int ok = 1,aok,i,er;
+	int ok = 1,aok,er;
+	unsigned i;
 
 	cm->m6_error = 0;
 	CHECKOPT2(1,ARRAY_t,NUMERIC_t);

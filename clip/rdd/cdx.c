@@ -550,8 +550,8 @@ static int cdx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 static int cdx_gotokey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int keyno,int* ok,const char* __PROC__);
 static int cdx_addkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
 static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,const char* __PROC__);
-static int cdx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__);
-static int cdx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__);
+static int cdx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* keyno,const char* __PROC__);
+static int cdx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* lastkey,const char* __PROC__);
 static int cdx_info(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int cmd,const char* __PROC__);
 static int cdx_keyvalue(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
 static int cdx_setscope(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* top,ClipVar* bottom,unsigned int* map,int bytes,int exact,const char* __PROC__);
@@ -2368,7 +2368,7 @@ static int __cdx_adds(ClipMachine* cm,RDD_ORDER* ro,int level,void* key,unsigned
 		unsigned int newbranch;
 		if((er = rdd_read(cm,&ro->index->file,ro->stack[level].page,sizeof(CDX_BRANCH),
 			&branch,__PROC__))) return er;
-		if((_rdd_ushort(branch.nkeys)+1)*(ro->bufsize+8) > sizeof(branch.keys)){
+		if((_rdd_ushort(branch.nkeys)+1U)*(ro->bufsize+8) > sizeof(branch.keys)){
 			if((er = _cdx_getfreepage(cm,ro->index,&newbranch,__PROC__))) return er;
 			if((er = rdd_write(cm,&ro->index->file,ro->stack[level].page+8,4,
 				&newbranch,__PROC__))) return er;
@@ -2409,7 +2409,7 @@ static int _cdx_adds(ClipMachine* cm,RDD_ORDER* ro,void* key,const char* __PROC_
 	return 0;
 }
 
-static int _cdx_savebtree(ClipMachine* cm,RDD_ORDER* ro,BTREE1* bt,int lastrec,const char* __PROC__){
+static int _cdx_savebtree(ClipMachine* cm,RDD_ORDER* ro,BTREE1* bt,unsigned lastrec,const char* __PROC__){
 	CDX_HEADER hdr;
 	CDX_PAGE page;
 	CDX_LEAF* leaf = (CDX_LEAF*)&page;
@@ -2500,7 +2500,8 @@ static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** ro
 	RDD_ORDER* ro = NULL;
 	CDX_HEADER hdr;
 	ClipVar vv,*vp;
-	int lastrec,s,e,i,er;
+	unsigned lastrec;
+	int s,e,i,er;
 	unsigned int newroot;
 	BTREE1* bt;
 	void* buf;
@@ -2666,13 +2667,13 @@ static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** ro
 	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 
 	s = rd->os.nStart;
-	e = min(lastrec,rd->os.nStart+rd->os.nNext-1);
+	e = min((int)lastrec,rd->os.nStart+rd->os.nNext-1);
 	if(rd->os.nStart==0 || !rd->os.lRest)
 		s = 1;
 	if(rd->os.nNext==0)
 		e = lastrec;
 	if(rd->os.nRecord)
-		s = e = min(lastrec,rd->os.nRecord);
+		s = e = min((int)lastrec,rd->os.nRecord);
 	if(rd->os.lAll || s<1 || e<1){
 		s = 1;
 		e = lastrec;
@@ -2691,7 +2692,7 @@ static int _cdx_create(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,RDD_ORDER** ro
 //	bt = NULL;
 	buf = malloc(ro->bufsize+sizeof(unsigned int));
 	if(!rd->os.lCurrent){
-		for(rd->recno=s;rd->recno<=e;rd->recno++){
+		for(rd->recno=s;(int)rd->recno<=e;rd->recno++){
 			rd->eof = 0;
 			if((er = rd->vtbl->rawgo(cm,rd,rd->recno,0,__PROC__))) return er;
 			/* check WHILE condition */
@@ -2930,7 +2931,8 @@ err:
 
 static int cdx_reindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__){
 	RDD_ORDER* ro;
-	int lastrec,i;
+	unsigned lastrec;
+	int i;
 	BTREE1* bt;
 	void* buf;
 	ClipVar vv,*vp;
@@ -3160,7 +3162,7 @@ static int cdx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 	rd->bof = rd->v_bof = rd->eof = 0;
 	if(rd->filter && rd->filter->list){
 		if(rd->filter->listlen==0){
-			if((er = rdd_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			rd->bof = rd->v_bof = rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 			rd->filter->cursor = 0;
@@ -3176,7 +3178,7 @@ static int cdx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 					return 0;
 			}
 			rd->eof = rd->bof = rd->v_bof = 1;
-			if((er = rdd_lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 		}
 		return 0;
@@ -3211,7 +3213,7 @@ static int cdx_gotop(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PR
 		free(key);
 		if(outrange || ok){
 			unsigned int lastrec;
-			if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
@@ -3250,7 +3252,7 @@ static int cdx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 	rd->bof = rd->v_bof = rd->eof = 0;
 	if(rd->filter && rd->filter->list){
 		if(rd->filter->listlen==0){
-			if((er = rdd_lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			rd->bof = rd->v_bof = rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
@@ -3267,7 +3269,7 @@ static int cdx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 					return 0;
 			}
 			rd->eof = rd->bof = rd->v_bof = 1;
-			if((er = rdd_lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 		}
 		return 0;
@@ -3302,7 +3304,7 @@ static int cdx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 		free(key);
 		if(outrange || ok){
 			unsigned int lastrec;
-			if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			rd->bof = rd->v_bof = rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
@@ -3326,7 +3328,7 @@ static int cdx_gobottom(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* _
 		if((er = cdx_prev(cm,rd,ro,__PROC__))) return er;
 		if(rd->bof){
 			unsigned int lastrec;
-			if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
@@ -3341,7 +3343,8 @@ static int cdx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	int out = 0,found;
 	ClipVar v,*vp;
 	void* key;
-	int ok = 1, fok = 0, deleted, lastrec, er;
+	int ok = 1, fok = 0, deleted, er;
+	unsigned lastrec;
 
 	rd->bof = rd->v_bof = 0;
 	if(rd->eof)
@@ -3428,7 +3431,7 @@ static int cdx_next(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	}
 	if(out){
 		unsigned int lastrec;
-		if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 			return er;
@@ -3448,7 +3451,8 @@ static int cdx_prev(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,const char* __PRO
 	unsigned int oldrecno = rd->recno;
 	unsigned int oldpage = ro->stack[ro->level].page;
 	int oldpos = ro->stack[ro->level].pos;
-	int lastrec,deleted;
+	unsigned lastrec;
+	int deleted;
 	int oldeof = rd->eof;
 	void* oldkey;
 
@@ -3608,7 +3612,7 @@ static int cdx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 
 	if(outrange){
 		unsigned int lastrec;
-		if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->eof = 1;
 		free(key);
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
@@ -3645,7 +3649,7 @@ static int cdx_seek(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,int so
 	free(key);
 	if(!(*found) && (!soft || ok)){
 		unsigned int lastrec;
-		if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+		if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 			return er;
@@ -3698,7 +3702,7 @@ static int cdx_gotokey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int k
 		while(c+_rdd_ushort(page.nkeys)<keyno){
 			if(_rdd_uint(page.right)==0xffffffff){
 				unsigned int lastrec;
-				if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__)))
+				if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__)))
 					return er;
 				rd->eof = 1;
 				if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
@@ -3725,7 +3729,7 @@ static int cdx_gotokey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int k
 		while(c+_rdd_ushort(page.nkeys)<keyno){
 			if(_rdd_uint(page.left)==0xffffffff){
 				unsigned int lastrec;
-				if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+				if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 				rd->eof = 1;
 				if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 					return er;
@@ -3756,7 +3760,7 @@ static int cdx_gotokey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int k
 		free(key);
 		if(ook){
 			unsigned int lastrec;
-			if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) return er;
+			if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) return er;
 			rd->bof = rd->v_bof = rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__)))
 				return er;
@@ -3976,7 +3980,7 @@ static int cdx_formatkey(ClipMachine* cm,RDD_ORDER* ro,ClipVar* var,void* res,co
 	return 0;
 }
 
-static int cdx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__){
+static int cdx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* keyno,const char* __PROC__){
 	CDX_HEADER hdr;
 	int found,ok,er;
 	ClipVar v,*vp;
@@ -4013,7 +4017,7 @@ static int cdx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const
 		return er;
 	if(ok)
 		return 0;
-	if((er = _cdx_keyno(cm,ro,ro->stack[ro->level].page,ro->stack[ro->level].pos,(unsigned int *)keyno,__PROC__)))
+	if((er = _cdx_keyno(cm,ro,ro->stack[ro->level].page,ro->stack[ro->level].pos,keyno,__PROC__)))
 		return er;
 	if(ro->scopetop){
 		unsigned int topno;
@@ -4034,7 +4038,7 @@ static int cdx_keyno(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const
 	return 0;
 }
 
-static int cdx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__){
+static int cdx_lastkey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* lastkey,const char* __PROC__){
 	unsigned int b = 1,e = 0;
 	int found,er;
 	CDX_HEADER hdr;
@@ -4764,7 +4768,8 @@ static int cdx_ii_prev(ClipMachine* cm,RDD_ORDER* ro,const char* __PROC__){
 }
 
 int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,RDD_FILTER* fp,const char* __PROC__){
-	int i,er;
+	unsigned i;
+	int er;
 	BTREE* bt;
 	void* key = malloc(sizeof(unsigned int)+ro->bufsize);
 	ClipVar vv,*vp;
@@ -4792,7 +4797,7 @@ int cdx_calcfiltlist(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,RDD_FILTER* fp,c
 	} else {
 #if 1
 		unsigned int bytes = ((fp->size+1) >> 5) + 1;
-		int i,b,bb,t,tt;
+		int b,bb,t,tt;
 
 		fp->listlen = 0;
 		for(i=0;i<bytes;i++){
@@ -5085,7 +5090,7 @@ err:
 
 static int idx_reindex(ClipMachine* cm,RDD_DATA* rd,RDD_INDEX* ri,const char* __PROC__){
 	RDD_ORDER* ro;
-	int lastrec;
+	unsigned lastrec;
 	BTREE1* bt;
 	void* buf;
 	ClipVar vv,*vp;

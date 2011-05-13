@@ -180,7 +180,8 @@ typedef struct _FPT_HEADER_ {
 static int fpt_create(ClipMachine* cm,char* name,const char* __PROC__){
 	RDD_FILE file;
 	FPT_HEADER hdr;
-	int fuu,er;
+	unsigned fuu;
+	int er;
 	FPT_HEADER dum;
 
 	memset(&hdr,0,sizeof(FPT_HEADER));
@@ -214,7 +215,8 @@ err:
 
 static int fpt_zap(ClipMachine* cm,RDD_MEMO* rm,const char* __PROC__){
 	FPT_HEADER hdr;
-	int fuu,er;
+	unsigned fuu;
+	int er;
 
 	fuu = sizeof(FPT_HEADER)/rm->blocksize;
 	fuu += (fuu*rm->blocksize<sizeof(FPT_HEADER))?1:0;
@@ -653,7 +655,7 @@ static int _flex_newpage(ClipMachine* cm,RDD_MEMO* rm,unsigned int* page,int lea
 	return 0;
 }
 
-static int __flex_search(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* tree,int l,int size,const char* __PROC__){
+static int __flex_search(ClipMachine* cm,RDD_MEMO* rm,FLEX_TREE* tree,unsigned l,unsigned size,const char* __PROC__){
 	char buf[FLEX_PAGESIZE-10];
 	int i,er;
 
@@ -1442,7 +1444,7 @@ static int fpt_pack(ClipMachine* cm,RDD_DATA* rd,RDD_MEMO* rm,int tmpfd,int bsiz
 		strcpy(hdr.sig0,"SIxMemo");
 
 	if(write(rm->file.fd,&hdr,sizeof(FPT_HEADER))!=sizeof(FPT_HEADER)) goto err;
-	if((er = rd->vtbl->lastrec(cm,rd,(int *)&lastrec,__PROC__))) goto err1;
+	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) goto err1;
 
 	for(rd->recno=1;rd->recno<=lastrec;rd->recno++){
 		for(i=0;i<rd->nfields;i++){

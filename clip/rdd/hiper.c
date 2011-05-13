@@ -195,8 +195,10 @@ int clip_HS_FILTER(ClipMachine* cm){
 	char* fexpr = NULL,*tmp,*s;
 	char** vals = NULL;
 	int* lens = NULL;
-	int nvals = 0,i,j;
+	unsigned int nvals = 0;
+	unsigned int i,j;
 	unsigned int* ti;
+	unsigned lastrec;
 	int er;
 
 	_clip_retni(cm,0);
@@ -266,7 +268,8 @@ int clip_HS_FILTER(ClipMachine* cm){
 	fp->active = 1;
 	wa->rd->filter = fp;
 
-	if((er = rdd_lastrec(cm,wa->rd,&wa->rd->filter->size,__PROC__))) goto err_unlock;
+	if((er = rdd_lastrec(cm,wa->rd,&lastrec,__PROC__))) goto err_unlock;
+	wa->rd->filter->size = lastrec;
 	if((er = hs_filter(cm,hs,vals[0],lens[0],&wa->rd->filter->rmap,wa->rd->filter->size,&count,__PROC__)))
 		goto err_unlock;
 	for(i=1;i<nvals;i++){
@@ -284,7 +287,8 @@ int clip_HS_FILTER(ClipMachine* cm){
 	if((er = hs_close(cm,hs,__PROC__))) goto err_unlock;
 
 	if(expr && _clip_parinfo(cm,3) == CHARACTER_t && len > 2){
-		if((er = rm_evalpartial(cm,fp,NULL,(unsigned int *)&len,&count,__PROC__))) goto err_unlock;
+		unsigned l = len;
+		if((er = rm_evalpartial(cm,fp,NULL,&l,&count,__PROC__))) goto err_unlock;
 	}
 	if(wa->rd->vtbl->_ulock(cm,wa->rd,__PROC__)) goto err;
 
@@ -378,7 +382,7 @@ int clip_HS_INDEX(ClipMachine* cm){
 	oldbof = wa->rd->bof;
 	oldeof = wa->rd->eof;
 	oldbof = oldeof = 0;
-	if((er = rdd_lastrec(cm,wa->rd,(int *)&lastrec,__PROC__))) goto err_unlock;
+	if((er = rdd_lastrec(cm,wa->rd,&lastrec,__PROC__))) goto err_unlock;
 	tmp = malloc(strlen(expr)+5);
 	sprintf(tmp,"{||%s}",expr);
 	if((er = _clip_eval_macro(cm,tmp,strlen(tmp),&block))) goto err_unlock;
@@ -546,7 +550,7 @@ int clip_HS_SET(ClipMachine* cm){
 	int land = _clip_parl(cm,3);
 	HIPER* hs;
 	char *tmp,*s;
-	int nvals = 0,i,j;
+	unsigned int nvals = 0,i,j;
 	int* lens = NULL;
 	char** vals = NULL;
 	unsigned int* ti;
@@ -807,14 +811,14 @@ err:
 }
 
 static int _hs_tobitstyle(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned int rec,unsigned int npairs,int* tobit,const char* __PROC__){
-	int bints = (max(hs->lastrec,rec)+31)/32;
+	unsigned bints = (max(hs->lastrec,rec)+31)/32;
 	unsigned int* rmap = NULL;
 	int er;
 
 	*tobit = 0;
 	if(bints<npairs+1){
 		unsigned char c4[4];
-		int c = 0;
+		unsigned c = 0;
 		int next = 8;
 		int pos = 12;
 		int tail;
@@ -835,7 +839,7 @@ static int _hs_tobitstyle(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned 
 				pos = 4;
 			}
 			if((er = rdd_read(cm,&hs->file,poffs+pos,4,c4,__PROC__))) goto err;
-			tail = min(hs->pagesize,(bints-c)*4);
+			tail = min(hs->pagesize,(int)(bints-c)*4);
 			if((er = rdd_write(cm,&hs->file,_rdd_uint(c4),tail,rmap+c,__PROC__)))
 				goto err;
 			if(tail<hs->pagesize){
@@ -863,7 +867,8 @@ static int _hs_compare(ClipMachine* cm,HIPER* hs,unsigned int poffs,int pos,unsi
 	int curr = hs->intsonpage*(hs->intsonpage-3);
 	int prev = 0;
 	unsigned char c4[4];
-	int lpos,er;
+	unsigned int lpos;
+	int er;
 
 	*nextp = 8;
 	while(pos>=curr){
@@ -938,7 +943,7 @@ static int _hs_setpair(ClipMachine* cm,HIPER* hs,unsigned int poffs,unsigned int
 	if((er = rdd_read(cm,&hs->file,poffs,4,c4,__PROC__))) goto err;
 	binary = _rdd_uint(c4);
 	if(binary){
-		int rs = (hs->intsonpage*(hs->intsonpage-3))<<5;
+		unsigned rs = (hs->intsonpage*(hs->intsonpage-3))<<5;
 		int prs = 0;
 		int f = 3;
 		unsigned int next,offs;
@@ -1295,7 +1300,7 @@ err:
 }
 
 static int hs_filter(ClipMachine* cm,HIPER* hs,const char* val,int len,unsigned int** map,unsigned int lastrec,unsigned int* count,const char* __PROC__){
-	int ints = (lastrec+31)/32;
+	unsigned ints = (lastrec+31)/32;
 	unsigned int* r = malloc(ints*4);
 	unsigned int* t = NULL;
 	char* s = (char*)val;
@@ -1415,7 +1420,8 @@ err:
 static int hs_remove(ClipMachine* cm,HIPER* hs,unsigned int rec,const char* __PROC__){
 	unsigned char c4[4];
 	unsigned int poffs,offs;
-	int i,er;
+	unsigned int i;
+	int er;
 
 	for(i=sizeof(HS_HEADER);i<0x40000+sizeof(HS_HEADER);i+=4){
 		if((er = rdd_read(cm,&hs->file,i,4,c4,__PROC__))) goto err;
@@ -1424,7 +1430,7 @@ static int hs_remove(ClipMachine* cm,HIPER* hs,unsigned int rec,const char* __PR
 			continue;
 		if((er = rdd_read(cm,&hs->file,poffs,4,c4,__PROC__))) goto err;
 		if(_rdd_uint(c4)){ /* binary */
-			int rs = (hs->intsonpage*(hs->intsonpage-3))<<5;
+			unsigned rs = (hs->intsonpage*(hs->intsonpage-3))<<5;
 			int prs = 0;
 			int f = 3;
 			unsigned int next,offs;

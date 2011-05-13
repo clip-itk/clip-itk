@@ -705,7 +705,8 @@ static int rm_cmp(ClipMachine* cm,int oper,ClipVar* vp1,ClipVar* vp2,int ic){
 static int rm_checkscope(ClipMachine* cm,RDD_DATA* rd,unsigned int* map,int size,int oper,char* fname,ClipVar* val,int ic,const char* __PROC__){
 	ClipVar key;
 	unsigned int bytes = ((size+1) >> 5) + 1;
-	int i,b,bb,t,tt,fno;
+	int b,bb,t,tt,fno;
+	unsigned int i;
 	unsigned int oldrecno = rd->recno;
 	int oldeof = rd->eof;
 	int er;
@@ -1080,7 +1081,8 @@ static unsigned int* rm_prim(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 static unsigned int* rm_term(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int bytes,int* optimize,int npseudo,RDD_PSEUDO* pseudo,int test,const char* __PROC__){
 	unsigned int* bm = rm_prim(cm,rd,fp,bytes,optimize,npseudo,pseudo,test,NULL,__PROC__);
 	unsigned int* bm2;
-	int opt2,recs;
+	int opt2;
+	unsigned recs;
 
 	if(!bm)
 		return NULL;
@@ -1088,7 +1090,7 @@ static unsigned int* rm_term(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,int byt
 		if(rd->curlex == RM_AND){
 			if(*optimize == 2){
 				unsigned int bytes = ((fp->size+1) >> 5) + 1;
-				int i; //,b,bb,t,tt;
+				unsigned i; //,b,bb,t,tt;
 				unsigned int tmp1; //,tmp2;
 
 				recs = 0;
@@ -1220,7 +1222,7 @@ err:
 }
 
 int rm_union(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PROC__){
-	int i;
+	unsigned int i;
 	unsigned int bytes = ((f1->size+1) >> 5) + 1;
 
 	if(f1->rmap){
@@ -1257,7 +1259,7 @@ int rm_union(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PROC__)
 }
 
 int rm_intersect(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PROC__){
-	int i;
+	unsigned int i;
 	unsigned int bytes = ((f1->size+1) >> 5) + 1;
 
 	if(f1->rmap){
@@ -1291,7 +1293,7 @@ int rm_intersect(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PRO
 }
 
 int rm_difference(ClipMachine* cm,RDD_FILTER* f1,RDD_FILTER* f2,const char* __PROC__){
-	int i;
+	unsigned int i;
 	unsigned int bytes = ((f1->size+1) >> 5) + 1;
 
 	if(f1->rmap){
@@ -1307,7 +1309,7 @@ int rm_evalpartial(ClipMachine* cm,RDD_FILTER* fp,ClipVar* block,unsigned int* r
 	unsigned int oldrecno = fp->rd->recno;
 	int oldbof = fp->rd->bof;
 	int oldeof = fp->rd->eof;
-	int recno;
+	unsigned recno;
 
 	*ret = 0;
 	if(cnt)
@@ -1317,7 +1319,7 @@ int rm_evalpartial(ClipMachine* cm,RDD_FILTER* fp,ClipVar* block,unsigned int* r
 		if(fp->list)
 			*cnt = fp->listlen;
 		else
-			if(rdd_lastrec(cm,fp->rd,(int *)cnt,__PROC__)) goto err;
+			if(rdd_lastrec(cm,fp->rd,cnt,__PROC__)) goto err;
 		return 0;
 	}
 
@@ -1367,7 +1369,7 @@ err:
 }
 
 int rm_inverse(ClipMachine* cm,RDD_FILTER* fp,const char* __PROC__){
-	int i;
+	unsigned int i;
 	unsigned int bytes = ((fp->size+1) >> 5) + 1;
 
 	if(fp->rmap){

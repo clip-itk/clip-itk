@@ -749,11 +749,11 @@ typedef struct _RDD_FILTER_ {
 	int nfps;
 	char* sfilter;
 	unsigned int* rmap;
-	int size;
+	unsigned size;
 	unsigned int* list;
 	unsigned int listlen;
 	unsigned int cursor;
-	int recno; /* m6_FiltGoRec(), m6_FiltSkip(), ... */
+	unsigned recno; /* m6_FiltGoRec(), m6_FiltSkip(), ... */
 	RDD_DATA* rd;
 } RDD_FILTER;
 
@@ -792,7 +792,7 @@ typedef struct _RDD_DATA_VTBL_ {
 	int (*pack)     (ClipMachine* cm,RDD_DATA* rd,int tfd,const char* __PROC__);
 	int (*zap)      (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	/* info */
-	int (*lastrec)  (ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__);
+	int (*lastrec)  (ClipMachine* cm,RDD_DATA* rd,unsigned int* lastrec,const char* __PROC__);
 	int (*deleted)  (ClipMachine* cm,RDD_DATA* rd,int* deleted,const char* __PROC__);
 	int (*lupdate)  (ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
 	int (*setstruct)(ClipMachine* cm,RDD_DATA* rd,const char* __PROC__);
@@ -859,8 +859,8 @@ typedef struct _RDD_INDEX_VTBL_ {
 	/* format key */
 	int (*formatkey)(ClipMachine* cm,RDD_ORDER* ro,ClipVar* v,void* res,const char* __PROC__);
 	/* info */
-	int (*keyno)    (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* keyno,const char* __PROC__);
-	int (*lastkey)  (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int* lastkey,const char* __PROC__);
+	int (*keyno)    (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* keyno,const char* __PROC__);
+	int (*lastkey)  (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned* lastkey,const char* __PROC__);
 	int (*info)     (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,int cmd,const char* __PROC__);
 	int (*keyvalue) (ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,ClipVar* v,const char* __PROC__);
 	/* rushmore */
@@ -1004,10 +1004,10 @@ int rdd_gotokey(ClipMachine* cm,RDD_DATA* rd,RDD_ORDER* ro,unsigned int keyno,in
 
 int rdd_bof(ClipMachine* cm,RDD_DATA* rd,int* bof,const char* __PROC__);
 int rdd_eof(ClipMachine* cm,RDD_DATA* rd,int* eof,const char* __PROC__);
-int rdd_recno(ClipMachine* cm,RDD_DATA* rd,int* recno,const char* __PROC__);
-int rdd_lastrec(ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__);
-int rdd_keyno(ClipMachine* cm,RDD_DATA* rd,int* keyno,const char* __PROC__);
-int rdd_lastkey(ClipMachine* cm,RDD_DATA* rd,int* lastkey,const char* __PROC__);
+int rdd_recno(ClipMachine* cm,RDD_DATA* rd,unsigned* recno,const char* __PROC__);
+int rdd_lastrec(ClipMachine* cm,RDD_DATA* rd,unsigned* lastrec,const char* __PROC__);
+int rdd_keyno(ClipMachine* cm,RDD_DATA* rd,unsigned* keyno,const char* __PROC__);
+int rdd_lastkey(ClipMachine* cm,RDD_DATA* rd,unsigned* lastkey,const char* __PROC__);
 int rdd_fieldname(ClipMachine* cm,RDD_DATA* rd,int fno,const char* __PROC__);
 
 int rdd_append(ClipMachine* cm,RDD_DATA* rd,int* neterr,const char* __PROC__);

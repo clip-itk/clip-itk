@@ -1253,7 +1253,7 @@ int rdd_checkfilter(ClipMachine* cm,RDD_DATA* rd,int* ok,const char* __PROC__){
 		deletedok = !deleted;
 	}
 	if(deletedok && rd->filter){
-		int lastrec;
+		unsigned lastrec;
 		if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		if(rd->recno>lastrec){
 			*ok = 0;
@@ -2469,7 +2469,7 @@ int rdd_eof(ClipMachine* cm,RDD_DATA* rd,int* eof,const char* __PROC__){
 	return 0;
 }
 
-int rdd_recno(ClipMachine* cm,RDD_DATA* rd,int* recno,const char* __PROC__){
+int rdd_recno(ClipMachine* cm,RDD_DATA* rd,unsigned* recno,const char* __PROC__){
 	int er;
 
 	if(rd->pending_child_parent)
@@ -2478,11 +2478,11 @@ int rdd_recno(ClipMachine* cm,RDD_DATA* rd,int* recno,const char* __PROC__){
 	return 0;
 }
 
-int rdd_lastrec(ClipMachine* cm,RDD_DATA* rd,int* lastrec,const char* __PROC__){
+int rdd_lastrec(ClipMachine* cm,RDD_DATA* rd,unsigned* lastrec,const char* __PROC__){
 	return rd->vtbl->lastrec(cm,rd,lastrec,__PROC__);
 }
 
-int rdd_keyno(ClipMachine* cm,RDD_DATA* rd,int* keyno,const char* __PROC__){
+int rdd_keyno(ClipMachine* cm,RDD_DATA* rd,unsigned* keyno,const char* __PROC__){
 	int er;
 
 	if((rd->ords_opened<1) || (rd->curord==-1))
@@ -2494,7 +2494,7 @@ int rdd_keyno(ClipMachine* cm,RDD_DATA* rd,int* keyno,const char* __PROC__){
 	return 0;
 }
 
-int rdd_lastkey(ClipMachine* cm,RDD_DATA* rd,int* lastkey,const char* __PROC__){
+int rdd_lastkey(ClipMachine* cm,RDD_DATA* rd,unsigned* lastkey,const char* __PROC__){
 	int er;
 
 	if((rd->ords_opened<1) || (rd->curord==-1))
@@ -2516,7 +2516,7 @@ int rdd_fieldname(ClipMachine* cm,RDD_DATA* rd,int fno,const char* __PROC__){
 
 int rdd_append(ClipMachine* cm,RDD_DATA* rd,int* neterr,const char* __PROC__){
 	int r,er;
-	int lastrec;
+	unsigned lastrec;
 
 	rd->pending_child_parent = NULL;
 	if((er = rdd_checkifnew(cm,rd,__PROC__))) return er;
@@ -2776,7 +2776,7 @@ int rdd_initrushmore(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER* fp,ClipVar* a,int 
 		}
 	}
 
-	if((er = rd->vtbl->lastrec(cm,rd,(int *)(&lastrec),__PROC__))) goto err;
+	if((er = rd->vtbl->lastrec(cm,rd,&lastrec,__PROC__))) goto err;
 
 	bytes = (lastrec >> 5) + 1;
 
@@ -2831,7 +2831,7 @@ int rdd_createuserfilter(ClipMachine* cm,RDD_DATA* rd,RDD_FILTER** fpp,unsigned 
 		bytes = ((size+1) >> 5) + 1;
 		fp->size = size;
 	} else {
-		int lastrec;
+		unsigned lastrec;
 		if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) goto err;
 		bytes = ((lastrec+1) >> 5) + 1;
 		fp->size = lastrec;
