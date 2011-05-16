@@ -2663,7 +2663,7 @@ process_args(int argc, char **argv, int *Argcp, char ***Argvp)
 	{
 		int found = 0;
 
-		for (j = 0; j < HIDDEN_NUM; j++)
+		for (j = 0; j < (int)HIDDEN_NUM; j++)
 		{
 			struct OptionAction *op;
 			int l, l1;
@@ -4512,7 +4512,8 @@ resume_mp(ClipMachine * mp)
 static int
 calc_loopcount(ClipMachine * mp, ClipVar * vp, ClipVarFrame * vfp, int deep)
 {
-	int r = 0, i;
+	int r = 0;
+	unsigned i;
 
 	vp = _clip_vptr(vp);
 
@@ -7610,7 +7611,7 @@ _clip_mdel(ClipMachine * mp, ClipVar * ap, long no)
 		_clip_destroy(mp, &((ap->m.items + ind)->v));
 
 		ap->m.count--;
-		if (ind < ap->m.count)
+		if (ind < (int)ap->m.count)
 			memmove(ap->m.items + ind, ap->m.items + ind + 1, (ap->m.count - ind) * sizeof(ClipVarEl));
 	}
 	return 0;
@@ -7792,7 +7793,7 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 			*hashp = no;
 		}
 	}
-	else if (no < 1 || no > ap->a.count)
+	else if (no < 1 || no > (int)ap->a.count)
 	{
 		char buf[64];
 
@@ -9321,7 +9322,7 @@ _clip_storclen(ClipMachine * mp, const char *str, int len, int num, int ind)
 
 	if (vp->t.type == ARRAY_t)
 	{
-		if (ind < 0 || ind >= vp->a.count)
+		if (ind < 0 || ind >= (int)vp->a.count)
 			return 0;
 		vp = _clip_vptr(vp->a.items + ind);
 	}
@@ -9372,7 +9373,7 @@ _clip_stornd(ClipMachine * mp, double d, int num, int ind)
 
 	if (vp->t.type == ARRAY_t)
 	{
-		if (ind < 0 || ind >= vp->a.count)
+		if (ind < 0 || ind >= (int)vp->a.count)
 			return 0;
 		vp = _clip_vptr(vp->a.items + ind);
 	}
@@ -9427,7 +9428,7 @@ _clip_storl(ClipMachine * mp, int val, int num, int ind)
 
 	if (vp->t.type == ARRAY_t)
 	{
-		if (ind < 0 || ind >= vp->a.count)
+		if (ind < 0 || ind >= (int)vp->a.count)
 			return 0;
 		vp = _clip_vptr(vp->a.items + ind);
 	}
@@ -9868,7 +9869,7 @@ _clip_stordj(ClipMachine * mp, long julian, int num, int ind)
 
 	if (vp->t.type == ARRAY_t)
 	{
-		if (ind < 0 || ind >= vp->a.count)
+		if (ind < 0 || ind >= (int)vp->a.count)
 			return 0;
 		vp = _clip_vptr(vp->a.items + ind);
 		goto assign;
