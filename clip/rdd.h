@@ -417,9 +417,20 @@
 #define max(a,b) ((a)>(b)?(a):(b))
 #endif
 
-#define _rm_setbit(m,b,r) ((r)<=(b))?((m)[((r)-1)>>5] = (m)[((r)-1)>>5] | (1<<((r-1)%32))):0
-#define _rm_clrbit(m,b,r) ((r)<=(b))?((m)[((r)-1)>>5] = (m)[((r)-1)>>5] & ~(1<<((r-1)%32))):0
-#define _rm_getbit(m,b,r) (((r)<=(b))?(((m)[((r)-1)>>5] & (1<<((r-1)%32)))):0)
+static inline void _rm_setbit(unsigned m[],unsigned b,unsigned r) {
+	if (r<=b)
+		m[(r-1)>>5] = m[(r-1)>>5] | (1<<((r-1)%32));
+}
+static inline void _rm_clrbit(unsigned m[],unsigned b,unsigned r) {
+	if (r<=b)
+		m[(r-1)>>5] = m[(r-1)>>5] & ~(1<<((r-1)%32));
+}
+static inline unsigned _rm_getbit(unsigned m[],unsigned b, unsigned r) {
+	if (r<=b)
+		return m[(r-1)>>5] & (1<<((r-1)%32));
+	else
+		return 0;
+}
 /*
 #define _RM_BITCOUNT  \
 	recs = 0;\
