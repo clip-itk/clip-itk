@@ -983,8 +983,8 @@ int _rdd_fieldno(RDD_DATA* rd,long hash);
 
 int _rdd_parsepath(ClipMachine* cm,const char* toopen,const char* suff,char** path,char** name,int oper,const char* __PROC__);
 
-int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__);
-int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__);
+int _rdd_read(ClipMachine* cm,RDD_FILE* file,unsigned pos,unsigned len,void* buf,const char* __PROC__);
+int _rdd_write(ClipMachine* cm,RDD_FILE* file,unsigned pos,unsigned len,void* buf,const char* __PROC__);
 int _rdd_trunc(ClipMachine* cm,RDD_FILE* file,unsigned int len,const char* __PROC__);
 int _rdd_read64(ClipMachine* cm,RDD_FILE* file,u8 pos,int len,void* buf,const char* __PROC__);
 int _rdd_write64(ClipMachine* cm,RDD_FILE* file,u8 pos,int len,void* buf,const char* __PROC__);

@@ -1391,7 +1391,7 @@ err:
 	return er;
 }
 
-int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const char* __PROC__){
+int _rdd_read(ClipMachine* cm,RDD_FILE* file,unsigned pos,unsigned len,void* buf,const char* __PROC__){
 #ifdef HAVE_MMAN_H
 	struct stat st;
 	int realen;
@@ -1411,7 +1411,7 @@ int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const cha
 	}
 #ifdef HAVE_MMAN_H
 	if(file->md!=(caddr_t)-1){
-		if(pos+len>(int)file->mapsize){
+		if(pos+len>file->mapsize){
 			if(fstat(file->fd,&st)==-1) goto err;
 			if((int)file->mapsize < st.st_size){
 				if(munmap(file->md,file->mapsize)==-1) goto err;
@@ -1442,7 +1442,7 @@ err:
 	return rdd_err(cm,EG_READ,errno,__FILE__,__LINE__,__PROC__,er_ioerror);
 }
 
-int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
+int _rdd_write(ClipMachine* cm,RDD_FILE* file,unsigned pos,unsigned len,void* buf,
 			  const char* __PROC__){
 	struct stat st;
 
@@ -1461,7 +1461,7 @@ int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
 	}
 #ifdef HAVE_MMAN_H
 	if(file->md!=(caddr_t)-1){
-		if(pos+len>(int)file->mapsize){
+		if(pos+len>file->mapsize){
 			if(munmap(file->md,file->mapsize)==-1) goto err;
 #ifdef _WIN32
 			{
