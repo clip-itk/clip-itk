@@ -1360,7 +1360,7 @@ int rdd_child_duty(ClipMachine* cm,RDD_DATA* child,const char* __PROC__){
 
 			child->orders[child->curord]->valid_stack = 0;
 			child->eof = 1;
-			if((er = rdd_lastrec(cm,child,(int *)(&lastrec),__PROC__))) return er;
+			if((er = rdd_lastrec(cm,child,&lastrec,__PROC__))) return er;
 			child->recno = lastrec+1;
 		} else {
 			if((er = child->orders[child->curord]->vtbl->seek(cm,child,
@@ -1411,9 +1411,9 @@ int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const cha
 	}
 #ifdef HAVE_MMAN_H
 	if(file->md!=(caddr_t)-1){
-		if(pos+len>file->mapsize){
+		if(pos+len>(int)file->mapsize){
 			if(fstat(file->fd,&st)==-1) goto err;
-			if(file->mapsize < st.st_size){
+			if((int)file->mapsize < st.st_size){
 				if(munmap(file->md,file->mapsize)==-1) goto err;
 				file->mapsize = st.st_size;
 				file->md = (caddr_t)mmap(0,file->mapsize,
@@ -1426,7 +1426,7 @@ int _rdd_read(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,const cha
 				}
 			}
 		}
-		realen = (pos+len > file->mapsize)?file->mapsize-pos:len;
+		realen = (pos+len>file->mapsize)?(file->mapsize-pos):len;
 		realen = realen<0?0:realen;
 		memcpy(buf,file->md+pos,realen);
 		memset(buf+realen,0,len-realen);
@@ -1461,7 +1461,7 @@ int _rdd_write(ClipMachine* cm,RDD_FILE* file,int pos,int len,void* buf,
 	}
 #ifdef HAVE_MMAN_H
 	if(file->md!=(caddr_t)-1){
-		if(pos+len>file->mapsize){
+		if(pos+len>(int)file->mapsize){
 			if(munmap(file->md,file->mapsize)==-1) goto err;
 #ifdef _WIN32
 			{
@@ -3219,8 +3219,6 @@ int rdd_ulock(ClipMachine* cm,RDD_DATA* rd,unsigned int rec,int flock,const char
 	}
 #endif
 */
-	if(rec<0)
-		return 0;
 	return rd->vtbl->ulock(cm,rd,rec,flock,__PROC__);
 }
 
@@ -4347,7 +4345,7 @@ int rdd_seekeval(ClipMachine* cm,RDD_DATA* rd,ClipVar* block,int* found,const ch
 	if(!(*found)){
 		unsigned int lastrec;
 
-		if((er = rdd_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) return er;
+		if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) return er;
 		rd->eof = 1;
 		if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) return er;
 	}
@@ -4448,7 +4446,7 @@ int rdd_wildseek(ClipMachine* cm,RDD_DATA* rd,const char* pat,int regular,int co
 		if(!(*found)){
 			unsigned int lastrec;
 
-			if((er = rdd_lastrec(cm,rd,(int *)(&lastrec),__PROC__))) goto err;
+			if((er = rdd_lastrec(cm,rd,&lastrec,__PROC__))) goto err;
 			rd->eof = 1;
 			if((er = rd->vtbl->rawgo(cm,rd,lastrec+1,0,__PROC__))) goto err;
 		}
@@ -4479,7 +4477,7 @@ int rdd_rawwrite(ClipMachine* cm,RDD_DATA* rd,void* buf,int append,const char* _
 		rd->recno++;
 		flen =rd->hdrsize+rd->recsize*rd->recno+1;
 		if(rd->file.md!=(caddr_t)(-1)){
-			if(flen>rd->file.mapsize){
+			if(flen>(ssize_t)rd->file.mapsize){
 				int delta = rd->recno/5;
 				if((er = rdd_write(cm,&rd->file,rd->hdrsize+rd->recsize*(rd->recno+delta)-1,
 					1,"",__PROC__))) return er;
