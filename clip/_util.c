@@ -2329,7 +2329,7 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll * refs)
 		break;
 	case ARRAY_t:
 		{
-			int i;
+			unsigned i;
 
 			insert_Coll(refs, vp);
 			putInt32_Buf(bp, htonl(vp->a.count));
@@ -2339,7 +2339,7 @@ put_var(ClipMachine * mp, ClipVar * vp, OutBuf * bp, Coll * refs)
 		break;
 	case MAP_t:
 		{
-			int i;
+			unsigned i;
 
 			insert_Coll(refs, vp);
 			putInt32_Buf(bp, htonl(vp->m.count));
