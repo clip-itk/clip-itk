@@ -1097,8 +1097,8 @@ extern int log_level;
 
 static void dialog_init(ClipMachine * mp);
 
-const static int _clip_deck[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
-const static double _clip_deck1[] = { 0.5f, 0.05f, 0.005f, 0.0005f, 0.00005f, 0.000005f, 0.0000005f, 0.00000005f, 0.000000005f };
+static const int _clip_deck[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+static const double _clip_deck1[] = { 0.5f, 0.05f, 0.005f, 0.0005f, 0.00005f, 0.000005f, 0.0000005f, 0.00000005f, 0.000000005f };
 
 void
 _clip_dtos(double d, char *buf, int buflen, int *dp)
@@ -1483,7 +1483,7 @@ print_var(ClipMachine * mp, ClipVar * vp, int attr, int dev, int level)
 		break;
 	case ARRAY_t:
 		{
-			int i;
+			unsigned i;
 
 			out_any(mp, "{", 1, attr, dev);
 			for (i = 0; i < vp->a.count; ++i)
@@ -1497,7 +1497,7 @@ print_var(ClipMachine * mp, ClipVar * vp, int attr, int dev, int level)
 		break;
 	case MAP_t:
 		{
-			int i;
+			unsigned i;
 
 			out_any(mp, "{", 1, attr, dev);
 			for (i = 0; i < vp->m.count; ++i)
@@ -5858,7 +5858,7 @@ clip_WBOXTERM(ClipMachine * mp)
 	if (chars)
 	{
 		cl = strlen((const char *)chars);
-		if (cl >= sizeof(bchars))
+		if (cl >= (int)sizeof(bchars))
 			cl = sizeof(bchars) - 1;
 
 		memcpy(bchars, chars, cl);
