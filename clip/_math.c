@@ -1063,7 +1063,7 @@ clip_NTOC(ClipMachine * mp)
 	int i = 256, b, j, l;
 	char *ret, *buf, fill;
 	static char base_sym[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	unsigned long data = (unsigned long) _clip_parnl(mp, 1);
+	long data = _clip_parnl(mp, 1);
 	char *sdata = _clip_parc(mp, 1);
 	int base = _clip_parni(mp, 2);
 	int len = _clip_parni(mp, 3);
