@@ -1043,7 +1043,7 @@ _clip_read(C_FILE *cf, void *buf, size_t count)
 					  Let's try again, _clip_select
 					  should decrease tv to avoid
 					  infinite loop. */
-		} while (i != -1 && i != 0 && n < count);
+		} while (i != -1 && i != 0 && n < (int)count);
 
 		if (i == -1 && errno == EPIPE)
 			cf->stat |= FS_EOF;
@@ -1110,7 +1110,7 @@ _clip_write(C_FILE *cf, void *buf, size_t count)
 					  Let's try again, _clip_select
 					  should decrease tv to avoid
 					  infinite loop. */
-		} while (i != -1 && i != 0 && n < count);
+		} while (i != -1 && i != 0 && n < (int)count);
 	}
 	return n > 0 ? n : i;
 }
@@ -2966,7 +2966,7 @@ clip_DIRECTORY(ClipMachine * mp)
 		/*     flag_dir = 1 */ ;
 	else
 	{
-		for (i = 0; i < strlen(attr) && !flag_dir; i++)
+		for (i = 0; i < (int)strlen(attr) && !flag_dir; i++)
 			flag_dir = (attr[i] == 'D');
 	}
 

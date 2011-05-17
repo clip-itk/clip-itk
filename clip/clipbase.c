@@ -1788,7 +1788,8 @@ clip__DBCREATE(ClipMachine * cm)
 	char data_driver[4];
 	char idx_driver[4];
 	char memo_driver[4];
-	int i,er;
+	unsigned i;
+	int er;
 
 	CHECKARG1(1, CHARACTER_t);
 	CHECKARG1(2, ARRAY_t);
@@ -2809,7 +2810,8 @@ clip_RECNO(ClipMachine * cm)
 {
 	const char *__PROC__ = "RECNO";
 	DBWorkArea *wa = cur_area(cm);
-	int recno,er;
+	unsigned recno;
+	int er;
 
 	_clip_retndp(cm,0,7,0);
 	if(!wa) return 0;
@@ -2952,13 +2954,13 @@ int
 clip_AFIELDS(ClipMachine * cm)
 {
 	DBWorkArea *wa = cur_area(cm);
-	int nfld, i;
+	unsigned i, nfld;
 	long vect[1];
 	ClipVar *name_ap = _clip_par(cm, 1);
 	ClipVar *type_ap = _clip_par(cm, 2);
 	ClipVar *len_ap = _clip_par(cm, 3);
 	ClipVar *dec_ap = _clip_par(cm, 4);
-	int r;
+	unsigned r;
 
 	if(!wa){
 		_clip_retni(cm,0);
@@ -4625,7 +4627,7 @@ clip_DBORDERINFO(ClipMachine* cm)
 		case DBOI_KEYCOUNT:
 		case DBOI_KEYSINCLUDED:
 		{
-			int c;
+			unsigned c;
 			if((er = ro->vtbl->lastkey(cm,wa->rd,ro,&c,__PROC__))) goto err;
 			_clip_retni(cm,c);
 			break;
@@ -4677,7 +4679,7 @@ clip_DBORDERINFO(ClipMachine* cm)
 		}
 		case DBOI_RECNO:
 		{
-			int n;
+			unsigned n;
 			if((er = ro->vtbl->keyno(cm,wa->rd,ro,&n,__PROC__))) goto err;
 			_clip_retni(cm,n);
 			break;
@@ -5266,7 +5268,8 @@ clip_ORDKEYCOUNT(ClipMachine* cm)
 	ClipVar* order = _clip_par(cm,1);
 	ClipVar* index = _clip_par(cm,2);
 	int ord = _clip_parni(cm,1);
-	int r,er;
+	unsigned r;
+	int er;
 
 	_clip_retni(cm,0);
 	CHECKWA(wa);
@@ -5332,7 +5335,8 @@ clip_ORDKEYNO(ClipMachine* cm)
 	ClipVar* order = _clip_par(cm,1);
 	ClipVar* index = _clip_par(cm,2);
 	int ord = _clip_parni(cm,1);
-	int r,er;
+	unsigned r;
+	int er;
 
 	_clip_retni(cm,0);
 	CHECKWA(wa);

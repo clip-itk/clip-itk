@@ -721,10 +721,9 @@ clip_FAHRENHEIT(ClipMachine * mp)
 int
 StrToInt(char *s, int len, int *res)
 {
-	unsigned int i;
-	int j;
+	unsigned int i, j;
 
-	for (i = j = 0; j < len && j < sizeof(int) * 2; j++)
+	for (i = j = 0; (int)j < len && j < sizeof(int) * 2; j++)
 
 		switch (s[j])
 		{
