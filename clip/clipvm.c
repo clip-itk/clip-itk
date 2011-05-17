@@ -918,7 +918,8 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 	ClipNameEntry *np;
 	ClipFile **cpp;
 	struct DBFuncTable **dpp;
-	int l, ret = 0, i;
+	unsigned l, i;
+	int ret = 0;
 
 	s = strrchr(name, '/');
 	if (s)
