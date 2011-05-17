@@ -224,7 +224,7 @@ HashTable_store(HashTable * self, void *item, long hash_val)
 		else
 		{
 			++h;
-			if (h >= Size)
+			if ((int)h >= Size)
 				h -= Size;
 		}
 	}
@@ -255,7 +255,7 @@ HashTable_fetch(HashTable * self, long hash_val)
 		else
 		{
 			++h;
-			if (h >= Size)
+			if ((int)h >= Size)
 				h -= Size;
 		}
 	}
@@ -285,7 +285,7 @@ HashTable_remove(HashTable * self, long hash_val)
 		else
 		{
 			++h;
-			if (h >= Size)
+			if ((int)h >= Size)
 				h -= Size;
 		}
 	}
