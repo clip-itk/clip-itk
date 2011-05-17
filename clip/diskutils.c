@@ -1752,9 +1752,9 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 				fsd->fname[i] = 0;
 			}
 #ifdef _WIN32
-			if (_clip_glob_match(entry->d_name, mask, 1) != strlen(entry->d_name))
+			if (_clip_glob_match(entry->d_name, mask, 1) != (int)strlen(entry->d_name))
 #else
-			if (_clip_glob_match(entry->d_name, mask,  cm->flags & TRANSLATE_FLAG) != strlen(entry->d_name))
+			if (_clip_glob_match(entry->d_name, mask,  cm->flags & TRANSLATE_FLAG) != (int)strlen(entry->d_name))
 #endif
 				continue;
 			strcpy(filename, entry->d_name);
@@ -2799,9 +2799,9 @@ clip_FILEDELETE(ClipMachine * cm)	/* Deletes file(s) by name and attribute */
 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
 			continue;
 #ifdef _WIN32
-		if (_clip_glob_match(d->d_name, s, 1) != strlen(d->d_name))
+		if (_clip_glob_match(d->d_name, s, 1) != (int)strlen(d->d_name))
 #else
-		if (_clip_glob_match(d->d_name, s, cm->flags & TRANSLATE_FLAG) != strlen(d->d_name))
+		if (_clip_glob_match(d->d_name, s, cm->flags & TRANSLATE_FLAG) != (int)strlen(d->d_name))
 #endif
 			continue;
 		stat(d->d_name, &st);

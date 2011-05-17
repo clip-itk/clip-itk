@@ -3456,7 +3456,7 @@ clip_CRYPT(ClipMachine * mp)
 						   )) & 0xFFFF) ^ ((USHORT) ulCryptLen & 0xFFFF);
 		USHORT uiCount1 = 0xAAAA;
 
-		for (ulStringPos = 0; ulStringPos < ulStringLen;)
+		for (ulStringPos = 0; ulStringPos < (ULONG)ulStringLen;)
 		{
 				USHORT uiTmpCount1 = uiCount1;
 				USHORT uiTmpCount2 = uiCount2;
@@ -3510,7 +3510,7 @@ clip_CRYPT(ClipMachine * mp)
 
 				pbyResult[ulStringPos++] = byte ^ HB_LOBYTE(uiTmpCount1);
 
-				if (ulCryptPos == ulCryptLen)
+				if (ulCryptPos == (ULONG)ulCryptLen)
 						ulCryptPos = 0;
 		}
 
