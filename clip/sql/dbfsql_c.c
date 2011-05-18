@@ -199,7 +199,7 @@ int clip_SQLCREATEROWSET(ClipMachine* mp){
 	SQLROWSET* rowset;
 	ClipVar *oname,*oexpr,*olen,*el;
 	long dims[1];
-	int i;
+	unsigned i;
 
 	if(!stmt){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOSTATEMENT,er_nostatement);

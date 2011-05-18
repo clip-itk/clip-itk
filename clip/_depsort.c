@@ -223,7 +223,7 @@ clip_DEPSORT(ClipMachine * mp)
 
 	init_Coll(&graph, delete_DepNode, cmp_DepNode);
 
-	for (i = 0; i < ap->a.count; i++)
+	for (i = 0; i < (int)ap->a.count; i++)
 	{
 		DepNode *np = new_DepNode(mp, ap->a.items + i);
 
