@@ -45,7 +45,7 @@ unsigned int keymap_count;
 unsigned short *key_maps[MAX_NR_KEYMAPS];
 unsigned short plain_map[NR_KEYS];
 struct kbdiacr accent_table[MAX_DIACR];
-unsigned int accent_table_size;
+int accent_table_size;
 
 #ifndef LIBROOT
 #define LIBROOT "/usr/local/lib/clip"

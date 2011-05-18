@@ -1033,7 +1033,8 @@ kbd_unexpected_up(unsigned char keycode)
 static void
 compute_shiftstate(void)
 {
-	int i, j, k, sym, val;
+	int k, sym, val;
+	unsigned i, j;
 
 	shift_state = 0;
 	for (i = 0; i < SIZE(k_down); i++)
@@ -1147,7 +1148,7 @@ static unsigned char
 handle_diacr(unsigned char ch)
 {
 	int d = diacr;
-	int i;
+	unsigned i;
 
 	diacr = 0;
 
@@ -1197,8 +1198,7 @@ do_fn(unsigned char value, char up_flag)
 	printf("do_fn: %d\r\n", value);
 #endif
 
-	//if (((int)value) < SIZE(func_table))
-	if (((int)value) < (sizeof(func_table)/sizeof((func_table)[0])))
+	if (value < SIZE(func_table))
 	{
 #if 1
 		if ( K(KT_FN, value) == K_INSERT )
