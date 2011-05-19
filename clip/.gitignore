@@ -1,7 +1,7 @@
 _hashcode.h
 bin
 calchash
-charsets
+/charsets
 clic.output
 clic.tab.c
 clic.tab.h
