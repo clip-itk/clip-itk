@@ -1090,7 +1090,7 @@
 #include "dbinfo.ch"
 #include "dbstruct.ch"
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
+#define NEW(type) calloc(sizeof(type),1)
 #define VAR(type,var,ini) type *var=(type*)(ini)
 
 #ifndef HIWORD
@@ -1181,9 +1181,9 @@ register_dbdriver(ClipMachine * cm, char *id, char *data, char *idx, char *memo)
 	if (!*cm->dbdrivers)
 		*cm->ndbdrivers = 0;
 	if (!*cm->ndbdrivers)
-		*cm->dbdrivers = (DBDriver *) malloc(sizeof(DBDriver));
+		*cm->dbdrivers = malloc(sizeof(DBDriver));
 	else
-		*cm->dbdrivers = (DBDriver *) realloc(*cm->dbdrivers,
+		*cm->dbdrivers = realloc(*cm->dbdrivers,
 							 sizeof(DBDriver) * (*cm->ndbdrivers + 1));
 	(*cm->ndbdrivers)++;
 	strcpy((*cm->dbdrivers)[*cm->ndbdrivers - 1].id, id);
@@ -1915,7 +1915,7 @@ clip_DBUSEAREA(ClipMachine * cm)
 		}
 	}
 
-	wa = (DBWorkArea *) calloc(1,sizeof(DBWorkArea));
+	wa = calloc(1,sizeof(DBWorkArea));
 	strcpy(wa->driver,driver);
 	strcpy(wa->idx_driver,idx_driver);
 	strcpy(wa->memo_driver,memo_driver);
@@ -3231,7 +3231,7 @@ _clip_parse_name(ClipMachine * mp, char *name, int l, char **anamep, int *alp,
 				ret = 3;
 
 				if (dimp && ndimp)
-					*dimp = (long *) realloc(*dimp, sizeof(long) * (1 + *ndimp));
+					*dimp = realloc(*dimp, sizeof(long) * (1 + *ndimp));
 
 				if (is_dig(ep, ll))
 					val = atoi(ep) - 1;

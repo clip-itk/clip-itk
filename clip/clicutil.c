@@ -715,7 +715,7 @@ new_Function(char *name, VarColl * params, int isPublic, int isMain, Function * 
 	switch (isPublic)
 	{
 	case 0:
-		ret->name = (char *) malloc(l + 4);
+		ret->name = malloc(l + 4);
 		memcpy(ret->name, "___", 3);
 		memcpy(ret->name + 3, name, l + 1);
 		break;
@@ -726,13 +726,13 @@ new_Function(char *name, VarColl * params, int isPublic, int isMain, Function * 
 			ret->name = name;
 		break;
 	case 2:
-		ret->name = (char *) malloc(l + 6);
+		ret->name = malloc(l + 6);
 		memcpy(ret->name, "INIT_", 5);
 		memcpy(ret->name + 5, name, l + 1);
 		free(name);
 		break;
 	case 3:
-		ret->name = (char *) malloc(l + 6);
+		ret->name = malloc(l + 6);
 		memcpy(ret->name, "EXIT_", 5);
 		memcpy(ret->name + 5, name, l + 1);
 		free(name);
@@ -916,7 +916,7 @@ add_HashName(long hash, const char *name)
 	if (search_Coll(&hashNames, &hash, &no))
 		return;
 	no = strlen(name);
-	entry = (char *) malloc(sizeof(long) + no + 1);
+	entry = malloc(sizeof(long) + no + 1);
 
 	*(long *) entry = hash;
 	memcpy(entry + sizeof(long), name, no + 1);
@@ -1246,7 +1246,7 @@ new_StrBuf()
 {
 	NEWVAR(StrBuf, bp);
 
-	bp->buf = bp->ptr = (char *) malloc(64);
+	bp->buf = bp->ptr = malloc(64);
 	bp->size = 64;
 	bp->end = bp->buf + bp->size;
 

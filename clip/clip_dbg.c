@@ -250,7 +250,7 @@ split_vector(char *str, char ***vpp, int *lenp)
 		if (!*tok)
 			continue;
 		l = (*lenp)++;
-		*vpp = (char **) realloc(*vpp, (l + 1) * sizeof(char *));
+		*vpp = realloc(*vpp, (l + 1) * sizeof(char *));
 
 		(*vpp)[l] = tok;
 	}

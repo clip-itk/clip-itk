@@ -133,7 +133,7 @@ main(int argc, char **argv)
 
 	if (!strcasecmp(p2, "utf-8"))
 	{
-		unsigned short *utbl = (unsigned short *) malloc(sizeof(unsigned short) * 256);
+		unsigned short *utbl = malloc(sizeof(unsigned short) * 256);
 
 		make_utbl(utbl, cs1, len1);
 		while ((ch = getchar()) != EOF)
@@ -144,7 +144,7 @@ main(int argc, char **argv)
 
 	if (!strcasecmp(p2, "ucs-2"))
 	{
-		unsigned short *utbl = (unsigned short *) malloc(sizeof(unsigned short) * 256);
+		unsigned short *utbl = malloc(sizeof(unsigned short) * 256);
 
 		make_utbl(utbl, cs1, len1);
 		while ((ch = getchar()) != EOF)

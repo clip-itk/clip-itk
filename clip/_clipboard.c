@@ -158,14 +158,14 @@ from_clipboard(int nType, int * len)
 
 			for(;;)
 			{
-				ret = (unsigned char*) realloc(ret, l + d);
+				ret = realloc(ret, l + d);
 				r = fread(ret + l, 1, d, f);
 				if (r <= 0)
 					break;
 				l += r;
 			}
 			pclose(f);
-			ret = (unsigned char*) realloc(ret, l + 1);
+			ret = realloc(ret, l + 1);
 			ret[l] = 0;
 			*len = l;
 		}

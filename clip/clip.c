@@ -601,12 +601,12 @@ getrc(char *name)
 				;
 		}
 
-		argv = (char **) realloc(argv, sizeof(char *) * (argc + 1));
+		argv = realloc(argv, sizeof(char *) * (argc + 1));
 
 		argv[argc++] = strdup(s);
 		if (*p)
 		{
-			argv = (char **) realloc(argv, sizeof(char *) * (argc + 1));
+			argv = realloc(argv, sizeof(char *) * (argc + 1));
 
 			argv[argc++] = strdup(p);
 		}
@@ -670,9 +670,9 @@ get_opt(int arg_c, char **arg_v)
 	int option_index = 0;
 	int argc = arg_c + 1, i;
 #ifdef OS_MINGW
-	char **argv = (char **) malloc(sizeof(char *) * (arg_c + 1));
+	char **argv = malloc(sizeof(char *) * (arg_c + 1));
 #else
-	char **argv = (char **) alloca(sizeof(char *) * (arg_c + 1));
+	char **argv = alloca(sizeof(char *) * (arg_c + 1));
 #endif
 
 
@@ -1070,7 +1070,7 @@ add_name(const char *name)
 #endif
 	}
 
-	ovect = (char **) realloc(ovect, sizeof(char *) * (onum + 1));
+	ovect = realloc(ovect, sizeof(char *) * (onum + 1));
 
 	ovect[onum] = strdup(buf);
 	++onum;

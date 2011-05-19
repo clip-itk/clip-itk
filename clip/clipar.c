@@ -220,7 +220,7 @@ read_module(FILE * file)
 	l += 8 + 2 * sizeof(long);
 
 	fseek(file, beg, SEEK_SET);
-	ret = (char *) malloc(l);
+	ret = malloc(l);
 	if (fread(ret, l, 1, file) != 1)
 		goto ferr;
 	filename = M_OFFS(ret, 8,6/*7, 7*/);
@@ -413,7 +413,7 @@ make_pa_file(char *arname, int argc, char **argv)
 
 		for (j = 0; j < funcnum; ++j)
 		{
-			OffsEntry *op = (OffsEntry *) malloc(sizeof(OffsEntry));
+			OffsEntry *op = malloc(sizeof(OffsEntry));
 
 			op->hash = *f_p;
 			++f_p;
@@ -423,7 +423,7 @@ make_pa_file(char *arname, int argc, char **argv)
 		}
 		for (j = 0; j < initnum; ++j)
 		{
-			OffsEntry *op = (OffsEntry *) malloc(sizeof(OffsEntry));
+			OffsEntry *op = malloc(sizeof(OffsEntry));
 
 			op->hash = *f_p;
 			++f_p;
@@ -433,7 +433,7 @@ make_pa_file(char *arname, int argc, char **argv)
 		}
 		for (j = 0; j < exitnum; ++j)
 		{
-			OffsEntry *op = (OffsEntry *) malloc(sizeof(OffsEntry));
+			OffsEntry *op = malloc(sizeof(OffsEntry));
 
 			op->hash = *f_p;
 			++f_p;
