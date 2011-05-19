@@ -126,7 +126,7 @@ _tgetent(char *bp, char *name, char *termcap)
 		tf = open(termcap, 0);
 	if (tf < 0)
 		return (0);
-	ibuf = (char *) malloc(BUFSIZE);
+	ibuf = malloc(BUFSIZE);
 	i = 0;
 	cnt = 0;
 	for (;;)
@@ -206,7 +206,7 @@ tnchktc()
 		errexit("Infinite tc= loop");
 		return (0);
 	}
-	tcbuf = (char *) malloc(BUFSIZE);
+	tcbuf = malloc(BUFSIZE);
 	if (!_tgetent(tcbuf, tcname, tcapfile))
 	{
 		hopcount = 0;	/* unwind recursion */

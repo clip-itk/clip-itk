@@ -1681,7 +1681,7 @@ place_buf(Terminfo * info, int need)
 			delta = 8;
 		osize = info->bufsize;
 		info->bufsize += delta;
-		info->buf = (char *) realloc(info->buf, info->bufsize);
+		info->buf = realloc(info->buf, info->bufsize);
 		memset(info->buf+osize, 0, delta);
 	}
 

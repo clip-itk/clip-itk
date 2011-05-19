@@ -550,7 +550,7 @@ initStack(Task * task)
 	{
 		if (!task->stack)
 		{
-			task->stack = (char *) malloc(task->stacklen);
+			task->stack = malloc(task->stacklen);
 			return 1;
 		}
 	}

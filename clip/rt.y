@@ -371,9 +371,9 @@ typedef struct Parser
 
 #define ERRBUFSIZE 256
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
-#define M_REALLOC(type,ptr,len) ((ptr)=(type*)realloc((ptr),sizeof(type)*(len)))
+#define NEW(type) calloc(sizeof(type),1)
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
+#define M_REALLOC(type,ptr,len) ((ptr)=realloc((ptr),sizeof(type)*(len)))
 
 #define MODBEG (bp->buf+8+2*sizeof(long))
 #define BEGOFFS (bp->ptr-MODBEG)
@@ -1486,7 +1486,7 @@ rt_error(Parser *parser, char *fmt,...)
 	++parser->errcount;
 	if (!parser->errbuf)
 	{
-		parser->errbuf = (char*)malloc(ERRBUFSIZE);
+		parser->errbuf = malloc(ERRBUFSIZE);
 		snprintf(parser->errbuf, ERRBUFSIZE, "runtime compiler error:");
 	}
 
@@ -1656,7 +1656,7 @@ _clip_compile_Block(ClipMachine * mp, char *str, int len, ClipBlock * dest)
 		LONGVAL(modlen,BEGOFFS);
 
 		l = file->bodySize = CUROFFS;
-		file->mem = file->body = (char*)realloc(bp->buf, l);
+		file->mem = file->body = realloc(bp->buf, l);
 		dest->func = file->body+foffs;
 	}
 

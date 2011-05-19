@@ -11,7 +11,7 @@
 #include "clip.h"
 #include "error.ch"
 
-#define NEW(type)	((type*)calloc(sizeof(type),1))
+#define NEW(type)	calloc(sizeof(type),1)
 #ifndef RE_NREGS
 #define RE_NREGS	30
 #endif
@@ -51,11 +51,11 @@ clip_SEARCH(ClipMachine * mp)
 		start = 0;
 	range = abs(range) < length ? abs(range) : length;
 
-	str = (unsigned char *) malloc(range + 1);
+	str = malloc(range + 1);
 	memcpy(str, string + start, range);
 	str[range] = 0;
 
-	buf = (unsigned char *) malloc(sl + 1);
+	buf = malloc(sl + 1);
 	memcpy(buf, s, sl);
 	buf[sl] = 0;
 
@@ -101,7 +101,7 @@ clip_SEARCH(ClipMachine * mp)
 			st->n.d = rmatch[j].rm_so + 1 + start;
 
 			c = ++el->a.count;
-			el->a.items = (ClipVar *) realloc(el->a.items, sizeof(ClipVar) * c);
+			el->a.items = realloc(el->a.items, sizeof(ClipVar) * c);
 			memset(el->a.items + c - 1, 0, sizeof(ClipVar));
 			_clip_clone(mp, el->a.items + c - 1, st);
 
@@ -111,11 +111,11 @@ clip_SEARCH(ClipMachine * mp)
 			ed->n.d = rmatch[j].rm_eo + 1 + start;
 
 			c = ++el->a.count;
-			el->a.items = (ClipVar *) realloc(el->a.items, sizeof(ClipVar) * c);
+			el->a.items = realloc(el->a.items, sizeof(ClipVar) * c);
 			memset(el->a.items + c - 1, 0, sizeof(ClipVar));
 			_clip_clone(mp, el->a.items + c - 1, ed);
 			c = ++rg->a.count;
-			rg->a.items = (ClipVar *) realloc(rg->a.items, sizeof(ClipVar) * c);
+			rg->a.items = realloc(rg->a.items, sizeof(ClipVar) * c);
 			memset(rg->a.items + c - 1, 0, sizeof(ClipVar));
 			_clip_dup(mp, rg->a.items + c - 1, el);
 
@@ -160,9 +160,9 @@ clip_RGCOMP(ClipMachine * mp)
 		_clip_retl(mp, 0);
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "RGCOMP");
 	}
-	preg = (regex_t*)malloc( sizeof(regex_t));
+	preg = malloc( sizeof(regex_t));
 
-	buf = (unsigned char *) malloc(sl + 1);
+	buf = malloc(sl + 1);
 	memcpy(buf, s, sl);
 	buf[sl] = 0;
 
@@ -210,7 +210,7 @@ clip_RGEXEC(ClipMachine * mp)
 		start = 0;
 	range = abs(range) < length ? abs(range) : length;
 
-	str = (unsigned char *) malloc(range + 1);
+	str = malloc(range + 1);
 	memcpy(str, string + start, range);
 	str[range] = 0;
 
@@ -250,7 +250,7 @@ clip_RGEXEC(ClipMachine * mp)
 			st->n.d = rmatch[j].rm_so + 1 + start;
 
 			c = ++el->a.count;
-			el->a.items = (ClipVar *) realloc(el->a.items, sizeof(ClipVar) * c);
+			el->a.items = realloc(el->a.items, sizeof(ClipVar) * c);
 			memset(el->a.items + c - 1, 0, sizeof(ClipVar));
 			_clip_clone(mp, el->a.items + c - 1, st);
 
@@ -260,11 +260,11 @@ clip_RGEXEC(ClipMachine * mp)
 			ed->n.d = rmatch[j].rm_eo + 1 + start;
 
 			c = ++el->a.count;
-			el->a.items = (ClipVar *) realloc(el->a.items, sizeof(ClipVar) * c);
+			el->a.items = realloc(el->a.items, sizeof(ClipVar) * c);
 			memset(el->a.items + c - 1, 0, sizeof(ClipVar));
 			_clip_clone(mp, el->a.items + c - 1, ed);
 			c = ++rg->a.count;
-			rg->a.items = (ClipVar *) realloc(rg->a.items, sizeof(ClipVar) * c);
+			rg->a.items = realloc(rg->a.items, sizeof(ClipVar) * c);
 			memset(rg->a.items + c - 1, 0, sizeof(ClipVar));
 			_clip_dup(mp, rg->a.items + c - 1, el);
 
@@ -319,11 +319,11 @@ clip_SPLIT(ClipMachine * mp)
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SEARCH");
 	}
 
-	str = (unsigned char *) malloc(range + 1);
+	str = malloc(range + 1);
 	memcpy(str, string + start, range);
 	str[range] = 0;
 
-	buf = (unsigned char *) malloc(sl + 1);
+	buf = malloc(sl + 1);
 	memcpy(buf, s, sl);
 	buf[sl] = 0;
 

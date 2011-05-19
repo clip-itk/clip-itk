@@ -166,13 +166,13 @@ clip_START(ClipMachine * mp)
 
 	name = _clip_parc(mp, 1);
 
-	stack = (ClipVar *) malloc(sizeof(ClipVar) * (argc + 1));
+	stack = malloc(sizeof(ClipVar) * (argc + 1));
 	memset(stack, 0, sizeof(ClipVar) * (argc + 1));
 
 	for (i = 0; i < argc; ++i)
 		_clip_clone(mp, stack + i, ARGPTR(mp, i + 2));
 
-	sp = (start_data*) calloc(sizeof(start_data), 1);
+	sp = calloc(sizeof(start_data), 1);
 	sp->stack = stack;
 	sp->argc = argc;
 	if (name)
@@ -273,7 +273,7 @@ msg_data_new(ClipMachine *mp, ClipVar *vp)
 {
 	msg_data *rp;
 
-	rp = (msg_data *) calloc(sizeof(msg_data), 1);
+	rp = calloc(sizeof(msg_data), 1);
 	rp->mp = mp;
 	_clip_clone(mp, &rp->var, vp);
 

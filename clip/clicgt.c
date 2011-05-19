@@ -203,7 +203,7 @@ _clic_ngettext(const char *msg, const char *nmsg, int n)
 		{
 			/* this is a memleak!!! but... */
 			char *rp;
-			rp = (char*) malloc(l+1);
+			rp = malloc(l+1);
 			memcpy(rp, sp, l);
 			rp[l] = 0;
 			return tr_charset(lp, rp);
@@ -318,7 +318,7 @@ tr_charset(Locale *lp, char *msg)
 			}
 			lp->tr_inited = 1;
 		}
-		rp = (char*)malloc(rl+1);
+		rp = malloc(rl+1);
 		for(i=0; i<rl; i++)
 			rp[i] = lp->trans_tbl[((unsigned char*)msg)[i]];
 		rp[rl] = 0;
@@ -403,7 +403,7 @@ init_locale(char *module)
 	char *locale = "";
 	char *charset = 0;
 
-	lp = (Locale *) calloc(1, sizeof(Locale));
+	lp = calloc(1, sizeof(Locale));
 	lp->module = strdup(module);
 #ifdef HAVE_ICONV
 	lp->it = (iconv_t)-1;
@@ -543,7 +543,7 @@ init_locale(char *module)
 		size_t to_read;
 		char *read_ptr;
 
-		data = (struct mo_file_header *) malloc(size);
+		data = malloc(size);
 
 		to_read = size;
 		read_ptr = (char *) data;
@@ -656,7 +656,7 @@ init_locale(char *module)
 			l = strcspn(charset, ";\n\r \t");
 			if (lp->charset)
 				free(lp->charset);
-			lp->charset = (char*) malloc(l+1);
+			lp->charset = malloc(l+1);
 			memcpy(lp->charset, charset, l);
 			lp->charset[l] = 0;
 		}

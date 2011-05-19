@@ -120,7 +120,7 @@ int clip_TCPLISTEN(ClipMachine *mp)
 		goto err;
 	}
 
-	cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+	cf = calloc(1, sizeof(C_FILE));
 	cf->fileno = sock;
 	cf->f = NULL;
 	cf->type = FT_SOCKET;
@@ -189,7 +189,7 @@ int clip_TCPACCEPT(ClipMachine *mp)
 		else {
 			/* Accept correcto. */
 			// Se registra el socket en clip.
-			cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+			cf = calloc(1, sizeof(C_FILE));
 			cf->fileno = socknew;
 			cf->f = NULL;
 			cf->type = FT_SOCKET;

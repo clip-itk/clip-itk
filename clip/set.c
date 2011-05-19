@@ -976,7 +976,7 @@ clip_SET(ClipMachine * mp)
 			if (lp < 16)
 				lp = 16;
 			mp->typeahead = lp;
-			mp->kbdbuf = (int *) realloc(mp->kbdbuf, lp * sizeof(int));
+			mp->kbdbuf = realloc(mp->kbdbuf, lp * sizeof(int));
 
 			*mp->kbdptr = mp->kbdbuf;
 		}

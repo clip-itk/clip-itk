@@ -110,7 +110,7 @@ void errperror(int prf_tot, ...)
 		/* realloc msg_all so it's big enough for itself, the current
 		 * argument, and a null terminator
 		 */
-		msg_all = (char *)xcrealloc(
+		msg_all = xcrealloc(
 			msg_all,
 			strlen(msg_all) + strlen(msg_cur) + sizeof(char)
 		);

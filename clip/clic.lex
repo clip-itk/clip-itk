@@ -1868,7 +1868,7 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 				newpos();
 				ctextLen=256;
 				ctextPos=0;
-				ctextPtr=(char*)malloc(ctextLen);
+				ctextPtr=malloc(ctextLen);
 				ctextQuota='{';
 				/*for(i=0;i<yyleng-2;i++)
 					addCtext(yytext[i]);*/
@@ -1879,7 +1879,7 @@ cmdword	[._a-zA-Z][.()_a-zA-Z0-9]*
 				newpos();
 				ctextLen=256;
 				ctextPos=0;
-				ctextPtr=(char*)malloc(ctextLen);
+				ctextPtr=malloc(ctextLen);
 				ctextQuota='(';
 				BEGIN(ctextState);
 			}
@@ -2260,7 +2260,7 @@ __CLIP_MODULE__ {
 				if (!isspace(e[-1]))
 					break;
 			l = e-b;
-			s = (char*) malloc(l+1);
+			s = malloc(l+1);
 			memcpy(s, b, l);
 			s[l] = 0;
 			set_charset(s, fileList.items[fileList.count-1]);
@@ -2278,7 +2278,7 @@ __CLIP_MODULE__ {
 				l = strcspn(b, " \t\n\r");
 				if (!l)
 					break;
-				s = (char*) malloc(l+1);
+				s = malloc(l+1);
 				memcpy(s, b, l);
 				s[l] = 0;
 				vo_printf(4, 0, "add reffunc '%s'\n", s);
@@ -4129,7 +4129,7 @@ init_lex()
 
 	if (!bracket_buf.buf)
 	{
-		bracket_buf.buf = bracket_buf.ptr = (char *) malloc(64);
+		bracket_buf.buf = bracket_buf.ptr = malloc(64);
 		bracket_buf.size = 64;
 		bracket_buf.end = bracket_buf.buf + 64;
 	}
@@ -4301,7 +4301,7 @@ finale_MacroFunc(MacroFunc *self)
 			le+=strlen((char*)self->macroArgs.items[mp->argno]);
 	}
 
-	self->macro.body= (char*) malloc(le+1);
+	self->macro.body= malloc(le+1);
 	self->macro.body[le]=0;
 	len=le;
 	le=0;
@@ -4378,7 +4378,7 @@ free_Macro(void *item)
 static Macro*
 new_Macro(char *Name, char *Body)
 {
-	Macro *ret=(Macro*)calloc(1,sizeof(Macro));
+	Macro *ret=calloc(1,sizeof(Macro));
 	ret->name=Name;
 	ret->body=Body;
 	ret->xdefine = xdefine;
@@ -4415,7 +4415,7 @@ free_MacroFunc(void *item)
 static MacroFunc *
 new_MacroFunc(char *Name)
 {
-	MacroFunc *ret=(MacroFunc*)calloc(1,sizeof(MacroFunc));
+	MacroFunc *ret=calloc(1,sizeof(MacroFunc));
 	ret->macro.name=Name;
 	ret->macro.body=0;
 	ret->macro.xdefine = xdefine;
@@ -4428,7 +4428,7 @@ new_MacroFunc(char *Name)
 static MacroPart *
 new_MacroPart(char *Text, int no)
 {
-	MacroPart *ret=(MacroPart*)calloc(1,sizeof(MacroPart));
+	MacroPart *ret=calloc(1,sizeof(MacroPart));
 	ret->text=Text;
 	ret->argno=no;
 	return ret;
@@ -4439,7 +4439,7 @@ new_MacroPart(char *Text, int no)
 static IfdefState *
 new_IfdefState(int Cond, int If)
 {
-	IfdefState *ret=(IfdefState*)calloc(1,sizeof(IfdefState));
+	IfdefState *ret=calloc(1,sizeof(IfdefState));
 	ret->condition=Cond;
 	ret->ifdef=If;
 	ret->begline=clic_line;
@@ -4451,7 +4451,7 @@ new_IfdefState(int Cond, int If)
 static IncludeFile *
 new_IncludeFile( char *Name, long Line )
 {
-	IncludeFile *ret=(IncludeFile*)calloc(1,sizeof(IncludeFile));
+	IncludeFile *ret=calloc(1,sizeof(IncludeFile));
 	ret->name=Name;
 	ret->line=Line;
 	ret->type=0;
@@ -4520,7 +4520,7 @@ strdup_bs(const char *s)
 	char *r, *ret;
 
 	l = strlen(s);
-	ret = r = (char*) malloc(l+1);
+	ret = r = malloc(l+1);
 
 
 	for(; *s; s++,r++)
@@ -4540,7 +4540,7 @@ strdup_bs(const char *s)
 static Command *
 new_Command(const char *Name, int isX, int isTranslate)
 {
-	Command *ret=(Command*)calloc(sizeof(Command),1);
+	Command *ret=calloc(sizeof(Command),1);
 
 	vo_printf(4, 0, "new_Command: '%s' isX=%d isTranslate=%d\n", Name, isX, isTranslate);
 	ret->name=strdup_bs(Name);
@@ -4684,7 +4684,7 @@ findFirst_Translate(const char *name, int *ind)
 static CommandPart *
 new_CommandPart(CommandPartType type, const char *text)
 {
-	CommandPart *ret=(CommandPart *)calloc(1,sizeof(CommandPart));
+	CommandPart *ret=calloc(1,sizeof(CommandPart));
 	ret->type=type;
 	if (text)
 		ret->text=strdup_bs(text);
@@ -4710,11 +4710,11 @@ delete_CommandPart(void *arg)
 static CommandArg *
 new_CommandArg(CommandPart *cp, const char *text, int len)
 {
-	CommandArg *ret=(CommandArg*)calloc(1,sizeof(CommandArg));
+	CommandArg *ret=calloc(1,sizeof(CommandArg));
 	while(len>0 && isspace(text[len-1]))
 		len--;
 
-	ret->text=(char*)malloc(len+1);
+	ret->text=malloc(len+1);
 	memcpy(ret->text, text, len);
 	ret->text[len]=0;
 	ret->cp=cp;
@@ -4724,7 +4724,7 @@ new_CommandArg(CommandPart *cp, const char *text, int len)
 static CommandArg *
 newList_CommandArg(CommandPart *cp)
 {
-	CommandArg *ret=(CommandArg*)calloc(1,sizeof(CommandArg));
+	CommandArg *ret=calloc(1,sizeof(CommandArg));
 	ret->cp=cp;
 	ret->list=new_Coll(free, NULL);
 	return ret;
@@ -4733,7 +4733,7 @@ newList_CommandArg(CommandPart *cp)
 static CommandArg *
 newLog_CommandArg(CommandPart *cp, const char *val, int len)
 {
-	CommandArg *ret=(CommandArg*)calloc(1,sizeof(CommandArg));
+	CommandArg *ret=calloc(1,sizeof(CommandArg));
 	ret->cp=cp;
 	ret->val=mem_Dup(val,len);
 	return ret;
@@ -5661,7 +5661,7 @@ matchCommandPartList(Coll *coll, int *pos, int top)
 static char *
 mem_Dup(const char *str, int len)
 {
-	char *r=(char*)malloc(len+1);
+	char *r=malloc(len+1);
 	int i;
 	for( i=0; i<len; ++i)
 		r[i]=toupper(str[i]);
@@ -5672,7 +5672,7 @@ mem_Dup(const char *str, int len)
 static char *
 mem_dup(const char *str, int len)
 {
-	char *r=(char*)malloc(len+1);
+	char *r=malloc(len+1);
 	memcpy(r, str, len);
 	r[len]=0;
 	return r;
@@ -6379,7 +6379,7 @@ quot_str(char *str, int simple)
 	{
 		if (lq && rq)
 		{
-			s = (char*) malloc(l+3);
+			s = malloc(l+3);
 			memcpy(s+1, str, l);
 			s[0] = lq;
 			s[l+1] = rq;
@@ -6427,7 +6427,7 @@ quot_str(char *str, int simple)
 		i = 0;
 	}
 
-	s = (char*) malloc(n + nq * 2 + 3);
+	s = malloc(n + nq * 2 + 3);
 	d = s;
 	*d++ = '"';
 
@@ -7207,7 +7207,7 @@ addCtext(int s)
 	if (ctextPos>=ctextLen)
 	{
 		ctextLen=ctextLen*3/2;
-		ctextPtr=(char*)realloc(ctextPtr, ctextLen);
+		ctextPtr=realloc(ctextPtr, ctextLen);
 	}
 }
 
@@ -7485,7 +7485,7 @@ get_input_str(char **ibuf, int *max_size)
 		l = unput_buffer.ptr - unput_buffer.buf;
 		if (l >= *max_size)
 		{
-			*ibuf = (char *) realloc(*ibuf, l+1);
+			*ibuf = realloc(*ibuf, l+1);
 			*max_size = l+1;
 		}
 		memcpy(*ibuf, unput_buffer.buf, l);
@@ -7507,7 +7507,7 @@ get_input_str(char **ibuf, int *max_size)
 		l = sp->ptr - sp->buf;
 		if (l >= *max_size)
 		{
-			*ibuf = (char *) realloc(*ibuf, l+1);
+			*ibuf = realloc(*ibuf, l+1);
 			*max_size = l+1;
 		}
 		memcpy(*ibuf, sp->buf, l);
@@ -7632,7 +7632,7 @@ addch_pp(P_State *pp, int ch)
 	if(pp->opos >= (*pp->olen))
 	{
 		(*pp->olen) *= 2;
-		(*pp->obuf) = (char *) realloc(*pp->obuf, *pp->olen);
+		(*pp->obuf) = realloc(*pp->obuf, *pp->olen);
 	}
 
 	(*pp->obuf)[pp->opos]=ch;
@@ -7886,9 +7886,9 @@ do_input(char *buf, int max_size)
 	if (!ibuf)
 	{
 		ilen = PP_READ_SIZE;
-		ibuf = (char*) malloc(ilen);
+		ibuf = malloc(ilen);
 		olen = PP_READ_SIZE;
-		obuf = (char*) malloc(olen);
+		obuf = malloc(olen);
 	}
 
 	pstate.obuf = &obuf;

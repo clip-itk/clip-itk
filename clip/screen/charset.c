@@ -73,7 +73,7 @@ addpair(int fp, unsigned long un, cons_CharsetEntry ** list, int *len)
 	int pos = *len;
 
 	(*len)++;
-	*list = (cons_CharsetEntry *) realloc(*list, (*len) * sizeof(cons_CharsetEntry));
+	*list = realloc(*list, (*len) * sizeof(cons_CharsetEntry));
 	(*list)[pos].ch = fp;
 	(*list)[pos].unich = un;
 }

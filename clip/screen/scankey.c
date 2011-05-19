@@ -503,7 +503,7 @@ put_queue(long key)
 		l = l * 2;
 		if (l < 16)
 			l = 16;
-		queue_beg = (long *) realloc(queue_beg, l * sizeof(long));
+		queue_beg = realloc(queue_beg, l * sizeof(long));
 
 		queue_end = queue_beg + p;
 		queue_max = queue_beg + l;

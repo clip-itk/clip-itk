@@ -21,7 +21,7 @@
 
 
 #define TASK_STACK_MIN        16384
-#define NEW(typ) ((typ*) calloc(sizeof(typ),1))
+#define NEW(typ) calloc(sizeof(typ),1)
 
 #include <setjmp.h>
 #include "../list.h"

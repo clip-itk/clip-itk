@@ -392,7 +392,7 @@
 #define CS_WIN	3
 #define CS_MAC	4
 
-#define NEW(type)	((type*)calloc(sizeof(type),1))
+#define NEW(type)	calloc(sizeof(type),1)
 
 const char *
 _atl(const char *src, const char *dst, int slen, int dlen)
@@ -443,12 +443,12 @@ clip_ALLTRIM(ClipMachine * mp)
 		return 0;
 		//return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "ALLTRIM");
 	}
-	rp = (char *) malloc(vl + 1);
+	rp = malloc(vl + 1);
 	for (e = vp; e < vp + vl && (*e == ' ' || *e == '\t'); e++);
 	rl = vl - (e - vp);
 	memcpy(rp, e, rl);
 	for (e = rp + rl - 1; e >= rp && (*e == ' ' || *e == '\t'); e--, rl--);
-	rp = (char *) realloc(rp, rl + 1);
+	rp = realloc(rp, rl + 1);
 	rp[rl] = 0;
 	_clip_retcn_m(mp, rp, rl);
 	return 0;
@@ -468,7 +468,7 @@ clip_LTRIM(ClipMachine * mp)
 	}
 	for (e = vp, end = vp + vl; e < end && (*e == ' ' || *e == '\t'); e++);
 	rl = vl - (e - vp);
-	rp = (char *) malloc(rl + 1);
+	rp = malloc(rl + 1);
 	memcpy(rp, e, rl);
 	rp[rl] = 0;
 	_clip_retcn_m(mp, rp, rl);
@@ -489,7 +489,7 @@ clip_RTRIM(ClipMachine * mp)
 	}
 	for (e = vp + vl - 1; e >= vp && (*e == ' ' || *e == '\t'); e--);
 	rl = e - vp + 1;
-	rp = (char *) malloc(rl + 1);
+	rp = malloc(rl + 1);
 	memcpy(rp, vp, rl);
 	rp[rl] = 0;
 	_clip_retcn_m(mp, rp, rl);
@@ -1178,7 +1178,7 @@ clip_MEMOLINE(ClipMachine * mp)
 		wrap = _clip_parl(mp,5);
 	else
 		wrap = 1;
-	rp = (char *) malloc(len + 1);
+	rp = malloc(len + 1);
 	memset(rp,' ',len);
 	rp[len] = 0;
 
@@ -1943,7 +1943,7 @@ clip_STRFORMAT(ClipMachine * mp)
 		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "STRFORMAT");
 	}
 
-	str1 = (char *) malloc(lend + 1);
+	str1 = malloc(lend + 1);
 
 	for (len--; str2[len] == ' '; len--);
 	str2[len + 1] = 0;
@@ -2013,7 +2013,7 @@ clip_STRUNFORMAT(ClipMachine * mp)
 		else
 			i++;
 	}
-	str1 = (char *) malloc(nw + 1);
+	str1 = malloc(nw + 1);
 
 	for (i = 0, nw = 0; str2[i] == ' '; i++, nw++)
 		str1[nw] = str2[i];

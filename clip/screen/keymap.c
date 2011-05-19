@@ -150,7 +150,7 @@ load_keymap(FILE *file, char *errbuf, int errbuflen)
 			goto err;
 #endif
 
-		keymap = (unsigned short *) calloc(size, sizeof(unsigned short));
+		keymap = calloc(size, sizeof(unsigned short));
 
 		key_maps[i] = keymap;
 
@@ -176,7 +176,7 @@ load_keymap(FILE *file, char *errbuf, int errbuflen)
 		goto err;
 	if (sscanf(buf, "%d", &funcbufsize) != 1)
 		goto err;
-	funcbuf = (char *) calloc(1, funcbufsize);
+	funcbuf = calloc(1, funcbufsize);
 
 	for (i = 0; i < funcbufsize; i++)
 	{

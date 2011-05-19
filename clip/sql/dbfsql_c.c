@@ -1133,7 +1133,7 @@ SQL_get_locale(ClipMachine * mp, const char* sqlcs)
 		return &koi_locale;
 	}
 
-	buf = (unsigned char *) calloc(256, 3);
+	buf = calloc(256, 3);
 
 	make_translation(cs1, len1, cs2, len2, buf);
 	make_translation(cs2, len2, cs1, len1, buf + 256);
@@ -1141,8 +1141,8 @@ SQL_get_locale(ClipMachine * mp, const char* sqlcs)
 	free(cs1);
 	free(cs2);
 
-	SQL_locale = (SQLLocale *) calloc(1, sizeof(SQLLocale));
-	lp = (LocData *) calloc(1, sizeof(LocData));
+	SQL_locale = calloc(1, sizeof(SQLLocale));
+	lp = calloc(1, sizeof(LocData));
 	lp->locale = SQL_locale;
 	lp->name = strdup(SQLcs);
 

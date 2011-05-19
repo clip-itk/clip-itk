@@ -197,7 +197,7 @@ int xcout (
 			XDeleteProperty(dpy, win, pty);
 		
 			/* copy the buffer to the pointer for returned data */
-			ltxt = (unsigned char *)xcmalloc(pty_items);
+			ltxt = xcmalloc(pty_items);
 			memcpy(ltxt, buffer, pty_items);
 
 			/* set the length of the returned data */
@@ -289,11 +289,11 @@ int xcout (
 			if (*len == 0)
 			{
 				*len = pty_items;
-				ltxt = (unsigned char *)xcmalloc(*len);
+				ltxt = xcmalloc(*len);
 			} else
 			{
 				*len += pty_items;
-				ltxt = (unsigned char *)xcrealloc(ltxt, *len);
+				ltxt = xcrealloc(ltxt, *len);
 			}
 
 			/* add data to ltxt */

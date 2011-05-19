@@ -477,7 +477,7 @@ clip_TCPCONNECT(ClipMachine *mp)
 	fcntl(sock, F_SETFL, arg | O_NONBLOCK);
 #endif
 
-	cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+	cf = calloc(1, sizeof(C_FILE));
 	cf->fileno = sock;
 	cf->f = NULL;
 	cf->type = FT_SOCKET;
@@ -643,7 +643,7 @@ clip_UDPSOCKET(ClipMachine *mp)
 	fcntl(sock, F_SETFL, arg | O_NONBLOCK);
 #endif
 
-	cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+	cf = calloc(1, sizeof(C_FILE));
 	cf->fileno = sock;
 	cf->f = NULL;
 	cf->type = FT_SOCKET;

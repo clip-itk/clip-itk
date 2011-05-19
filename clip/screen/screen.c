@@ -1225,7 +1225,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 	else
 		base->terminalName = strdup(p);
 
-	dp = (ScreenData *) calloc(sizeof(ScreenData), 1);
+	dp = calloc(sizeof(ScreenData), 1);
 	base->data = dp;
 
 #ifdef _WIN32
@@ -1765,7 +1765,7 @@ init_tty(ScreenBase * base, int fd, char **envp, int Clear_on_exit, ScreenPgChar
 		w32_size.X = base->Columns;
 		w32_size.Y = base->Lines;
 		w32_scrsize = base->Lines * base->Columns;
-		w32_screen = (CHAR_INFO *) malloc(w32_scrsize * sizeof(CHAR_INFO));
+		w32_screen = malloc(w32_scrsize * sizeof(CHAR_INFO));
 
 		p.Char.AsciiChar = ' ';
 		p.Attributes = 7;
@@ -3406,9 +3406,9 @@ new_Screen(ScreenBase * base)
 	int Lines = base->Lines;
 	int Columns = base->Columns;
 
-	scr = (Screen *) calloc(1, sizeof(Screen));
+	scr = calloc(1, sizeof(Screen));
 	scr->base = base;
-	scr->mem = mem = (char *) calloc(Lines * Columns * 3 + Lines * 3 * sizeof(char *) + Lines * 2 * sizeof(int), 1);
+	scr->mem = mem = calloc(Lines * Columns * 3 + Lines * 3 * sizeof(char *) + Lines * 2 * sizeof(int), 1);
 
 	scr->chars = (unsigned char **) (mem + Lines * Columns * 3);
 	scr->colors = (unsigned char **) (mem + Lines * Columns * 3 + Lines * sizeof(char *));
@@ -4045,7 +4045,7 @@ w32_put_scan_buf(unsigned char b)
 		if (size < 8)
 			size = 8;
 		w32_scan_buf_size = size;
-		w32_scan_buf = (unsigned char *) realloc(w32_scan_buf, size);
+		w32_scan_buf = realloc(w32_scan_buf, size);
 	}
 
 	w32_scan_buf[w32_scan_buf_len] = b;

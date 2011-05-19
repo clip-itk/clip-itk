@@ -594,8 +594,8 @@
 
 extern char *CLIPROOT;
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
+#define NEW(type) (calloc(sizeof(type),1))
+#define NEWVECT(type,len) (calloc(sizeof(type),(len)))
 
 #ifndef RTLD_NOW
 #define RTLD_NOW DL_LAZY
@@ -684,7 +684,7 @@ clip_ERRORBLOCK(ClipMachine * mp)
 	if (vp)
 	{
 		_clip_delete(mp, mp->errorblock);
-		mp->errorblock = (ClipVar *) calloc(1, sizeof(ClipVar));
+		mp->errorblock = calloc(1, sizeof(ClipVar));
 		_clip_clone(mp, mp->errorblock, vp);
 	}
 	return 0;
@@ -935,7 +935,7 @@ BLOCK2STR(ClipMachine * mp)
 	rp->t.type = CHARACTER_t;
 	rp->t.flags = F_NONE;
 	rp->s.str.len = l = bp->file->bodySize;
-	rp->s.str.buf = (char *) malloc(l);
+	rp->s.str.buf = malloc(l);
 	memcpy(rp->s.str.buf, bp->file->body, l);
 
 	return 0;
@@ -1015,9 +1015,9 @@ clip_ARRAY(ClipMachine * mp)
 
 	ndim = mp->argc;
 #ifdef OS_MINGW
-	dims = (long *) malloc(ndim * sizeof(long));
+	dims = malloc(ndim * sizeof(long));
 #else
-	dims = (long *) alloca(ndim * sizeof(long));
+	dims = alloca(ndim * sizeof(long));
 #endif
 
 	for (i = 1; i <= ndim; ++i)
@@ -1061,11 +1061,11 @@ clip_MAPKEYS(ClipMachine * mp)
 	CLEAR_CLIPVAR(rp);
 	rp->t.type = ARRAY_t;
 	rp->t.flags = F_MPTR;
-	rp->p.vp = ap = (ClipVar *) calloc(sizeof(ClipVar), 1);
+	rp->p.vp = ap = calloc(sizeof(ClipVar), 1);
 	ap->t.type = ARRAY_t;
 	ap->t.flags = F_NONE;
 	size = ap->a.count = vp->m.count;
-	ap->a.items = (ClipVar *) calloc(sizeof(ClipVar), size);
+	ap->a.items = calloc(sizeof(ClipVar), size);
 	ap->t.count = 1;
 
 	for (i = 0; i < size; ++i)
@@ -1349,7 +1349,7 @@ clip_AADD(ClipMachine * mp)
 	if (ap->t.type == ARRAY_t)
 	{
 		c = ++ap->a.count;
-		ap->a.items = (ClipVar *) realloc(ap->a.items, sizeof(ClipVar) * c);
+		ap->a.items = realloc(ap->a.items, sizeof(ClipVar) * c);
 		memset(ap->a.items + c - 1, 0, sizeof(ClipVar));
 		_clip_clone(mp, ap->a.items + c - 1, vp);
 		_clip_clone(mp, RETPTR(mp), vp);
@@ -2471,7 +2471,7 @@ get_str(char **buf, long *buflen, char **strp, long *lenp)
 		return 0;
 
 	*lenp = l;
-	*strp = (char *) calloc(1/**strp*/, l + 1);
+	*strp = calloc(1/**strp*/, l + 1);
 	memcpy(*strp, *buf, l);
 	(*strp)[l] = 0;
 
@@ -2585,7 +2585,7 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 	case PCODE_t:
 	case CCODE_t:
 		{
-			/*ClipVar *sp = (ClipVar *) calloc(1, sizeof(ClipVar)); */
+			/*ClipVar *sp = calloc(1, sizeof(ClipVar)); */
 			/*
 			   vp->t.flags = F_MPTR;
 			   vp->t.type = CCODE_t;
@@ -2606,14 +2606,14 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			if (!get_int32(str, len, &size))
 				return -1;
 
-			ap = (ClipVar *) calloc(1, sizeof(ClipVar));
+			ap = calloc(1, sizeof(ClipVar));
 			vp->t.type = ARRAY_t;
 			vp->t.flags = F_MPTR;
 			vp->p.vp = ap;
 			ap->t.type = ARRAY_t;
 			ap->t.flags = F_NONE;
 			ap->t.count = 1;
-			ap->a.items = (ClipVar *) malloc(sizeof(ClipVar) * size);
+			ap->a.items = malloc(sizeof(ClipVar) * size);
 			ap->a.count = size;
 
 			for (i = 0; i < size; ++i)
@@ -2630,14 +2630,14 @@ get_var(ClipMachine * mp, ClipVar * vp, char **str, long *len)
 			if (!get_int32(str, len, &size))
 				return -1;
 
-			ap = (ClipVar *) calloc(1, sizeof(ClipVar));
+			ap = calloc(1, sizeof(ClipVar));
 			vp->t.type = MAP_t;
 			vp->t.flags = F_MPTR;
 			vp->p.vp = ap;
 			ap->t.type = MAP_t;
 			ap->t.flags = F_NONE;
 			ap->t.count = 1;
-			ap->m.items = (ClipVarEl *) calloc(sizeof(ClipVarEl), size);
+			ap->m.items = calloc(sizeof(ClipVarEl), size);
 			ap->m.count = size;
 
 			for (i = 0; i < size; ++i)
@@ -2689,7 +2689,7 @@ _clip_str2var(ClipMachine * mp, ClipVar * vp, char *str, long len, int method)
 		if (!_clip_strFromVar(mp, np, &s, &l) && l)
 		{
 			buflen = l + RECOVER_PREFIX_LEN + 1;
-			b = (char *) realloc(b, buflen);
+			b = realloc(b, buflen);
 			memcpy(b, RECOVER_PREFIX, RECOVER_PREFIX_LEN);
 			memcpy(b + RECOVER_PREFIX_LEN, s, l);
 			b[RECOVER_PREFIX_LEN + l] = 0;
@@ -2805,7 +2805,7 @@ _clip_uuencode(char *sstr, long l, char **strp, long *lenp, int without_newline)
 		putByte_Buf(&buf, '\n');
 
 	*lenp = buf.ptr - buf.buf;
-	*strp = (char *) realloc(*strp, *lenp + 1);
+	*strp = realloc(*strp, *lenp + 1);
 	memcpy(*strp, buf.buf, *lenp);
 	(*strp)[*lenp] = 0;
 
@@ -2874,7 +2874,7 @@ _clip_uudecode(char *sstr, long l, char **strp, long *lenp)
 	}
 
 	*lenp = buf.ptr - buf.buf;
-	*strp = (char *) realloc(*strp, *lenp + 1);
+	*strp = realloc(*strp, *lenp + 1);
 	memcpy(*strp, buf.buf, *lenp);
 	(*strp)[*lenp] = 0;
 
@@ -3407,7 +3407,7 @@ clip_TRANSLATE_CHARSET(ClipMachine * mp)
 		return 0;
 	}
 
-	s = (unsigned char *) malloc(len + 1);
+	s = malloc(len + 1);
 	s[len] = 0;
 
 	if ((r = _clip_translate_charset(p1, p2, str, s, len)))
@@ -3522,7 +3522,7 @@ clip_DOSPARAM(ClipMachine * mp)
 	for (i = 1, l = 0; i < _clip_raw_argc; i++)
 		l += strlen(_clip_raw_argv[i]) + 1;
 
-	s = (char *) malloc(l + 1);
+	s = malloc(l + 1);
 
 	for (i = 1, l = 0; i < _clip_raw_argc; i++)
 	{

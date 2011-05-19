@@ -407,7 +407,7 @@ int main (int argc, char *argv[])
 					 * allocated elements
 					 */
 					sel_all *= 2;
-					sel_buf = (unsigned char *)xcrealloc(
+					sel_buf = xcrealloc(
 						sel_buf,
 						sel_all * sizeof(char)
 					);
