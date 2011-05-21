@@ -307,7 +307,7 @@ clip_DBGCOMMAND(ClipMachine *mp)
 		return -1;
 	}
 
-	buf = (char*) malloc(4096);
+	buf = malloc(4096);
 	memset(buf, 0, 4096);
 
 #if 0
@@ -362,7 +362,7 @@ clip_DBGCOMMAND(ClipMachine *mp)
 	usleep(1);
 
 	/* read input up to '.' line */
-	obuf = (char*) malloc(1);
+	obuf = malloc(1);
 	*obuf = 0;
 
 	for(;;)
@@ -381,7 +381,7 @@ clip_DBGCOMMAND(ClipMachine *mp)
 			break;
 		l = strlen(buf);
 		ol = strlen(obuf);
-		obuf = (char*) realloc(obuf, ol+l+1);
+		obuf = realloc(obuf, ol+l+1);
 		memcpy(obuf+ol, buf, l);
 		obuf[ol+l] = 0;
 	}

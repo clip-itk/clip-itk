@@ -23,8 +23,8 @@
 #ifndef COLL_H
 #define COLL_H
 
-#define ARR_ALLOC(type,len)       ((type*)malloc(sizeof(type)*(len)))
-#define ARR_REALLOC(type,ptr,len) ((ptr)=(type*)realloc(ptr,sizeof(type)*(len)))
+#define ARR_ALLOC(type,len)       malloc(sizeof(type)*(len))
+#define ARR_REALLOC(type,ptr,len) ((ptr)=realloc(ptr,sizeof(type)*(len)))
 #define ARR_SEARCH(type,ptr,len)  ((type*)bsearch(ptr,len,sizeof(type),compare_##type))
 #define ARR_SORT(type,ptr,len)    qsort(ptr,len,sizeof(type),compare_##type)
 

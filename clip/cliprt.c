@@ -1850,10 +1850,10 @@
 #include "task/task.h"
 #endif
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
+#define NEW(type) calloc(sizeof(type),1)
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
 #define VAR(type,var,ini) type *var=(type*)(ini)
-#define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
+#define NEWVAR(type,var) type *var=calloc(sizeof(type),1)
 #define c_DELETE(type,var)	{destroy_##type(var);free(var);}
 
 #define EXPAND_MACRO
@@ -1931,7 +1931,7 @@ destroy_ClipBuf(ClipBuf * buf)
 void
 setLen_ClipBuf(ClipBuf * buf, int newlen)
 {
-	buf->buf = (char *) realloc(buf->buf, newlen);
+	buf->buf = realloc(buf->buf, newlen);
 	buf->len = newlen;
 }
 
@@ -2262,7 +2262,7 @@ new_ClipMachine(struct Screen *screen)
 	if (all_kbdbuf)
 		ret->kbdbuf = all_kbdbuf;
 	else
-		ret->kbdbuf = all_kbdbuf = (int *) calloc(ret->typeahead,sizeof(int));
+		ret->kbdbuf = all_kbdbuf = calloc(ret->typeahead,sizeof(int));
 
 	ret->kbdptr = &all_kbdptr;
 	*(ret->kbdptr) = ret->kbdbuf;
@@ -2291,7 +2291,7 @@ new_ClipMachine(struct Screen *screen)
 	ret->attr.u3 = COLOR_BLACK | COLOR_BACK_BLACK;
 	ret->attr.u4 = COLOR_BLACK | COLOR_BACK_BLACK;
 	ret->attr.u5 = COLOR_BLACK | COLOR_BACK_BLACK;
-	ret->buf = (char *) malloc(64);
+	ret->buf = malloc(64);
 	ret->buflen = 64;
 	ret->driver = init_struct->_dbdrivers[0];
 	ret->syserr[0] = 0;
@@ -2465,7 +2465,7 @@ put_env(char ***envp, char *name)
 		}
 	}
 
-	*envp = (char **) realloc(*envp, (len + 2) * sizeof(char *));
+	*envp = realloc(*envp, (len + 2) * sizeof(char *));
 
 	(*envp)[len] = strdup(name);
 	(*envp)[len + 1] = 0;
@@ -2490,9 +2490,9 @@ _clip_put_env(char *name, char *val)
 	int r;
 
 #ifdef OS_MINGW
-	char *buf = (char *) malloc(l1 + l2 + 2);
+	char *buf = malloc(l1 + l2 + 2);
 #else
-	char *buf = (char *) alloca(l1 + l2 + 2);
+	char *buf = alloca(l1 + l2 + 2);
 #endif
 
 	memcpy(buf, name, l1);
@@ -2686,7 +2686,7 @@ process_args(int argc, char **argv, int *Argcp, char ***Argvp)
 			int l;
 
 			l = (*Argcp)++;
-			(*Argvp) = (char **) realloc(*Argvp, sizeof(char *) * (l + 1));
+			(*Argvp) = realloc(*Argvp, sizeof(char *) * (l + 1));
 
 			(*Argvp)[l] = argv[i];
 		}
@@ -3918,9 +3918,9 @@ CLIP_DLLEXPORT int
 _clip_eval(ClipMachine * mp, ClipVar * blockp, int argc, ClipVar * stackp, ClipVar * retp)
 {
 #ifdef OS_MINGW
-	ClipVar *stack = (ClipVar *) malloc(sizeof(ClipVar) * (argc + 1));
+	ClipVar *stack = malloc(sizeof(ClipVar) * (argc + 1));
 #else
-	ClipVar *stack = (ClipVar *) alloca(sizeof(ClipVar) * (argc + 1));
+	ClipVar *stack = alloca(sizeof(ClipVar) * (argc + 1));
 #endif
 	ClipFrame frame = { stack, stack + 1 + argc, __file__, __LINE__, 0, 0, 0, 0, 0, 0, "eval",
 		argc + 1, 0
@@ -4046,7 +4046,7 @@ _clip_clip(ClipMachine * mp, const char *funcname, int argc, ClipVar * stackp, C
 		return 1;
 	}
 
-	stack = (ClipVar *) malloc(sizeof(ClipVar) * (argc + 1));
+	stack = malloc(sizeof(ClipVar) * (argc + 1));
 	frame.stack = stack;
 	frame.sp = stack + 1 + argc;
 	memset(stack, 0, sizeof(ClipVar) * (argc + 1));
@@ -4088,7 +4088,7 @@ _clip_push_func(struct ClipMachine *mp, ClipFunction f, int nlocals, int nolocal
 
 	if (nlocals)
 	{
-		ClipVarFrame *localvars = (ClipVarFrame *) calloc(1, sizeof(ClipVarFrame) + nlocals * sizeof(ClipVar));
+		ClipVarFrame *localvars = calloc(1, sizeof(ClipVarFrame) + nlocals * sizeof(ClipVar));
 
 		localvars->vars = (ClipVar *) (localvars + 1);
 		memcpy(localvars->vars, mp->fp->sp - nlocals, nlocals * sizeof(ClipVar));
@@ -4374,7 +4374,7 @@ _clip_func_hash(struct ClipMachine *mp, long hash, int argc, int rest, ClipVarFr
 		{
 			if (mp->fp->procname)
 			{
-				buf = (char *) calloc(1, 64);
+				buf = calloc(1, 64);
 				_clip_hash_name(mp, hash, buf, 64);
 				oldbuf = (char *) mp->fp->procname;
 				mp->fp->procname = buf;
@@ -4427,7 +4427,7 @@ _clip_proc_hash(struct ClipMachine *mp, long hash, int argc, int rest, ClipVarFr
 		{
 			if (mp->fp->procname)
 			{
-				buf = (char *) calloc(1, 64);
+				buf = calloc(1, 64);
 				_clip_hash_name(mp, hash, buf, 64);
 				oldbuf = (char *) mp->fp->procname;
 				mp->fp->procname = buf;
@@ -4569,7 +4569,7 @@ _clip_add_tempvar(ClipMachine *mp, ClipVar *vp)
 		fp->tempvars = vvp;
 	}
 
-	vvp->items = (ClipVar *) realloc (vvp->items, (vvp->count+1)*sizeof(ClipVar));
+	vvp->items = realloc (vvp->items, (vvp->count+1)*sizeof(ClipVar));
 	np = vvp->items + vvp->count;
 	vvp->count++;
 
@@ -5137,14 +5137,14 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 
 			if (Lval->t.flags == F_MSTAT)
 			{
-				char *s = (char *) malloc(len + 1);
+				char *s = malloc(len + 1);
 
 				Lval->t.flags = F_NONE;
 				memcpy(s, Lval->s.str.buf, Lval->s.str.len);
 				Lval->s.str.buf = s;
 			}
 			else
-				Lval->s.str.buf = (char *) realloc(Lval->s.str.buf, len + 1);
+				Lval->s.str.buf = realloc(Lval->s.str.buf, len + 1);
 			memcpy(Lval->s.str.buf + Lval->s.str.len, Rval->s.str.buf, Rval->s.str.len + 1);
 			Lval->s.str.len = len;
 			Lval->t.MACRO = Rval->t.MACRO;
@@ -5215,14 +5215,14 @@ do_assign(ClipMachine * mp, ClipVar * lval, ClipVar * rval, int op)
 
 			if (Lval->t.flags == F_MSTAT)
 			{
-				char *s = (char *) malloc(len + 1);
+				char *s = malloc(len + 1);
 
 				Lval->t.flags = F_NONE;
 				memcpy(s, Lval->s.str.buf, Lval->s.str.len);
 				Lval->s.str.buf = s;
 			}
 			else
-				Lval->s.str.buf = (char *) realloc(Lval->s.str.buf, len + slen + 1);
+				Lval->s.str.buf = realloc(Lval->s.str.buf, len + slen + 1);
 			memcpy(Lval->s.str.buf + llen, Rval->s.str.buf, Rval->s.str.len + 1);
 			memset(Lval->s.str.buf + len,' ',slen);
 			Lval->s.str.buf[len+slen] = 0;
@@ -6201,7 +6201,7 @@ _clip_dup(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 			ap->t.type = ARRAY_t;
 			ap->t.flags = F_NONE;
 			ap->t.count = 1;
-			ap->a.items = (ClipVar *) malloc(sizeof(ClipVar) * count);
+			ap->a.items = malloc(sizeof(ClipVar) * count);
 			ap->a.count = count;
 			for (i = 0; i < count; i++)
 			{
@@ -6226,7 +6226,7 @@ _clip_dup(ClipMachine * mp, ClipVar * dest, ClipVar * src)
 			ap->t.type = MAP_t;
 			ap->t.flags = F_NONE;
 			ap->t.count = 1;
-			ap->m.items = (ClipVarEl *) malloc(sizeof(ClipVarEl) * count);
+			ap->m.items = malloc(sizeof(ClipVarEl) * count);
 			ap->m.count = count;
 			for (i = 0; i < count; i++)
 			{
@@ -6717,7 +6717,7 @@ add_private(ClipMachine * mp, long hash)
 				}
 			p = fp->privates;
 			c = GETLONG(p);
-			p = (long *) realloc(p, (c + 2) * sizeof(long));
+			p = realloc(p, (c + 2) * sizeof(long));
 
 			SETLONG(p, c + 1);
 			SETLONG(p + c + 1, hash);
@@ -6725,7 +6725,7 @@ add_private(ClipMachine * mp, long hash)
 		}
 		else
 		{
-			p = fp->privates = (long *) malloc(sizeof(long) * 2);
+			p = fp->privates = malloc(sizeof(long) * 2);
 
 			SETLONG(p, 1);
 			SETLONG(p + 1, hash);
@@ -7086,7 +7086,7 @@ _clip_sarray(ClipMachine * mp, int n)
 	ap->t.type = ARRAY_t;
 	ap->t.flags = F_NONE;
 	ap->t.count = 1;
-	ap->a.items = (ClipVar *) malloc(sizeof(ClipVar) * n);
+	ap->a.items = malloc(sizeof(ClipVar) * n);
 	ap->a.count = n;
 	for (i = 0; i < n; i++)
 	{
@@ -7124,7 +7124,7 @@ new_array(ClipVar * vp, int n, long *dims)
 	ap->t.type = ARRAY_t;
 	ap->t.flags = F_NONE;
 	ap->t.count = 1;
-	ap->a.items = (ClipVar *) malloc(sizeof(ClipVar) * size);
+	ap->a.items = malloc(sizeof(ClipVar) * size);
 	ap->a.count = size;
 	for (i = 0; i < size; i++)
 		new_array(&ap->a.items[i], n, dims);
@@ -7138,9 +7138,9 @@ _clip_dimarray(ClipMachine * mp, int n)
 	long *dims;
 
 #ifdef OS_MINGW
-	dims = (long *) malloc(sizeof(long) * n);
+	dims = malloc(sizeof(long) * n);
 #else
-	dims = (long *) alloca(sizeof(long) * n);
+	dims = alloca(sizeof(long) * n);
 #endif
 
 	for (i = 0; i < n; i++)
@@ -7257,7 +7257,7 @@ _clip_asize(ClipMachine * mp, ClipVar * ap, int ndim, long *dims)
 	for (i = ind; i < c; ++i)
 		_clip_destroy(mp, ap->a.items + i);
 
-	ap->a.items = (ClipVar *) realloc(ap->a.items, sizeof(ClipVar) * ind);
+	ap->a.items = realloc(ap->a.items, sizeof(ClipVar) * ind);
 	ap->a.count = ind;
 
 	for (i = c; i < ind; ++i)
@@ -7316,7 +7316,7 @@ _clip_aadd(ClipMachine * mp, ClipVar * ap, ClipVar * vp)
 		return 1;
 
 	c = ++ap->a.count;
-	ap->a.items = (ClipVar *) realloc(ap->a.items, sizeof(ClipVar) * c);
+	ap->a.items = realloc(ap->a.items, sizeof(ClipVar) * c);
 	memset(ap->a.items + c - 1, 0, sizeof(ClipVar));
 	_clip_clone(mp, ap->a.items + c - 1, vp);
 
@@ -7581,7 +7581,7 @@ _clip_madd(ClipMachine * mp, ClipVar * ap, long no, ClipVar * vp)
 	}
 	else
 	{
-		ap->m.items = (ClipVarEl *) realloc(ap->m.items, (c + 1) * sizeof(ClipVarEl));
+		ap->m.items = realloc(ap->m.items, (c + 1) * sizeof(ClipVarEl));
 		if (ind < c)
 			memmove(ap->m.items + ind + 1, ap->m.items + ind, (c - ind /* -1 */ ) * sizeof(ClipVarEl));
 		ap->m.count++;
@@ -7750,7 +7750,7 @@ fetch_arr(ClipMachine * mp, ClipVar * ap, int dim, long *vect, int Dim, long *Ve
 		else if (store)
 		{
 			/*addvar: */
-			ap->m.items = (ClipVarEl *) realloc(ap->m.items, (c + 1) * sizeof(ClipVarEl));
+			ap->m.items = realloc(ap->m.items, (c + 1) * sizeof(ClipVarEl));
 			if (ind < c)
 				memmove(ap->m.items + ind + 1, ap->m.items + ind, (c - ind /*-1*/ ) * sizeof(ClipVarEl));
 			ap->m.count++;
@@ -7838,9 +7838,9 @@ clip_fetch(ClipMachine * mp, int dim, int push, int store, ClipVar ** mapp, long
 	/*ClipVar *app;*/
 	int i;
 #ifdef OS_MINGW
-	long *vect = (long *) malloc(sizeof(long) * dim);
+	long *vect = malloc(sizeof(long) * dim);
 #else
-	long *vect = (long *) alloca(sizeof(long) * dim);
+	long *vect = alloca(sizeof(long) * dim);
 #endif
 
 	memset(&arr, 0, sizeof(ClipVar));
@@ -8894,7 +8894,7 @@ _clip_set(struct ClipMachine *mp, long hash)
 void
 init_Buf(OutBuf * bp)
 {
-	bp->buf = bp->ptr = (char *) malloc(64);
+	bp->buf = bp->ptr = malloc(64);
 	bp->end = bp->buf + 64;
 }
 
@@ -9518,9 +9518,9 @@ do_main(ClipMachine * mp, long hash, ClipFunction * func, ClipBlock * block, int
 {
 	int i, ret;
 #ifdef OS_MINGW
-	ClipVar *_stack = (ClipVar *) malloc(sizeof(ClipVar) * (argc + 1));
+	ClipVar *_stack = malloc(sizeof(ClipVar) * (argc + 1));
 #else
-	ClipVar *_stack = (ClipVar *) alloca(sizeof(ClipVar) * (argc + 1));
+	ClipVar *_stack = alloca(sizeof(ClipVar) * (argc + 1));
 #endif
 	ClipFrame _frame =
 		{ _stack, _stack, "" /*__FILE__*//* ": do_main()" */ , /*__LINE__*/ 0, 0, 0, 0, 0, 0, 0, 0, argc + 1, 0 };
@@ -10447,7 +10447,7 @@ _clip_store_c_item(ClipMachine * cm, void *item, int type, void (*destroy) (void
 	}
 	citem.key = i;
 
-	cn->items = (ContainerItem *) realloc(cn->items, (cn->len + 1) * sizeof(ContainerItem));
+	cn->items = realloc(cn->items, (cn->len + 1) * sizeof(ContainerItem));
 
 	cn->items[cn->len++] = citem;
 
@@ -11436,7 +11436,7 @@ _clip_push_locale(ClipMachine * mp)
 		for (i = 0, e = p; *e && *e != 1; e++, i++)
 			;
 		e++;
-		m = (char *) malloc(i + 1);
+		m = malloc(i + 1);
 		memcpy(m, p, i);
 		m[i] = 0;
 
@@ -11467,7 +11467,7 @@ local_ref(ClipMachine * mp, int no)
 	else
 	{
 		int nlocals = no + 1;
-		ClipVarFrame *localvars = (ClipVarFrame *) realloc(lp, sizeof(ClipVarFrame) + nlocals * sizeof(ClipVar));
+		ClipVarFrame *localvars = realloc(lp, sizeof(ClipVarFrame) + nlocals * sizeof(ClipVar));
 
 		localvars->vars = (ClipVar *) (localvars + 1);
 		if (lp)
@@ -11619,7 +11619,7 @@ _clip_get_fielddef(ClipMachine * mp, long areahash, long namehash)
 	fp = (ClipFieldDef *) HashTable_fetch(mp->fields, hash);
 	if (!fp)
 	{
-		fp = (ClipFieldDef *) calloc(1, sizeof(ClipFieldDef));
+		fp = calloc(1, sizeof(ClipFieldDef));
 		fp->areahash = areahash;
 		fp->fieldhash = namehash;
 		HashTable_insert(mp->fields, fp, hash);
@@ -11719,7 +11719,7 @@ _clip_catstr(ClipMachine * mp, int num)
 		}
 
 		{
-			s = (char *) realloc(s, l + l1 + 1);
+			s = realloc(s, l + l1 + 1);
 			memcpy(s + l, s1, l1);
 			s[l + l1] = 0;
 			l += l1;
@@ -11754,7 +11754,7 @@ _clip_quot(ClipMachine * mp)
 	if (rp->t.type == CHARACTER_t)
 	{
 		l = rp->s.str.len;
-		s = (char *) calloc(1, l + 3);
+		s = calloc(1, l + 3);
 		memcpy(s + 1, rp->s.str.buf, l);
 		s[0] = '"';
 		s[l + 1] = '"';
@@ -12229,7 +12229,7 @@ _clip_translate_charset(char *p1, char *p2, unsigned char *str, unsigned char *o
 	{
 		int src_pg, dst_pg;
 
-		tp = (TranslateTable *) calloc(1, sizeof(TranslateTable));
+		tp = calloc(1, sizeof(TranslateTable));
 		tp->src = strdup(p1);
 		tp->dst = strdup(p2);
 		make_translation(cs1, len1, cs2, len2, tp->tbl);
@@ -12240,11 +12240,11 @@ _clip_translate_charset(char *p1, char *p2, unsigned char *str, unsigned char *o
 		{
 			unsigned char *pg;
 
-			pg = (unsigned char *) malloc(256);
+			pg = malloc(256);
 			load_charset_tables(p1, 0, 0, 0, 0, pg);
 
 			memmove(pg, pg + 128, 128);
-			tp->pg = (unsigned char *) realloc(pg, 128);
+			tp->pg = realloc(pg, 128);
 		}
 
 		if (!tr_charsets)

@@ -477,7 +477,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	{
 		hstr[0] = (char) j;
 		_hash_cur_dir[i] = _clip_hashstr(hstr);
-		s = (char *) calloc(1, 2);
+		s = calloc(1, 2);
 		*s = '\\';
 		_clip_store_item(cm, _hash_cur_dir[i], s);
 	}
@@ -514,19 +514,19 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 #if 0
 		if (j>3)
 		{
-			char *ch = (char *) calloc(MAXPATHLEN, 1);
+			char *ch = calloc(MAXPATHLEN, 1);
 			cygwin_win32_to_posix_path_list(currpath,ch);
 			_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
 		}
 		else if (j==3)
 		{
-			char *ch = (char *) calloc(1, 1);
+			char *ch = calloc(1, 1);
 			_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
 		}
 #else
 		if (j > 0)
 		{
-			char *ch = (char *) calloc(j - 1, 1);
+			char *ch = calloc(j - 1, 1);
 
 			memcpy(ch, currpath + 2, j - 1);
 			_clip_store_item(cm, _hash_cur_dir[i - 65], ch);
@@ -539,7 +539,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	free(cDisk);
 
 #else
-	if ((s = (char *) calloc(MAXPATHLEN, 1)))
+	if ((s = calloc(MAXPATHLEN, 1)))
 	{
 
 		/* current UNIX path */
@@ -561,7 +561,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 					continue;
 				if (!memcmp(path, d, j))
 				{
-					char *ch = (char *) calloc(3, 1);
+					char *ch = calloc(3, 1);
 
 					*ch = i;	/* drive letter */
 					*(ch + 1) = ':';
@@ -575,7 +575,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 					if (path[j] == '/')
 						j++;
 					_clip_translate_path(cm, path + j, s, MAXPATHLEN);
-					ch = (char *) calloc(len - j + 2, 1);
+					ch = calloc(len - j + 2, 1);
 					*ch = '\\';
 					memcpy(ch + 1, path + j, len - j);
 
@@ -597,7 +597,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 #endif
 	if ((s = _clip_fetch_item(cm, CLIP_CUR_DRIVE)) == NULL)
 	{
-		s = (char *) calloc(1, 3);
+		s = calloc(1, 3);
 		memcpy(s, "C:", 3);
 		_clip_store_item(cm, CLIP_CUR_DRIVE, s);
 	}
@@ -610,7 +610,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	 */
 	if ((s = _clip_fetch_item(cm, j)) == NULL)
 	{
-		s = (char *) calloc(1, 2);
+		s = calloc(1, 2);
 		*s = '/';
 		_clip_store_item(cm, j, s);	/* set( "?:", "/" ) */
 	}
@@ -618,7 +618,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	/*
 	 * default create file attribute
 	 */
-	f_attr = (int *) malloc(sizeof(int));
+	f_attr = malloc(sizeof(int));
 
 	*f_attr = FA_ARCHIVE;
 	_clip_store_item(cm, CLIP_CA_FCREATE_ATTR, f_attr);
@@ -626,7 +626,7 @@ clip_INIT__CTOOLS_DISKFUNC(ClipMachine * cm)
 	/*
 	 * default open file attribute
 	 */
-	f_attr = (int *) calloc(1, sizeof(int));
+	f_attr = calloc(1, sizeof(int));
 
 	*f_attr = LOCK_RDONLY;
 	_clip_store_item(cm, CLIP_CA_SHARE_MODE, f_attr);
@@ -648,7 +648,7 @@ clip_INI__CTOOLS_DISKFUNC(ClipMachine * cm)
 char *
 _get_path(const char *fname)
 {
-	char *path = (char *) malloc(MAXPATHLEN);
+	char *path = malloc(MAXPATHLEN);
 	int i = 0, j = 0;
 
 	for (; fname[i]; i++)
@@ -720,7 +720,7 @@ _get_unix_name(ClipMachine * cm, char *dname)
 		/*_clip_trap_printf(cm, __FILE__, __LINE__, "invalid argument");*/
 		return NULL;
 	}
-	if (!(buf = (char *) calloc(MAXPATHLEN, 1)))
+	if (!(buf = calloc(MAXPATHLEN, 1)))
 	{
 		_clip_trap_err(cm, EG_MEM, 0, 0, __FILE__, __LINE__, "cannot allocate memory");
 		/*_clip_trap_printf(cm, __FILE__, __LINE__, "cannot allocate memory");*/
@@ -834,11 +834,11 @@ clip_DIRCHANGE(ClipMachine * cm)
 	len = GetCurrentDirectory(MAXPATHLEN, ndir);
 	if (len > 0)
 	{
-		ch = (char *) calloc(len - 1, 1);
+		ch = calloc(len - 1, 1);
 		memcpy(ch, ndir + 2, len - 1);
 	}
 	else
-		ch = (char *) calloc(1,1);
+		ch = calloc(1,1);
 	_clip_store_item(cm, hash_dir, ch);
 	_clip_retni(cm, NO_DISK_ERR);	/* success */
 	return 0;
@@ -915,7 +915,7 @@ clip_DIRCHANGE(ClipMachine * cm)
 
 			dir = _clip_fetch_item(cm, hash_dir);
 			dlen = strlen(dir);
-			ndir = (char *) calloc(dlen + strlen(dname) + 2, 1);
+			ndir = calloc(dlen + strlen(dname) + 2, 1);
 			memcpy(ndir, dir, dlen);
 			if (*dname == '.' && (*(dname + 1) == '.'))
 			{
@@ -992,7 +992,7 @@ clip_DIRMAKE(ClipMachine * cm)
 int
 clip_DIRNAME(ClipMachine * cm)
 {
-	char *buf = (char *) malloc(MAXPATHLEN);
+	char *buf = malloc(MAXPATHLEN);
 	char *dname = _clip_parc(cm, 1);
 	char *drv = dname ? dname : _clip_fetch_item(cm, CLIP_CUR_DRIVE);
 	char *dir = _clip_fetch_item(cm, _hash_cur_dir[toupper(*drv) - 65]);
@@ -1084,7 +1084,7 @@ clip_DISKCHANGE(ClipMachine * cm)
 		return 0;
 	}
 
-	drv = (char *) calloc(3, 1);
+	drv = calloc(3, 1);
 	drv[1] = ':';
 	switch (*dname)
 	{
@@ -1716,7 +1716,7 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 
 	if (fsd == NULL)
 	{
-		fsd = (FSdata *) calloc(sizeof(FSdata), 1);
+		fsd = calloc(sizeof(FSdata), 1);
 		if ((mask = strrchr(uname, '/')) == NULL || *(mask + 1) == 0)
 		{
 			mask = "*";
@@ -1728,7 +1728,7 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 
 		if ((dir = opendir((*uname) == 0 ? "/" : uname)) != NULL)
 		{
-			fullname = (char *) calloc(MAXPATHLEN, 1);
+			fullname = calloc(MAXPATHLEN, 1);
 			strcpy(fullname, uname);
 			strcat(fullname, "/");
 			filename = fullname + strlen(fullname);
@@ -1746,8 +1746,8 @@ clip_FILESEEK(ClipMachine * cm)	/* Searches for files by name and attribute */
 		{
 			if (fsd->fname == NULL || fsd->fname[i] == 0)
 			{
-				fsd->fname = (char **) realloc(fsd->fname, (i + 64) * sizeof(char *));
-				fsd->st = (struct stat *) realloc(fsd->st, (i + 64) * sizeof(struct stat));
+				fsd->fname = realloc(fsd->fname, (i + 64) * sizeof(char *));
+				fsd->st = realloc(fsd->st, (i + 64) * sizeof(struct stat));
 
 				fsd->fname[i] = 0;
 			}
@@ -2156,7 +2156,7 @@ clip_FILESTR(ClipMachine * cm)	/* Reads a portion of a file into a string */
 		nlen = 0xFFFF;
 
 	if ((fd = open(uname, O_RDONLY)) == -1 || !_set_lock(fd, F_RDLCK) ||
-		(f = fdopen(fd, "r")) == NULL || fseek(f, noff, SEEK_SET) || (ret = (char *) malloc(nlen)) == NULL)
+		(f = fdopen(fd, "r")) == NULL || fseek(f, noff, SEEK_SET) || (ret = malloc(nlen)) == NULL)
 		goto end;
 
 	if (!ctrl_z)
@@ -2205,7 +2205,7 @@ clip_SETFCREATE(ClipMachine * cm)
 	ptrattr = _clip_fetch_item(cm, CLIP_CA_FCREATE_ATTR);
 	oldattr = *ptrattr;
 
-	ptrattr = (int *) malloc(sizeof(int));
+	ptrattr = malloc(sizeof(int));
 
 	*ptrattr = newattr;
 	_clip_store_item(cm, CLIP_CA_FCREATE_ATTR, ptrattr);
@@ -2875,7 +2875,7 @@ clip_SETSHARE(ClipMachine * cm)
 		return 0;
 	}
 
-	smode = (int *) calloc(1, sizeof(int));
+	smode = calloc(1, sizeof(int));
 
 	*smode = n;
 	_clip_store_item(cm, CLIP_CA_SHARE_MODE, smode);

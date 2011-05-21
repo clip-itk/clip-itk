@@ -305,7 +305,7 @@ main(int argc, char **argv)
 		int l;
 		char *s;
 
-		rp = (UniRecord *) calloc(1, sizeof(*rp));
+		rp = calloc(1, sizeof(*rp));
 		l = strlen(buf);
 		if (l > 0 && buf[--l] == '\n')
 			buf[l] = 0;
@@ -461,9 +461,9 @@ main(int argc, char **argv)
 
 		if (!rp)
 		{
-			cons_CharsetEntry *cp = (cons_CharsetEntry *) calloc(sizeof(cons_CharsetEntry *), 1);
+			cons_CharsetEntry *cp = calloc(sizeof(cons_CharsetEntry *), 1);
 
-			rp = (UniRecord *) calloc(sizeof(UniRecord), 1);
+			rp = calloc(sizeof(UniRecord), 1);
 			rp->no = i;
 			rp->ch = i;
 			cp->ch = i;

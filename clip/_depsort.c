@@ -33,8 +33,8 @@
 
 extern char *CLIPROOT;
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
+#define NEW(type) calloc(sizeof(type),1)
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
 
 /*
 m:={;
@@ -129,7 +129,7 @@ new_DepNode(ClipMachine * mp, ClipVar * vp)
 			int i;
 
 			np->ndeps = dp->a.count;
-			np->deps = (long *) calloc(np->ndeps, sizeof(long));
+			np->deps = calloc(np->ndeps, sizeof(long));
 
 			for (i = 0; i < np->ndeps; i++)
 				np->deps[i] = _clip_hash(mp, dp->a.items + i);
@@ -263,7 +263,7 @@ clip_DEPSORT(ClipMachine * mp)
 	CLEAR_CLIPVAR(rp);
 	rp->t.type = ARRAY_t;
 	rp->t.flags = F_MPTR;
-	rp->p.vp = rap = (ClipVar *) calloc(sizeof(ClipVar), 1);
+	rp->p.vp = rap = calloc(sizeof(ClipVar), 1);
 	rap->t.type = ARRAY_t;
 	rap->t.flags = F_NONE;
 	rap->a.count = 0;
@@ -282,7 +282,7 @@ clip_DEPSORT(ClipMachine * mp)
 			{
 				ClipVar *vpp;
 
-				rap->a.items = (ClipVar *) realloc(rap->a.items, (rap->a.count + 1) * sizeof(ClipVar));
+				rap->a.items = realloc(rap->a.items, (rap->a.count + 1) * sizeof(ClipVar));
 
 				vpp = rap->a.items + rap->a.count;
 				(rap->a.count)++;
@@ -303,7 +303,7 @@ clip_DEPSORT(ClipMachine * mp)
 		{
 			ClipVar *vpp;
 
-			rap->a.items = (ClipVar *) realloc(rap->a.items, (rap->a.count + 1) * sizeof(ClipVar));
+			rap->a.items = realloc(rap->a.items, (rap->a.count + 1) * sizeof(ClipVar));
 
 			vpp = rap->a.items + rap->a.count;
 			(rap->a.count)++;

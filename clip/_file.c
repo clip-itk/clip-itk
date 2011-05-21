@@ -1175,7 +1175,7 @@ clip_INIT_FILE_SETS(ClipMachine * mp)
 	/* open stdin, stdout, stderr */
 	for (fd = 0; fd < 3; fd++)
 	{
-		cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+		cf = calloc(1, sizeof(C_FILE));
 		if (fd == 0)
 			cf->f = stdin;
 		else if (fd == 1)
@@ -1494,7 +1494,7 @@ clip_FOPEN(ClipMachine * mp)
 			else
 				lseek(fd, 0, SEEK_SET);
 		}
-		cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+		cf = calloc(1, sizeof(C_FILE));
 		cf->fileno = fd;
 		cf->f = f;
 		cf->stat = (lbuf ? FS_BUFFERED : 0);
@@ -1565,7 +1565,7 @@ clip_FCREATE(ClipMachine * mp)
 	{
 		if (!lbuf || (f = fdopen(fd, "r+")) != NULL)
 		{
-			cf = (C_FILE *) calloc(1, sizeof(C_FILE));
+			cf = calloc(1, sizeof(C_FILE));
 			cf->type = _clip_ftype(fd);
 			cf->fileno = fd;
 			cf->f = f;
@@ -1996,7 +1996,7 @@ clip_FILEGETSTR(ClipMachine * mp)
 		}
 		if (i > 0)
 		{
-			buf = (char *) realloc(buf, i + 1);
+			buf = realloc(buf, i + 1);
 			_clip_retcn_m(mp, buf, i);
 		}
 		else

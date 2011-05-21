@@ -1283,10 +1283,10 @@ new_StringConstNode(char *val)
 {
 	int no;
 
-//#define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
+//#define NEWVAR(type,var) type *var=calloc(sizeof(type),1)
 //	NEWVAR(ConstNode, ret);
 
-	ConstNode * ret = (ConstNode *) calloc(sizeof(ConstNode),1);
+	ConstNode * ret = calloc(sizeof(ConstNode),1);
 
 	init_Node(ret, pass_ConstNode, "const");
 	ret->type = CONST_STRING;
@@ -6272,7 +6272,7 @@ pass_IfNode(void *self, Pass pass, int level, void *par)
 			int no;
 			int count = np->elseifs->count / 2 + (np->elselist ? 0 : -1);
 			int eoffs;
-			int *ejmps = (int *) malloc(sizeof(int) * (count+1));
+			int *ejmps = malloc(sizeof(int) * (count+1));
 
 			put_line(self, level, out);
 			for (i = 0, no = 0; i < np->elseifs->count; i += 2, ++no)
@@ -7386,7 +7386,7 @@ new_LocaleStringNode(char *val)
 
 	l = strlen(val)+1;
 	lm = strlen(CLIP_MODULE)+1;
-	s = (char*) malloc(l+lm);
+	s = malloc(l+lm);
 	memcpy(s, CLIP_MODULE, lm);
 	memcpy(s+lm, val, l);
 

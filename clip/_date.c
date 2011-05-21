@@ -581,7 +581,7 @@ clip_SECONDSCPU(ClipMachine * mp)
 int
 clip_TIME(ClipMachine * mp)
 {
-	char *ret = (char *) malloc(9);
+	char *ret = malloc(9);
 #ifdef _WIN32
 	SYSTEMTIME st;
 	GetLocalTime( &st );

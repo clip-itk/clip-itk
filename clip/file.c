@@ -875,7 +875,7 @@ write_Function(FILE * out, File * file, Function * fp)
 		int i, l;
 
 		fprintf(out,
-			"\tClipVarFrame *_localvars = (ClipVarFrame*) calloc(1, sizeof(ClipVarFrame)+%d*sizeof(ClipVar));\n",
+			"\tClipVarFrame *_localvars = calloc(1, sizeof(ClipVarFrame)+%d*sizeof(ClipVar));\n",
 			fp->locals->unsorted.count);
 		fprintf(out, "\tstatic const char _localnames[] = {");
 		for (j = 0; j < fp->locals->unsorted.count; j++)
@@ -2308,7 +2308,7 @@ new_Label(char *str)
 {
 	Label *ret;
 
-	ret = (Label *)calloc(1, sizeof(Label));
+	ret = calloc(1, sizeof(Label));
 	ret->hash = hashstr(str + 5);
 	ret->str = str;
 
@@ -2501,7 +2501,7 @@ write_Cfunc(const char *name, int argc, char **argv, Coll * ex, Coll * nm)
 			l = e - b;
 		else
 			l = strlen(b);
-		r = (char *) malloc(l + 1);
+		r = malloc(l + 1);
 		for (j = 0; j < l; j++)
 		{
 			switch (b[j])

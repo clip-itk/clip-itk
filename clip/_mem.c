@@ -119,8 +119,8 @@
 #include "coll.h"
 #include "rational.h"
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
+#define NEW(type) calloc(sizeof(type),1)
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
 
 #define DBFDATA_NONFREE 0x1
 

@@ -573,10 +573,10 @@
 #endif
 
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
+#define NEW(type) calloc(sizeof(type),1)
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
 #define VAR(type,var,ini) type *var=(type*)(ini)
-#define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
+#define NEWVAR(type,var) type *var=calloc(sizeof(type),1)
 #define c_DELETE(type,var)	{destroy_##type(var);free(var);}
 #define M_OFFS(base,nl,ns) ((base)+8+nl*sizeof(long)+ns*sizeof(short))
 #define F_OFFS(fp,nl,ns,nb) ((fp)+(nl)*sizeof(long)+(ns)*sizeof(short)+(nb))
@@ -764,7 +764,7 @@ load_pobj(ClipMachine * mp, struct ClipFile *file, const char *name, int mallocM
 		int readed, r;
 
 		file->bodyMem = 1;
-		file->body = (char *) malloc(len);
+		file->body = malloc(len);
 		for (s = file->body, readed = 0; readed < len; readed += r, s += r)
 		{
 			int portion = 4096;
@@ -825,7 +825,7 @@ load_pobj(ClipMachine * mp, struct ClipFile *file, const char *name, int mallocM
 
 	file->nstatics = GETLONG(sp);
 
-	file->statics = (ClipVar *) calloc(sizeof(ClipVar), file->nstatics + 1);
+	file->statics = calloc(sizeof(ClipVar), file->nstatics + 1);
 	file->staticsMem = 1;
 
 	sp += sizeof(short) * 7 + sizeof(long) * 4;
@@ -865,7 +865,7 @@ _clip_hash_buckets(ClipMachine * mp, ClipFile * file)
 
 	hash_names = NEW(ClipHashNames);
 	if (count)
-		buckets = (ClipHashBucket *) calloc(sizeof(ClipHashBucket), count);
+		buckets = calloc(sizeof(ClipHashBucket), count);
 	else
 		buckets = 0;
 	hash_names->num = count;
@@ -894,7 +894,7 @@ _clip_hash_buckets(ClipMachine * mp, ClipFile * file)
 
 	file->hash_names = hash_names;
 
-	statics = file->staticDefs = (ClipVarDef *) calloc(sizeof(ClipVarDef), nstatics + 1);
+	statics = file->staticDefs = calloc(sizeof(ClipVarDef), nstatics + 1);
 
 	file->staticDefs[0].name = nstatics;
 	for (i = 0; i < nstatics; i++)
@@ -989,7 +989,7 @@ load_dll(ClipMachine * mp, const char *name, struct Coll *names, ClipVar * resp)
 
 	for (fpp = entry->exits; fpp && *fpp; ++fpp)
 	{
-		mp->cexits = (ClipFunction **) realloc(mp->cexits, (mp->ncexits + 1) * sizeof(ClipFunction *));
+		mp->cexits = realloc(mp->cexits, (mp->ncexits + 1) * sizeof(ClipFunction *));
 		mp->cexits[mp->ncexits] = *fpp;
 		++mp->ncexits;
 	}
@@ -1042,7 +1042,7 @@ _clip_load_inits(ClipMachine * mp, ClipFile * file)
 	{
 		make_func(file, &c, &hash);
 		file->pos += 2;
-		mp->exits = (ClipBlock *) realloc(mp->exits, (mp->nexits + 1) * sizeof(ClipBlock));
+		mp->exits = realloc(mp->exits, (mp->nexits + 1) * sizeof(ClipBlock));
 		mp->exits[mp->nexits] = *c.u.block;
 		++file->refCount;
 		++mp->nexits;
@@ -1543,10 +1543,10 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	int ret = 0;
 	int i;
 #if 0
-	ClipVar *locals /* = (ClipVar *) alloca(sizeof(ClipVar) * nlocals) */ ;
+	ClipVar *locals /* = alloca(sizeof(ClipVar) * nlocals) */ ;
 #endif
 	int maxdeep = GETSHORT(F_OFFS(func, 3, 2, 1));
-	ClipVar *stack = (ClipVar *) alloca(sizeof(ClipVar) * maxdeep);
+	ClipVar *stack = alloca(sizeof(ClipVar) * maxdeep);
 	char *filename = F_OFFS(modbeg, 6, 6, 0);
 	int nprivates = GETSHORT(F_OFFS(func, 3, 3, 1));
 
@@ -1555,13 +1555,13 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	/*long *localDefHashs = (long *) F_OFFS(func, 3 + nprivates, 5, 1); */
 	int numlocals = nlocals + nreflocals;
 
-	/*ClipVarDef *ldp, *localDefs = (ClipVarDef *) alloca(sizeof(ClipVarDef) * (numlocals+1)); */
+	/*ClipVarDef *ldp, *localDefs = alloca(sizeof(ClipVarDef) * (numlocals+1)); */
 	/*short *localDefNums = (short *) F_OFFS(func, 3 + nprivates + numlocals, 5, 1); */
 
 	char *procname = F_OFFS(func, 3 + nprivates + numlocals, 5 + numlocals, 1 + 1);
 	char *localnames = procname + *(unsigned char *) F_OFFS(func, 3 + nprivates + numlocals, 5 + numlocals, 1) + 1;
 
-	/*ClipVar *params = (ClipVar *)alloca( nparams*sizeof(ClipVar)); */
+	/*ClipVar *params = alloca( nparams*sizeof(ClipVar)); */
 	ClipFrame frame =
 	{stack, stack, filename, 0, 0, 0, 0 /*localDefs */ , file->staticDefs, 0,
 	 file->hash_names, procname, maxdeep, 0};
@@ -1583,7 +1583,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	}
 	else if (nreflocals)
 	{
-		localvars = (ClipVarFrame *) calloc(1, sizeof(ClipVarFrame) + numlocals * sizeof(ClipVar));
+		localvars = calloc(1, sizeof(ClipVarFrame) + numlocals * sizeof(ClipVar));
 		localvars->vars = (ClipVar *) (localvars + 1);
 		localvars->refcount = 1;
 		reflocals = frame.localvars = localvars;
@@ -1593,16 +1593,16 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 	else
 	{
 #if 1
-		localvars = (ClipVarFrame *) calloc(1, sizeof(ClipVarFrame) + numlocals * sizeof(ClipVar));
+		localvars = calloc(1, sizeof(ClipVarFrame) + numlocals * sizeof(ClipVar));
 		localvars->vars = (ClipVar *) (localvars + 1);
 		localvars->size = numlocals;
 		localvars->refcount = 1;
 		localvars->names = localnames;
 		reflocals = frame.localvars = localvars;
 #else
-		locals = (ClipVar *) alloca(sizeof(ClipVar) * numlocals);
+		locals = alloca(sizeof(ClipVar) * numlocals);
 		memset(locals, 0, numlocals * sizeof(ClipVar));
-		localvars = (ClipVarFrame *) alloca(sizeof(ClipVarFrame));
+		localvars = alloca(sizeof(ClipVarFrame));
 		localvars->vars = locals;
 		localvars->size = numlocals;
 		localvars->refcount = 0;
@@ -2147,7 +2147,7 @@ run_vm(ClipMachine * mp, ClipBlock * bp)
 			if (c)
 			{
 				int nlocals = c;
-				ClipVarFrame *localvars = (ClipVarFrame *) calloc(1, sizeof(ClipVarFrame) + nlocals * sizeof(ClipVar));
+				ClipVarFrame *localvars = calloc(1, sizeof(ClipVarFrame) + nlocals * sizeof(ClipVar));
 
 				localvars->vars = (ClipVar *) (localvars + 1);
 				memcpy(localvars->vars, mp->fp->sp - nlocals, nlocals * sizeof(ClipVar));

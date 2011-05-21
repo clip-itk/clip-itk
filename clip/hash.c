@@ -72,11 +72,11 @@ static unsigned long doublehashinc(unsigned long h, unsigned long s);
 #define FIRST_SIZE 16
 #define NEED_GROW(c,s) ((c)*5/4>=(s))
 
-#define NEW(type) ((type*)malloc(sizeof(type)))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
-#define RESIZE(ptr,type,len) ((type*)realloc(ptr,sizeof(type)*(len)))
+#define NEW(type) malloc(sizeof(type))
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
+#define RESIZE(ptr,type,len) realloc(ptr,sizeof(type)*(len))
 #define VAR(type,var,ini) type *var=(type*)(ini)
-#define NEWVAR(type,var) type *var=(type*)malloc(sizeof(type))
+#define NEWVAR(type,var) type *var=malloc(sizeof(type))
 
 HashTable *
 new_HashTable()

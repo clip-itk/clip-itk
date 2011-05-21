@@ -2267,7 +2267,7 @@ clip_REMRIGHT(ClipMachine * mp)
 	ch = ch == 0 ? ' ' : ch;
 	for (e = str + l - 1; e >= str && (*e == ch); e--);
 	rl = e - str + 1;
-	ret = (unsigned char *) malloc(rl + 1);
+	ret = malloc(rl + 1);
 	memcpy(ret, str, rl);
 	ret[rl] = 0;
 	_clip_retcn_m(mp, (char *)ret, rl);
@@ -3449,7 +3449,7 @@ clip_CRYPT(ClipMachine * mp)
 	if(ulCryptLen>1)
 	{
 
-		BYTE *pbyResult = (BYTE *) malloc(ulStringLen + 1);
+		BYTE *pbyResult = malloc(ulStringLen + 1);
 
 		USHORT uiCount2 = (((USHORT) (pbyCrypt[ulCryptPos] +
 							(USHORT) (pbyCrypt[ulCryptPos + 1] * 256)
@@ -3546,7 +3546,7 @@ clip_CRYPT(ClipMachine * mp)
 	BYTE *pbyString = (BYTE *) _clip_parcl(mp, 1, &ulStringLen);
 	ULONG ulStringPos;
 
-	BYTE *pbyResult = (BYTE *) malloc(ulStringLen + 1);
+	BYTE *pbyResult = malloc(ulStringLen + 1);
 
 	USHORT uiCount2 = (((USHORT) (pbyCrypt[ulCryptPos] + (USHORT) (pbyCrypt[ulCryptPos + 1] * 256)
 				)) & 0xFFFF) ^ ((USHORT) ulCryptLen & 0xFFFF);

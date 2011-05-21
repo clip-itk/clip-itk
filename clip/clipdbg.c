@@ -635,7 +635,7 @@ split_vector(char *str, char ***vpp, int *lenp)
 		if (!*tok)
 			continue;
 		l = (*lenp)++;
-		*vpp = (char **) realloc(*vpp, (l + 1) * sizeof(char *));
+		*vpp = realloc(*vpp, (l + 1) * sizeof(char *));
 
 		(*vpp)[l] = tok;
 	}
@@ -767,7 +767,7 @@ expr_command(ClipMachine * mp, int argc, char **argv)
 	{
 		int ln = strlen(argv[i]);
 
-		s = (char *) realloc(s, l + ln + 2);
+		s = realloc(s, l + ln + 2);
 		s[l] = ' ';
 		memcpy(s + l + 1, argv[i], ln);
 		s[l + 1 + ln] = 0;
@@ -1038,7 +1038,7 @@ parse_name(const char *name, long *hashp, long **dimp, int *ndimp)
 		l = strcspn(s, "[]:");
 		if (!l)
 			break;
-		*dimp = (long *) realloc(*dimp, sizeof(long) * (1 + *ndimp));
+		*dimp = realloc(*dimp, sizeof(long) * (1 + *ndimp));
 
 		if (is_dig(s, l))
 			val = atoi(s) - 1;
@@ -1381,7 +1381,7 @@ bp_command(ClipMachine * mp, int argc, char **argv)
 			}
 			else
 			{
-				bp = (ClipBreakPoint *) calloc(sizeof(ClipBreakPoint), 1);
+				bp = calloc(sizeof(ClipBreakPoint), 1);
 				bp->filename = filename;
 				bp->procname = procname;
 				bp->line = line;

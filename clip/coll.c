@@ -50,7 +50,7 @@ init_Coll(Coll * coll, void (*Free) (void *),
 {
 	coll->count = 0;
 	coll->size = FIRST_SIZE;
-	coll->items = (void **) malloc(sizeof(void *) * FIRST_SIZE);
+	coll->items = malloc(sizeof(void *) * FIRST_SIZE);
 
 	coll->_free = Free;
 	coll->compare = compare;
@@ -61,7 +61,7 @@ Coll *
 new_Coll(void (*Free) (void *),
 	 int (*Compare) ())
 {
-	Coll *ret = (Coll *) malloc(sizeof(Coll));
+	Coll *ret = malloc(sizeof(Coll));
 
 	init_Coll(ret, Free, Compare);
 	return ret;
@@ -131,7 +131,7 @@ static void
 setSize(Coll * coll, int size)
 {
 	void **aItems;
-	aItems = (void **) malloc(size * sizeof(void *));
+	aItems = malloc(size * sizeof(void *));
 
 	if (coll->count != 0)
 		memcpy(aItems, coll->items, coll->count * sizeof(void *));

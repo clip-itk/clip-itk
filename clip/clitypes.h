@@ -45,9 +45,9 @@ typedef struct
 }
 OffsEntry;
 
-#define NEW(type) ((type*)calloc(sizeof(type),1))
-#define NEWVECT(type,len) ((type*)calloc(sizeof(type),(len)))
+#define NEW(type) calloc(sizeof(type),1)
+#define NEWVECT(type,len) calloc(sizeof(type),(len))
 #define VAR(type,var,ini) type *var=(type*)(ini)
-#define NEWVAR(type,var) type *var=(type*)calloc(sizeof(type),1)
+#define NEWVAR(type,var) type *var=calloc(sizeof(type),1)
 
 #endif

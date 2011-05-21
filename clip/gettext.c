@@ -131,7 +131,7 @@ _clip_locale_msg(char *module, char *msg, char **dst)
 			{
 				int l = strlen(s);
 
-				*dst = (char *) malloc(l + 1);
+				*dst = malloc(l + 1);
 				(*dst)[l] = 0;
 				_clip_translate_charset(locale->charset, _clip_hostcs, (unsigned char *)s, (unsigned char *)(*dst), l);
 				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
@@ -227,7 +227,7 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 			_clip_logg(4, "locale msg plural(%ld:%lu): %s -> %s: %s", n, nn, lp->charset, _clip_hostcs, sp);
 			if (lp->charset && strcasecmp(lp->charset, _clip_hostcs))
 			{
-				*dst = (char *) malloc(l + 1);
+				*dst = malloc(l + 1);
 				(*dst)[l] = 0;
 				_clip_translate_charset(lp->charset, _clip_hostcs, (unsigned char *)sp, (unsigned char *)(*dst), l);
 				_clip_logg(3, "localed msg: %s -> %s: %.*s -> %.*s",
@@ -235,7 +235,7 @@ _clip_locale_msg_plural(char *module, char *msgid, char *msgid_plural, long n, c
 			}
 			else
 			{
-				*dst = (char *) malloc(l + 1);
+				*dst = malloc(l + 1);
 				(*dst)[l] = 0;
 				memcpy(*dst, sp, l);
 			}
@@ -326,7 +326,7 @@ add_locale(char *module, char *filename)
 	char *locale = "";
 	char *charset = 0;
 
-	lp = (Locale *) calloc(1, sizeof(Locale));
+	lp = calloc(1, sizeof(Locale));
 	lp->module = strdup(module);
 
 	if (search_Coll(&locales, lp, &ind))
@@ -465,7 +465,7 @@ add_locale(char *module, char *filename)
 		size_t to_read;
 		char *read_ptr;
 
-		data = (struct mo_file_header *) malloc(size);
+		data = malloc(size);
 
 		to_read = size;
 		read_ptr = (char *) data;
@@ -579,7 +579,7 @@ add_locale(char *module, char *filename)
 			l = strcspn(charset, ";\n\r \t");
 			if (lp->charset)
 				free(lp->charset);
-			lp->charset = (char*) malloc(l+1);
+			lp->charset = malloc(l+1);
 			memcpy(lp->charset, charset, l);
 			lp->charset[l] = 0;
 		}
