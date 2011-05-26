@@ -600,11 +600,8 @@ make_c_file(char *Arname, int argc, char **argv)
 	modp = (char *) coll.items[0];
 	modbeg = M_OFFS(modp, 2, 0);
 	nstatics = *(long *) M_OFFS(modp, 3, 0);
+	fprintf(file, "static ClipVar %s_statics[%d];", name, nstatics);
 
-	fprintf(file, "static ClipVar %s_statics[] =\n{\n", name);
-	for (i = 0; i < nstatics; ++i)
-		fprintf(file, "\t{0,0},\n");
-	fprintf(file, "\n};\n");
 	fprintf(file, "\nstatic char %s_body[]=\n{\n", name);
 	for (size = 0, i = 0; i < coll.count; ++i)
 	{

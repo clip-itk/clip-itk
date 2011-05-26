@@ -1123,7 +1123,7 @@ write_statics(FILE * out, VarColl * statics)
 	{
 		VAR(Var, vp, statics->unsorted.items[j]);
 #if 1
-		fprintf(out, "static ClipVar s_%s_%s = { {UNDEF_t, 0, 0,0,0} }", vp->func->name, vp->name);
+		fprintf(out, "static ClipVar s_%s_%s", vp->func->name, vp->name);
 #else
 		if (!vp->init)
 			fprintf(out, "static ClipVar s_%s_%s = { {UNDEF_t, 0, 0,0,0} }", vp->func->name, vp->name);
@@ -2110,10 +2110,7 @@ write_OFile(File * file, long *len)
 			}
 		}
 
-		fprintf(out, "static ClipVar %s_statics[] =\n{\n", name);
-		for (i = 0; i < file->staticNo + 1; ++i)
-			fprintf(out, "\t{{0, 0}},\n");
-		fprintf(out, "\n};\n");
+		fprintf(out, "static ClipVar %s_statics[%d];\n", name, file->staticNo + 1);
 		fprintf(out, "\n/*body1 of module %s*/",name);
 		fprintf(out, "\nstatic const unsigned char %s_body[] =\n{\n", name);
 
