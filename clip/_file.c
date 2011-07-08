@@ -818,7 +818,7 @@ _clip_open(ClipMachine* cm,char *file, int flags, mode_t mode, int exclusive)
 			*fileopen = 1;
 			HashTable_store(cm->fileopens,fileopen,hash);
 		}
-		if(_clip_setlock(cm,hash,fd,0x7fffffff,
+		if( flags != O_NONBLOCK && _clip_setlock(cm,hash,fd,0x7fffffff,
 			(exclusive?CLIP_LOCK_WRITE:CLIP_LOCK_READ)))
 		{
 			_clip_close(cm,hash,fd);
@@ -1466,8 +1466,17 @@ clip_FOPEN(ClipMachine * mp)
 #endif
 			mode |= O_NONBLOCK;
 			mode |= ((share_mode & FO_TRUNC) != 0) ? O_TRUNC: 0;
+			mode |= ((share_mode & FO_DENYWRITE)) ? O_RDWR: 0;
 
-			fd = _clip_open(mp, buf, mode, 0, l_type == F_WRLCK);
+			if ((fd = _clip_open(mp, buf, mode, 0, l_type == F_WRLCK)) == -1)
+			{
+				if (share_mode & FO_DENYWRITE || share_mode == 0 )
+				{
+				mode ^= O_RDWR;
+				l_type = F_RDLCK;
+				fd = _clip_open(mp, buf, mode, 0, l_type == F_WRLCK);
+				}
+			}
 		}
 	}
 
