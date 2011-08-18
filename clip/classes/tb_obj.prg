@@ -780,6 +780,8 @@ return self
 static func down(self)
 	local nskip
 
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	nskip:=eval(self:skipBlock,1)
 	if nskip=0
@@ -799,6 +801,8 @@ return self
 static func up(self)
 	local oldrow,nskip
 
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	nskip:=eval(self:skipBlock,-1)
 	if nskip==0
@@ -816,6 +820,8 @@ return self
 
 *********************************
 static func cleft(self)
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
 
 	self:hitTop:=self:hitBottom:=.f.
 	if self:__colpos==1
@@ -841,6 +847,8 @@ return self
 *********************************
 static func cright(self)
 
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	if self:__colpos==len(self:__colVisible)
 		if ! self:__rightAll
@@ -859,6 +867,9 @@ static func goBottom(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"goBottom")
 #endif
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	if self:gobottomBlock!=NIL
 		self:rowPos=self:rowCount
@@ -871,6 +882,9 @@ static func goTop(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"goTop")
 #endif
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	if self:gotopBlock!=NIL
 		self:rowPos=1
@@ -885,6 +899,9 @@ static func pageDown(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"pageDown")
 #endif
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	xskip=self:rowCount
 	nskip=eval(self:skipBlock,xskip)
@@ -905,6 +922,9 @@ static func pageUp(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"pageUp")
 #endif
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	xskip=0-self:rowCount
 	nskip=eval(self:skipBlock,xskip)
@@ -923,6 +943,9 @@ static func home(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"Home")
 #endif
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	self:__colPos:=min(max(1,self:freeze+1),self:colCount)
 	self:colpos:=self:__colVisible[self:__colpos]
@@ -935,6 +958,9 @@ static func end(self)
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"End")
 #endif
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	self:hitTop:=self:hitBottom:=.f.
 	if self:__colPos <> len(self:__colVisible)
 		self:__colPos:=len(self:__colVisible)
@@ -945,6 +971,8 @@ return self
 
 *********************************
 static func panHome(self)
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
 
 	self:hitTop:=self:hitBottom:=.f.
 	if self:__colpos <> 1 .or.  self:__colVisible[1] <> 1
@@ -957,6 +985,8 @@ return self
 
 *********************************
 static func panEnd(self)
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
 
 	if self:__colpos <> len(self:__colVisible) .or.	! self:__rightAll
 		self:__colpos:=self:colcount+1
@@ -991,6 +1021,9 @@ return self
 *********************************
 static func panLeft(self)
 	local i,j,k
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	if self:freeze >=len(self:__colVisible)
 		return self
 	endif
@@ -1037,6 +1070,9 @@ return self
 *********************************
 static func panRight(self)
 	local i,j,k
+
+	if ! self:__firstStab; self:__remakeColumns(); endif
+
 	if self:__rightAll
 		return self
 	endif
