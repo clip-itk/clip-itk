@@ -341,7 +341,7 @@ static func __sayTable
 	scol=::__whereVisible[i]
 	//len=min(len,::nright-scol-lenSep+len(strSep2))
 	if vislen !=1
-		len=min(len,::nright-scol-lenSep)
+		len=min(len,::nright)
 	endif
 	strings:=::__HeadStrings[col]
 	ccc:=::__getcolor(1)
