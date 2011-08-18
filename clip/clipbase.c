@@ -3583,6 +3583,10 @@ clip_INDEXKEY(ClipMachine * cm)
 	int er;
 
 	_clip_retc(cm,"");
+
+	if (wa==NULL)
+		return 0;
+
 	CHECKWA(wa);
 	CHECKOPT1(1,NUMERIC_t);
 
