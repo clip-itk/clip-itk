@@ -10683,15 +10683,11 @@ _clip_translate_path(ClipMachine * mp, const char *str, char *buf, int buflen)
 	if (mp->flags & TRANSLATE_FLAG)
 	{
 #if 1
-		int i,j;
-		for (i=0,j=0; i<bl; i++)
+		int i;
+		for (i=0; i<bl; i++)
 		{
-			if (buf[i] == ' ')
-				continue;
-			buf[j] = tolower((unsigned char) (buf[i]));
-			j ++;
+			buf[i] = tolower((unsigned char) (buf[i]));
 		}
-		buf[j] = 0;
 #else
 		char *tmp;
 		for (e = buf + bl, s = buf; s < e; ++s)
