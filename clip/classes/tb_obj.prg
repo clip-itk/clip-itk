@@ -1505,15 +1505,15 @@ static func __dummyRow( row )
 return NIL
 
 *********************************
-static function  forceStable
+static function forceStable( self )
 #ifdef DEBUG_CALL
 	outlog(__FILE__,__LINE__,"forceStable")
 #endif
 	dispbegin()
-	   do while !::stabilize()
+	   do while ! self:stabilize()
 	   enddo
 	dispend()
-return NIL
+return self
 
 *********************************
 static func __tdbskip(n)
