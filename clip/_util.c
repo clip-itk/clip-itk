@@ -1782,8 +1782,10 @@ clip_ASCAN(ClipMachine * mp)
 			goto _ret;
 		if (start < 0)
 			start = 0;
-		if (count <= 0 || count > (c - start))
+		if (count < 0 || count > (c - start) || _clip_parinfo(mp, 4) == UNDEF_t)
 			count = c - start;
+		if (count == 0)
+			goto _ret;
 		end = start + count;
 
 		if (code)
@@ -1877,8 +1879,10 @@ clip_ASCAN(ClipMachine * mp)
 			goto _ret;
 		if (start < 0)
 			start = 0;
-		if (count <= 0 || count > (c - start))
+		if (count < 0 || count > (c - start) || _clip_parinfo(mp, 4) == UNDEF_t)
 			count = c - start;
+		if (count == 0)
+			goto _ret;
 		end = start + count;
 
 		if (code)
@@ -2030,8 +2034,10 @@ clip_ASORT(ClipMachine * mp)
 		return 0;
 	if (start < 0)
 		start = 0;
-	if (count <= 0 || count > (c - start))
+	if (count < 0 || count > (c - start) || _clip_parinfo(mp, 3) == UNDEF_t)
 		count = c - start;
+	if (count == 0)
+		return 0;
 
 	if (bp)
 		swap_sort(ap->a.items + start, count, compare_var, mp, bp);
