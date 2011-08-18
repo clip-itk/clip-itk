@@ -1908,7 +1908,7 @@ clip_DBUSEAREA(ClipMachine * cm)
 	if(er){
 		if(*err == 32){
 			cm->neterr = 1;
-			return 0;
+			return er;
 		} else {
 //			rdd_err(cm,EG_OPEN,errno,__FILE__,__LINE__,__PROC__,er_open);
 			goto err;
