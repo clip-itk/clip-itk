@@ -14,7 +14,7 @@
 #define YES   .T.
 #define NO    .F.
 
-#translate ISNIL( <v1> )         => ( <v1> == NIL )
+#translate ISNIL( <v1> )         => ( valtype( <v1> ) == "U" )
 #translate ISARRAY( <v1> )       => ( valtype( <v1> ) == "A" )
 #translate ISBLOCK( <v1> )       => ( valtype( <v1> ) == "B" )
 #translate ISCHARACTER( <v1> )   => ( valtype( <v1> ) == "C" )
