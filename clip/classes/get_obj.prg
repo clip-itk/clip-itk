@@ -1318,7 +1318,7 @@ static func __analizePic()
 		::__format:=space(len(::__original))
 	endcase
 	if !("S" $ ::__flags) .or. ::__winlen==0
-	   ::__winlen:=min(len(::__format),iif(::__fullScreen,maxcol(),999)-::col)
+	   ::__winlen:=min(len(::__format),iif(::__fullScreen,maxcol()+1,999)-::col)
 	endif
 
   else
