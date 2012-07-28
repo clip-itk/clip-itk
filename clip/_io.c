@@ -5849,7 +5849,7 @@ clip_WBOXTERM(ClipMachine * mp)
 	format.bottom--;
 	format.right--;
 
-	if (format.bottom - format.top < 0 || format.right - format.left < 1)
+	if (format.bottom - format.top < 0 || format.right - format.left < 0)
 	{
 		_clip_retni(mp, -1);
 		return 0;
