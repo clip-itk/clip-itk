@@ -140,7 +140,7 @@ do_cipher(ClipMachine *mp, int operation)
 	iv_str = _clip_parcl(mp, 5, &iv_len);
 	if (iv_str)
 	{
-		if (iv_len>sizeof(iv))
+		if (iv_len>(int)sizeof(iv))
 			iv_len = sizeof(iv);
 		memcpy(iv, iv_str, iv_len);
 	}
