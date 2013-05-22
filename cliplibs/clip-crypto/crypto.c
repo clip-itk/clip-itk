@@ -22,14 +22,38 @@
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 
 #include <openssl/evp.h>
+#include <openssl/sha.h>
 
 #include "clip.h"
 #include "error.ch"
 
 
 #define BLOCK_SIZE 4096
+
+static void
+str2strhex(unsigned char *str, unsigned long int len, char *strhexa )
+{
+	register unsigned long int i = 0;
+	const char hexachar[16] = "0123456789abcdef";
+
+	for (; i < len ; i++)
+	{
+		strhexa[ i * 2 ] = hexachar[ (str[i]>>4) & 0xf ];
+		strhexa[ i * 2 + 1 ] = hexachar[ str[i] & 0xf ];
+	}
+
+	strhexa[ i * 2 ] = '\0';
+
+}
+
 
 static void
 crypto_init(void)
@@ -185,5 +209,92 @@ do_cipher(ClipMachine *mp, int operation)
 	_clip_retcn_m(mp, obuf, olen);
 
 	return 0;
+}
+
+
+int
+clip_SHA1(ClipMachine *mp)
+{
+	int len = 0;
+	char hashhexa[ SHA_DIGEST_LENGTH * 2 + 1 ];
+	unsigned char hash[ SHA_DIGEST_LENGTH ];
+	unsigned char *str = (unsigned char *)_clip_parcl(mp, 1, &len );
+
+	if (str == NULL)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SHA1");
+	}
+
+	SHA1( str, len, hash);
+
+	str2strhex( hash, SHA_DIGEST_LENGTH, hashhexa );
+
+	if (hashhexa == NULL)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_MEM, 0, 0, __FILE__, __LINE__, "SHA1");
+	}
+
+	_clip_retc(mp, hashhexa );
+
+	return 0;
+}
+
+int clip_SHA1_FILE(ClipMachine *mp)
+{
+	int len = 0, fd = 0;
+	struct stat buf;
+	char hashhexa[ SHA_DIGEST_LENGTH * 2 + 1 ];
+	unsigned char hash[ SHA_DIGEST_LENGTH ];
+	unsigned char *data, *str = (unsigned char *)_clip_parcl(mp, 1, &len );
+
+	if (str == NULL)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SHA1_FILE");
+	}
+
+	if ((fd = open((char *)str, O_RDONLY)) < 0) {
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_OPEN, 0, 0, __FILE__, __LINE__, "SHA1_FILE");
+	}
+
+	if (fstat(fd, &buf) < 0)
+	{
+		close(fd);
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_OPEN, 0, 0, __FILE__, __LINE__, "SHA1_FILE");
+	}
+
+	if ((data = mmap(NULL, buf.st_size, PROT_READ, MAP_SHARED, fd, 0)) == MAP_FAILED)
+	{
+		close(fd);
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_OPEN, 0, 0, __FILE__, __LINE__, "SHA1_FILE");
+	}
+
+	SHA1(data, buf.st_size, hash);
+
+	if (munmap(data, buf.st_size) == -1)
+	{
+		_clip_retni(mp, -1);
+		return _clip_trap_err(mp, EG_ARG, 0, 0, __FILE__, __LINE__, "SHA1_FILE");
+	}
+
+	close(fd);
+
+	str2strhex(hash, SHA_DIGEST_LENGTH, hashhexa);
+
+	if (hashhexa == NULL)
+	{
+		_clip_retc(mp, "");
+		return _clip_trap_err(mp, EG_MEM, 0, 0, __FILE__, __LINE__, "SHA1_FILE");
+	}
+
+	_clip_retc(mp, hashhexa );
+
+	return 0;
+
 }
 
