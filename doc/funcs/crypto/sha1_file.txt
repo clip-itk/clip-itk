@@ -1,0 +1,25 @@
+$FUNCNAME$
+	SHA1_FILE()
+$CATEGORY$
+  Crypto
+$SUMMARY$
+	SHA-1 (Secure Hash Algorithm) is a cryptographic hash function with a 160
+	bits output.
+$SYNTAX$
+	SHA1_FILE(<cFile>) --> cSHA1Digest
+$ARGUMENTS$
+	<cFile> is the name of the file to open, including the path if there is one. 
+$RETURNS$
+	SHA1 file digest 20 bytes of output.
+$DESCRIPTION$
+	A cryptographic hash function is a hash function, that is, an algorithm that
+	takes an arbitrary block of data and returns a fixed-size bit string.
+$EXAMPLES$
+	SHA1_FILE( "Temp.txt" )		// Result: SHA1 file digest
+$PECULIARITIES$
+$PLATFORMS$
+$SEEALSO$
+   SHA1()
+$AUTHOR$
+Ricardo Brisighelli
+$END$
