@@ -995,7 +995,10 @@ static int _cdx_back_search_tree(ClipMachine* cm,RDD_ORDER* ro,void* key,int len
 			recno1 = _rdd_backuint(branch->keys+i*(ro->bufsize+8)+ro->bufsize);
 			s = _cdx_cmp(ro,branch->keys+i*(ro->bufsize+8),key,len);
 			if(recno && !s)
-				s = recno1-recno;
+				if(recno1 = recno)
+					s=1;
+				else
+					s = recno1-recno;
 			if((s <= 0) || (i == 0)){
 				ro->stack[ro->level].pos = i;
 				if((s<=0) && (i<_rdd_ushort(branch->nkeys)-1)){
