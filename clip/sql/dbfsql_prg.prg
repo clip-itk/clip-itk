@@ -32,6 +32,7 @@ STATIC FUNCTION connCommand(sql,pars)
 	LOCAL stmt
 	LOCAL ret
 
+	sql := ExpandInitMacros( sql, pars )
 	SQLLocWrite(::conn,@sql)
 	stmt := SQLPrepare(::conn,sql)
 	ParLocWrite(::conn,pars,::RDBMS)
@@ -72,6 +73,8 @@ STATIC FUNCTION connCreateRowset(self,selectSQL,pars,insertSQL,deleteSQL,updateS
 	LOCAL i
 
 	ors:classname := "TROWSET"
+
+	selectSQL := ExpandInitMacros( selectSQL, pars )
 
 	SQLLocWrite(self:conn,@selectSQL)
 	SQLLocWrite(self:conn,@insertSQL)
@@ -562,6 +565,21 @@ STATIC FUNCTION ParsMacros(self,sql,data)
 		ENDDO
 	ENDIF
 
+RETURN sql
+
+STATIC FUNCTION ExpandInitMacros( sql, aPars )
+	LOCAL cFields := ""
+	LOCAL cValues := ""
+	LOCAL cList := ""
+
+	IF aPars != NIL
+		AEVAL( aPars, {|a,n| cFields += IIF( n != 1, ",", "" ) + a[1] } )
+		AEVAL( aPars, {|a,n| cValues += IIF( n != 1, ",", "" ) + ":" + ALLTRIM( a[1] ) } )
+		AEVAL( aPars, {|a,n| cList += IIF( n != 1, ",", "" ) + a[1] + "=:" + ALLTRIM( a[1] ) } )
+	ENDIF
+	sql := STRTRAN( sql, "%FIELDS", cFields )
+	sql := STRTRAN( sql, "%VALUES", cValues )
+	sql := STRTRAN( sql, "%LIST", cList )
 RETURN sql
 
 STATIC FUNCTION ParsArray(self,sql,data)
