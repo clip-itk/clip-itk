@@ -256,12 +256,12 @@ void pg_bindpars(PG_STMT* stmt,ClipVar* ap){
 				}
 			}
 		}
-		if(vp->t.type == CHARACTER_t){
-			strcpy(t,vp->s.str.buf);
-			t += strlen(vp->s.str.buf);
-		} else {
+		if(i == ap->a.count){
 			strcpy(t,"null");
 			t += 4;
+		} else {
+			strcpy(t,vp->s.str.buf);
+			t += strlen(vp->s.str.buf);
 		}
 	}
 	if(t!=&res[len] && b){
