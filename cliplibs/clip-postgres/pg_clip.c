@@ -35,6 +35,8 @@ static const char er_blob_unlink[]	= "Can't unlink Large Object";
 
 int pg_createconn(ClipMachine* mp);
 
+static void notice_processor(void *arg, const char *message);
+
 struct tagPG_CONN;
 
 typedef struct tagPG_STMT {
@@ -318,6 +320,7 @@ int pg_createconn(ClipMachine* mp){
 		}
 	}
 
+	PQsetNoticeProcessor(tmpconn, notice_processor, NULL);
 
 	return _clip_store_c_item(mp,(void*)conn,_C_ITEM_TYPE_SQL,destroy_pg_conn);
 }
@@ -1362,3 +1365,9 @@ int pg_lo_unlink(ClipMachine* mp, SQLCONN* c, unsigned int OID){
 	return 0;
 }
 /* ************************************************************************* */
+static void notice_processor(void *arg, const char *message)
+{
+#ifndef SQL_PG_SILENT_NOTICES
+	fprintf(stderr, "%s", message);
+#endif
+}

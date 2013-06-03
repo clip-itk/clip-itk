@@ -47,4 +47,8 @@
 #define PGT_VARCHAR		1043				// -1	Implemented!	!
 #define PGT_XID			28					// 4	Implemented!	!
 
+
+/* PostgreSQL messages */
+#define SQL_PG_SILENT_NOTICES				//Silence Postgres Notices
+
 #endif
