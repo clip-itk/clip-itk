@@ -722,6 +722,8 @@ STATIC PROCEDURE ParLocWrite(conn,pars,RDBMS)
 					pars[i][2] := "'"+STRZERO(YEAR(pars[i][2]),4)+"-"+;
 						STRZERO(MONTH(pars[i][2]),2)+"-"+;
 						STRZERO(DAY(pars[i][2]),2)+"'"
+				ELSEIF VALTYPE(pars[i][2]) == "L" .AND. RDBMS == "PG"
+					pars[i][2] := "'" + If( pars[i][2], "T", "F" ) + "'"
 				ENDIF
 			ENDIF
 		NEXT
