@@ -388,13 +388,15 @@ static char _pg_ctype(int type){
 			return 'N';
 
 		case PGT_VARCHAR:
-		case PGT_TEXT:
 		case PGT_BPCHAR:
 		case PGT_BYTEA:
 		case PGT_NAME:
 		case PGT_FILENAME:
 		case PGT_ABSTIME:
 			return 'C';
+
+		case PGT_TEXT:
+			return 'M';
 
 		case PGT_DATE:
 		case PGT_TIMESTAMP:
@@ -462,12 +464,20 @@ int pg_createrowset(ClipMachine* mp,SQLROWSET* rs,ClipVar* ap,ClipVar* idname,co
 		rowset->fields[i].dec = 0;
 		mod = PQfmod(stmt->res,i);
 		switch(rowset->fields[i].type){
+			case PGT_BPCHAR:
+			case PGT_CHAR:
 			case PGT_VARCHAR:
 				rowset->fields[i].len = mod-4;
+				break;
+			case PGT_TEXT:
+				rowset->fields[i].len = 10;
 				break;
 			case PGT_NUMERIC:
 				rowset->fields[i].len = (mod >> 16);
 				rowset->fields[i].dec = (mod & 0xffff)-4;
+				break;
+			case PGT_DATE:
+				rowset->fields[i].len = 8;
 				break;
 			default:
 				rowset->fields[i].len = PQfsize(stmt->res,i);
