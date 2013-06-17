@@ -713,7 +713,8 @@ STATIC PROCEDURE ParLocWrite(conn,pars,RDBMS)
 				.OR. RDBMS == "DBTCP"
 
 				IF VALTYPE(pars[i][2]) == "C"
-					IF !(LEFT(pars[i][2],1) == "'" .AND. RIGHT(pars[i][2],1) == "'")
+					IF ( Len( pars[i] ) < 5 .or. ValType( pars[i][5] ) != "L" .or. pars[i][5] ) .and.;
+						! ( LEFT(pars[i][2],1) == "'" .AND. RIGHT(pars[i][2],1) == "'" )
 						pars[i][2] := "'"+pars[i][2]+"'"
 					ENDIF
 				ELSEIF VALTYPE(pars[i][2]) == "N"
