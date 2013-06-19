@@ -389,6 +389,7 @@ static char _pg_ctype(int type){
 
 		case PGT_VARCHAR:
 		case PGT_BPCHAR:
+		case PGT_CHAR:
 		case PGT_BYTEA:
 		case PGT_NAME:
 		case PGT_FILENAME:

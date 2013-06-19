@@ -9,7 +9,7 @@
 #define PGT_BOX			603					// 32	Implemented!	!
 #define PGT_BPCHAR		1042				// -1	Implemented!	!
 #define PGT_BYTEA		17					// -1	Implemented!	!
-#define PGT_CHAR		1042				// -1	Implemented!	!
+#define PGT_CHAR		18				// -1	Implemented!	!
 #define PGT_CID			29					// 4	Implemented!	!
 #define PGT_CIDR		650					// -1	Implemented!	!
 #define PGT_CIRCLE		718					// 24	Implemented!	!
