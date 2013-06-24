@@ -583,6 +583,7 @@ STATIC FUNCTION ExpandInitMacros( sql, aPars )
 RETURN sql
 
 STATIC FUNCTION ParsArray(self,sql,data)
+	LOCAL keys := mapkeys(data)
 	LOCAL ar := ARRAY(0)
 	LOCAL iter := sql
 	LOCAL b,e
@@ -599,7 +600,7 @@ STATIC FUNCTION ParsArray(self,sql,data)
 		IF ASCAN(ar,{|x| x[1]==name}) == 0
 			fieldno := self:FieldNo(name)
 			IF fieldno != 0
-				IF data[HASHSTR(UPPER(name))] != NIL
+				IF aScan( keys, HASHSTR(UPPER(name))) != 0 .and. data[HASHSTR(UPPER(name))] != NIL
 					val := self:FromClip(fieldno,data[HASHSTR(UPPER(name))],.T.)
 					AADD(ar,{name,val,SQLFieldTypeSQL(self:rowset,fieldno),;
 						SQLFieldBinary(self:rowset,fieldno)})
