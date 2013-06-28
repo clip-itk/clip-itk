@@ -41,7 +41,7 @@
 #define PGT_TID			27					// 6	?
 #define PGT_TIME		1083				// 8	Text only		!
 #define PGT_TIMESPAN	1186				// 12	Text only		!
-#define PGT_TIMESTAMP	1296				// 4	Implemented!	!
+#define PGT_TIMESTAMP	1114				// 4	Implemented!	!
 #define PGT_TINTERVAL	704					// 12	?
 #define PGT_UNKNOWN		705					// -1
 #define PGT_VARCHAR		1043				// -1	Implemented!	!

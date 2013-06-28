@@ -400,13 +400,13 @@ static char _pg_ctype(int type){
 			return 'M';
 
 		case PGT_DATE:
-		case PGT_TIMESTAMP:
 			return 'D';
 
 		case PGT_BOOL:
 			return 'L';
 
 		case PGT_DATETIME:
+		case PGT_TIMESTAMP:
 			return 'T';
 
 		case PGT_BOX:
@@ -811,10 +811,9 @@ int clip_PG_IN_TIMESTAMP(ClipMachine* mp){
 			_clip_retdc(mp,time->tm_year+1900,time->tm_mon+1,time->tm_mday);
 		}
 	} else {
-		date = _clip_parc(mp,2);
-		if(date){
-//			_pg_in_date(mp,rowset->conn->datestyle,rowset->conn->textdate,date);
-		}
+		date = _clip_parcl(mp,2,&len);
+		_clip_retc(mp,date);
+//		_pg_in_date(mp,rowset->conn->datestyle,rowset->conn->textdate,date);
 	}
 	return 0;
 }
@@ -954,24 +953,30 @@ int clip_PG_OUT_TIMESTAMP(ClipMachine* mp){
 		mp,_clip_parni(mp,1),_C_ITEM_TYPE_SQL);
 	int totext = _clip_parl(mp,3);
 	struct tm time;
-	time_t date;
-
-	memset(&time,0,sizeof(time));
-	_clip_pardc(mp,2,&time.tm_year,&time.tm_mon,&time.tm_mday,&time.tm_wday);
-	time.tm_year -= 1900;
-	time.tm_mon--;
+	time_t bindate;
+	char* date;
+	int len;
 
 	if(!rowset){
 		_clip_trap_err(mp,0,0,0,subsys,ER_NOROWSET,er_norowset);
 		return 1;
 	}
 	if((!totext)&&rowset->binary){
-		date = mktime(&time);
-		_clip_retcn(mp,(char*)(&date),4);
+		
+		memset(&time,0,sizeof(time));
+		_clip_pardc(mp,2,&time.tm_year,&time.tm_mon,&time.tm_mday,&time.tm_wday);
+		time.tm_year -= 1900;
+		time.tm_mon--;
+
+		bindate = mktime(&time);
+		_clip_retcn(mp,(char*)(&bindate),4);
 	} else {
-		char str[25];
+		date = _clip_parcl(mp,2,&len);
+	        _clip_retc(mp,date);
+
+//		char str[25];
 //		_pg_out_date(mp,str,rowset->conn->datestyle,rowset->conn->textdate,_clip_pardj(mp,2));
-		_clip_retc(mp,str);
+//		_clip_retc(mp,str);
 	}
 	return 0;
 }
